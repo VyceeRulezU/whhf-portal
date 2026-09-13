@@ -52,10 +52,18 @@ documented intent. Update this as real implementation lands.
   least privilege") and `PRD.md` §7 for when this becomes necessary.
 - Rate limiting is in-memory only (see above) — fine for a single instance,
   not for multi-instance/production scale without a shared store.
-- CSP is a reasonable starting policy but not yet tightened against a real
-  build (e.g. `style-src 'unsafe-inline'` is a dev-mode concession for CSS
-  Modules' injected `<style>` tags — revisit once the production build
-  pipeline is finalized).
+- CSP is a reasonable starting policy but not fully strict:
+  `style-src 'unsafe-inline'` is a dev-mode concession for CSS Modules'
+  injected `<style>` tags. `script-src 'unsafe-inline'` is required in
+  *production too* (confirmed on the real Cloudflare deployment) — Next.js
+  delivers the RSC/hydration payload via inline `<script>` tags, and a
+  strict `script-src 'self'` blocks that outright (page loads, then goes
+  blank, hydration fails). The fully-strict fix is a per-request CSP
+  nonce, but that forces every page — including the currently-static
+  marketing pages — into dynamic per-request rendering, since a nonce
+  baked into a statically-cached page can't match a fresh nonce generated
+  per request. Deliberately not done given that cost; see the comment in
+  `middleware.ts` before changing this.
 - No automated tests yet for the auth/session/rate-limit code — add these
   before relying on this in production, per `code-style.md` ("chase
   coverage on anything that touches money or donor PII").

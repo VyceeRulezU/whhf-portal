@@ -17,15 +17,32 @@ export function middleware(req: NextRequest) {
       // Payment providers' checkout widgets/redirects need their own
       // frame/script sources — add each provider's exact domain here as
       // it's wired in, never a wildcard.
-      // 'unsafe-eval'/'unsafe-inline' are a dev-only concession: webpack's
-      // dev-mode module runtime (React Refresh) both eval()s code and
-      // injects literal inline <script> tags for the HMR/hydration
-      // bootstrap. A strict script-src blocks these outright — not just
-      // makes noisier, it silently breaks all client-side interactivity
-      // (onClick, useEffect, forms) in `next dev`, with no visible error
-      // short of a CSP violation logged to the browser console. Production
-      // builds don't need either; never add them there.
-      isDev ? "script-src 'self' 'unsafe-eval' 'unsafe-inline'" : "script-src 'self'",
+      // 'unsafe-eval' is a dev-only concession: webpack's dev-mode module
+      // runtime (React Refresh) eval()s code, which a strict script-src
+      // blocks outright — silently breaking all client-side interactivity
+      // in `next dev`, with no visible error short of a CSP console log.
+      //
+      // 'unsafe-inline' for scripts is NOT dev-only — Next.js's App Router
+      // delivers the RSC/hydration payload via literal inline <script>
+      // tags in production too, not just dev's HMR bootstrap. Without it,
+      // production hydration fails outright (confirmed on the real
+      // Cloudflare deployment: page loads, then goes blank, React throws
+      // "Connection closed" mid-hydration).
+      //
+      // The fully-strict alternative is a per-request nonce (Next's
+      // documented CSP pattern), but that requires every page reading
+      // headers() to get the nonce, which forces ALL pages — including
+      // the currently-static marketing pages — into dynamic per-request
+      // rendering: a static page's nonce is fixed at build time and won't
+      // match the fresh nonce this middleware would generate on each
+      // later request. That's a real performance/architecture tradeoff
+      // (losing static generation sitewide), not a drop-in hardening, so
+      // it's deliberately not done here — revisit only if it's worth
+      // that cost. In the meantime, this remains reasonably safe: React
+      // escapes all rendered content by default (no dangerouslySetInnerHTML
+      // anywhere in this codebase), so the residual risk 'unsafe-inline'
+      // accepts is narrow.
+      isDev ? "script-src 'self' 'unsafe-eval' 'unsafe-inline'" : "script-src 'self' 'unsafe-inline'",
       "style-src 'self' 'unsafe-inline'", // CSS Modules inject inline <style> in dev; revisit for a stricter policy at build time
       "img-src 'self' data: https:",
       "frame-src 'self'",
