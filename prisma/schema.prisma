@@ -1,0 +1,86 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum DonationStatus {
+  pending
+  processing
+  succeeded
+  failed
+  refunded
+}
+
+enum PaymentProviderName {
+  paystack
+  flutterwave
+  korapay
+  manual
+}
+
+model Donor {
+  id        String     @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  address   String?
+  createdAt DateTime   @default(now())
+  donations Donation[]
+
+  @@index([email])
+}
+
+model Cause {
+  id          String     @id @default(cuid())
+  name        String
+  slug        String     @unique
+  description String
+  isDefault   Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+  donations   Donation[]
+}
+
+model Donation {
+  id                    String              @id @default(cuid())
+  donor                 Donor               @relation(fields: [donorId], references: [id])
+  donorId               String
+  cause                 Cause               @relation(fields: [causeId], references: [id])
+  causeId               String
+  amount                Int // smallest currency unit — never a float
+  currency              String // ISO 4217, e.g. "NGN", "USD"
+  status                DonationStatus      @default(pending)
+  provider              PaymentProviderName
+  providerReference      String              @unique
+  isRecurring           Boolean             @default(false)
+  recurringParentId     String?
+  isManualEntry         Boolean             @default(false)
+  message               String?
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+
+  @@index([status])
+  @@index([provider])
+  @@index([createdAt])
+}
+
+model WebhookEvent {
+  id         String   @id @default(cuid())
+  provider   PaymentProviderName
+  eventId    String
+  rawPayload Json
+  receivedAt DateTime @default(now())
+
+  @@unique([provider, eventId])
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         String   @default("admin") // "admin" | "content_editor" — see security.md
+  createdAt    DateTime @default(now())
+}

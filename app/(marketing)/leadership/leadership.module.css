@@ -1,0 +1,21 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-bg-surface-raised);
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-gold);
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-h3);
+  margin-bottom: var(--space-2);
+}

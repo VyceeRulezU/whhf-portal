@@ -1,0 +1,36 @@
+{
+  "$description": "Raw color palette for the WHHF portal, derived from assets/brand/logo.jpg. This file is the source of truth for hue values; design-tokens.json references these by name for semantic roles.",
+  "black": {
+    "true": "#000000",
+    "canvas": "#0A0A0A",
+    "surface": "#141414",
+    "surfaceRaised": "#1D1D1D"
+  },
+  "gold": {
+    "50": "#F7EFDB",
+    "300": "#E8C06A",
+    "500": "#D4A64C",
+    "700": "#B8862F",
+    "900": "#8A6A2C"
+  },
+  "silver": {
+    "300": "#C7CBD1",
+    "500": "#A8ADB4",
+    "700": "#7C8288"
+  },
+  "warmWhite": {
+    "100": "#F5F3EF",
+    "300": "#B8B6B2",
+    "500": "#7C7A76"
+  },
+  "semantic": {
+    "success": "#5CA97A",
+    "successMuted": "#2E4A3B",
+    "error": "#E2574C",
+    "errorMuted": "#4A2B28"
+  },
+  "borders": {
+    "default": "rgba(255,255,255,0.08)",
+    "strong": "rgba(255,255,255,0.16)"
+  }
+}

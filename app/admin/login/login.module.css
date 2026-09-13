@@ -1,0 +1,28 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+}
+
+.card {
+  width: 100%;
+  max-width: 400px;
+}
+
+.brand {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--space-6);
+}
+
+.brand img {
+  border-radius: var(--radius-sm);
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}

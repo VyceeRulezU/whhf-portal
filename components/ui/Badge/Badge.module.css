@@ -1,0 +1,16 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-bg-surface-raised);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  border: 1px solid transparent;
+}
+
+.badge--featured {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+  background-color: transparent;
+}

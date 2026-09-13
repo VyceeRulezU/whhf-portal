@@ -1,0 +1,16 @@
+.card {
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+}
+
+/* Stat-overlay variant — text over a background photo, per design-system.md:
+   never place text directly on an unscrimmed photo. Apply this class to a
+   wrapper positioned over the image; the scrim is the true-black plate at
+   70% opacity. */
+.card--overlay {
+  background-color: rgba(0, 0, 0, 0.7);
+  border: none;
+  backdrop-filter: blur(2px);
+}

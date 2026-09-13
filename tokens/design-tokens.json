@@ -1,0 +1,82 @@
+{
+  "$description": "Semantic design tokens for the WHHF portal. generate-css-variables.js reads this file and color-tokens.json to produce tokens.css. Do not hand-edit tokens.css — edit here and regenerate.",
+  "color": {
+    "bg": {
+      "canvas": { "value": "{black.canvas}", "css": "--color-bg-canvas" },
+      "surface": { "value": "{black.surface}", "css": "--color-bg-surface" },
+      "surfaceRaised": { "value": "{black.surfaceRaised}", "css": "--color-bg-surface-raised" },
+      "trueBlack": { "value": "{black.true}", "css": "--color-bg-true-black" }
+    },
+    "border": {
+      "default": { "value": "{borders.default}", "css": "--color-border" },
+      "strong": { "value": "{borders.strong}", "css": "--color-border-strong" }
+    },
+    "accent": {
+      "gold": { "value": "{gold.500}", "css": "--color-gold" },
+      "goldHover": { "value": "{gold.300}", "css": "--color-gold-hover" },
+      "goldMuted": { "value": "{gold.900}", "css": "--color-gold-muted" },
+      "silver": { "value": "{silver.500}", "css": "--color-silver" }
+    },
+    "text": {
+      "primary": { "value": "{warmWhite.100}", "css": "--color-text-primary" },
+      "secondary": { "value": "{warmWhite.300}", "css": "--color-text-secondary" },
+      "muted": { "value": "{warmWhite.500}", "css": "--color-text-muted" },
+      "onGold": { "value": "{black.surface}", "css": "--color-text-on-gold" }
+    },
+    "status": {
+      "success": { "value": "{semantic.success}", "css": "--color-success" },
+      "error": { "value": "{semantic.error}", "css": "--color-error" }
+    },
+    "focusRing": { "value": "{gold.500}", "css": "--color-focus-ring" }
+  },
+  "font": {
+    "family": {
+      "display": { "value": "'Fraunces', 'Freight Display', Georgia, serif", "css": "--font-family-display" },
+      "ui": { "value": "'Inter', 'General Sans', -apple-system, sans-serif", "css": "--font-family-ui" }
+    },
+    "size": {
+      "display": { "value": "3.5rem", "css": "--font-size-display" },
+      "h1": { "value": "2.5rem", "css": "--font-size-h1" },
+      "h2": { "value": "1.875rem", "css": "--font-size-h2" },
+      "h3": { "value": "1.375rem", "css": "--font-size-h3" },
+      "bodyLg": { "value": "1.125rem", "css": "--font-size-body-lg" },
+      "body": { "value": "1rem", "css": "--font-size-body" },
+      "sm": { "value": "0.875rem", "css": "--font-size-sm" },
+      "xs": { "value": "0.75rem", "css": "--font-size-xs" }
+    },
+    "lineHeight": {
+      "display": { "value": "1.05", "css": "--line-height-display" },
+      "heading": { "value": "1.2", "css": "--line-height-heading" },
+      "body": { "value": "1.6", "css": "--line-height-body" }
+    }
+  },
+  "space": {
+    "0-5": { "value": "2px", "css": "--space-0-5" },
+    "1": { "value": "4px", "css": "--space-1" },
+    "2": { "value": "8px", "css": "--space-2" },
+    "3": { "value": "12px", "css": "--space-3" },
+    "4": { "value": "16px", "css": "--space-4" },
+    "5": { "value": "24px", "css": "--space-5" },
+    "6": { "value": "32px", "css": "--space-6" },
+    "7": { "value": "40px", "css": "--space-7" },
+    "8": { "value": "48px", "css": "--space-8" },
+    "9": { "value": "64px", "css": "--space-9" },
+    "10": { "value": "80px", "css": "--space-10" },
+    "11": { "value": "96px", "css": "--space-11" },
+    "12": { "value": "128px", "css": "--space-12" }
+  },
+  "radius": {
+    "sm": { "value": "6px", "css": "--radius-sm" },
+    "md": { "value": "12px", "css": "--radius-md" },
+    "pill": { "value": "999px", "css": "--radius-pill" }
+  },
+  "motion": {
+    "fast": { "value": "0.15s ease", "css": "--motion-fast" },
+    "base": { "value": "0.25s ease", "css": "--motion-base" }
+  },
+  "container": {
+    "maxWidth": { "value": "1200px", "css": "--container-max-width" },
+    "maxWidthWide": { "value": "1880px", "css": "--container-max-width-wide" },
+    "gutter": { "value": "24px", "css": "--container-gutter" }
+  }
+}

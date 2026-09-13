@@ -1,0 +1,59 @@
+/* styles/base/typography.css — global type defaults; component-level type
+   overrides live in each component's own module, not here. */
+
+/* Layers the fonts loaded via next/font (app/layout.tsx) in front of the
+   generated tokens.css family names, so the same --font-family-* variables
+   everywhere else in the app resolve to real loaded font files. */
+:root {
+  --font-family-display: var(--font-fraunces), 'Freight Display', Georgia, serif;
+  --font-family-ui: var(--font-inter), 'General Sans', -apple-system, sans-serif;
+}
+
+body {
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  font-weight: 400;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-family-display);
+  font-weight: 600;
+  line-height: var(--line-height-heading);
+  margin: 0;
+  color: var(--color-text-primary);
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+}
+
+h3 {
+  font-size: var(--font-size-h3);
+}
+
+p {
+  margin: 0;
+  max-width: 70ch;
+}
+
+.eyebrow-label {
+  /* Use sparingly — see design-system.md: avoid tracked-out ALL-CAPS
+     eyebrows as a default. This exists for the rare case a section truly
+     needs a small label above a heading. */
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-gold);
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
+  border-radius: var(--radius-sm);
+}

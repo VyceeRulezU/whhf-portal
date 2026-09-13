@@ -1,0 +1,11 @@
+.imageWrap {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin-bottom: var(--space-4);
+}
+
+.image {
+  object-fit: cover;
+}

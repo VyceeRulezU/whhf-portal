@@ -1,0 +1,83 @@
+.button {
+  /* Local structural constants (not global tokens — this is this
+     component's own box model, reused below so button__iconChip's height
+     calc never has to duplicate a magic number). */
+  --button-min-height: 54px;
+  --button-border-width: 1.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-family-ui);
+  font-weight: 600;
+  font-size: var(--font-size-body);
+  border: var(--button-border-width) solid transparent;
+  cursor: pointer;
+  min-height: var(--button-min-height);
+  transition: transform var(--motion-fast), background-color var(--motion-fast),
+    border-color var(--motion-fast), color var(--motion-fast);
+}
+
+.button:focus-visible {
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
+  outline: none;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.button--primary {
+  background-color: var(--color-gold);
+  color: var(--color-text-on-gold);
+}
+.button--primary:hover:not(:disabled) {
+  background-color: var(--color-gold-hover);
+  transform: translateY(-1px);
+}
+
+.button--outline {
+  background-color: transparent;
+  border-color: var(--color-border-strong);
+  color: var(--color-text-primary);
+}
+.button--outline:hover:not(:disabled) {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+
+.button--ghost {
+  background-color: transparent;
+  color: var(--color-text-secondary);
+  padding-inline: var(--space-2);
+}
+.button--ghost:hover:not(:disabled) {
+  color: var(--color-gold);
+  text-decoration: underline;
+}
+
+.button--withIconChip {
+  padding-top: var(--space-0-5);
+  padding-right: var(--space-0-5);
+  padding-bottom: var(--space-0-5);
+}
+
+.button__iconChip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Fills the button's full inner height (min-height minus its own
+     top/bottom padding and border) rather than a fixed pixel size or the
+     text's line-height, so it reads as a large circular badge nearly the
+     height of the (now compact, 2px-padded) button. aspect-ratio keeps it
+     a perfect circle at whatever that height resolves to. */
+  height: calc(var(--button-min-height) - (var(--button-border-width) * 2) - (var(--space-0-5) * 2));
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-bg-true-black);
+  color: var(--color-gold);
+  flex-shrink: 0;
+}

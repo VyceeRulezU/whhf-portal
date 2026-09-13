@@ -1,0 +1,59 @@
+/**
+ * tokens.css — GENERATED FILE. Do not edit by hand.
+ * Source: tokens/color-tokens.json + tokens/design-tokens.json
+ * Regenerate with: node tokens/generate-css-variables.js
+ */
+
+:root {
+  --color-bg-canvas: #0A0A0A;
+  --color-bg-surface: #141414;
+  --color-bg-surface-raised: #1D1D1D;
+  --color-bg-true-black: #000000;
+  --color-border: rgba(255,255,255,0.08);
+  --color-border-strong: rgba(255,255,255,0.16);
+  --color-error: #E2574C;
+  --color-focus-ring: #D4A64C;
+  --color-gold: #D4A64C;
+  --color-gold-hover: #E8C06A;
+  --color-gold-muted: #8A6A2C;
+  --color-silver: #A8ADB4;
+  --color-success: #5CA97A;
+  --color-text-muted: #7C7A76;
+  --color-text-on-gold: #141414;
+  --color-text-primary: #F5F3EF;
+  --color-text-secondary: #B8B6B2;
+  --container-gutter: 24px;
+  --container-max-width: 1200px;
+  --container-max-width-wide: 1880px;
+  --font-family-display: 'Fraunces', 'Freight Display', Georgia, serif;
+  --font-family-ui: 'Inter', 'General Sans', -apple-system, sans-serif;
+  --font-size-body: 1rem;
+  --font-size-body-lg: 1.125rem;
+  --font-size-display: 3.5rem;
+  --font-size-h1: 2.5rem;
+  --font-size-h2: 1.875rem;
+  --font-size-h3: 1.375rem;
+  --font-size-sm: 0.875rem;
+  --font-size-xs: 0.75rem;
+  --line-height-body: 1.6;
+  --line-height-display: 1.05;
+  --line-height-heading: 1.2;
+  --motion-base: 0.25s ease;
+  --motion-fast: 0.15s ease;
+  --radius-md: 12px;
+  --radius-pill: 999px;
+  --radius-sm: 6px;
+  --space-0-5: 2px;
+  --space-1: 4px;
+  --space-10: 80px;
+  --space-11: 96px;
+  --space-12: 128px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 40px;
+  --space-8: 48px;
+  --space-9: 64px;
+}
