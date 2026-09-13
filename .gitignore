@@ -1,8 +1,20 @@
 node_modules/
 .next/
 out/
-.env
-.env.local
+.open-next/
+.wrangler/
+# Cloudflare's local-secrets file for `wrangler dev` — same rule as .env*,
+# never commit real values here.
+.dev.vars*
+# All .env* files are ignored except the checked-in template — see
+# AGENTS.md ("Never commit secrets, API keys, or .env* files"). Also
+# covers the no-dot spelling defensively (Next.js itself only auto-loads
+# ".env.local", not "env.local" — but if a file by that name exists, it
+# must never be trackable regardless of whether the app reads it).
+.env*
+!.env.example
+env.local
+env*.local
 *.log
 .DS_Store
 prisma/*.db

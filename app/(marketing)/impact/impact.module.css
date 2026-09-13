@@ -8,3 +8,7 @@
 .image {
   object-fit: cover;
 }
+
+.description {
+  color: var(--color-text-secondary);
+}

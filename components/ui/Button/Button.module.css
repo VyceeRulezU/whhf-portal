@@ -31,12 +31,29 @@
 }
 
 .button--primary {
+  position: relative;
+  overflow: hidden;
   background-color: var(--color-gold);
   color: var(--color-text-on-gold);
 }
 .button--primary:hover:not(:disabled) {
   background-color: var(--color-gold-hover);
   transform: translateY(-1px);
+}
+
+/* Glossy sheen — a light-reflection highlight across the top half, like a
+   glazed/glass surface. rgba(white) rather than a token: this is a
+   structural light-reflection effect (same technique Card's overlay scrim
+   already uses with rgba(black)), not a brand color choice. */
+.button--primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.05) 45%, rgba(255, 255, 255, 0) 55%);
+  pointer-events: none;
+}
+.button--primary:hover:not(:disabled)::before {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.08) 45%, rgba(255, 255, 255, 0) 55%);
 }
 
 .button--outline {
@@ -59,6 +76,13 @@
   text-decoration: underline;
 }
 
+.button__label {
+  /* Stacks above .button--primary's ::before gloss layer, which is
+     absolutely positioned and would otherwise paint over static content. */
+  position: relative;
+  z-index: 1;
+}
+
 .button--withIconChip {
   padding-top: var(--space-0-5);
   padding-right: var(--space-0-5);
@@ -69,6 +93,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  /* Also stacks above the gloss ::before layer — see .button__label. */
+  position: relative;
+  z-index: 1;
   /* Fills the button's full inner height (min-height minus its own
      top/bottom padding and border) rather than a fixed pixel size or the
      text's line-height, so it reads as a large circular badge nearly the

@@ -23,13 +23,14 @@
   --color-text-primary: #F5F3EF;
   --color-text-secondary: #B8B6B2;
   --container-gutter: 24px;
-  --container-max-width: 1200px;
+  --container-max-width: 1440px;
+  --container-max-width-narrow: 560px;
   --container-max-width-wide: 1880px;
   --font-family-display: 'Fraunces', 'Freight Display', Georgia, serif;
   --font-family-ui: 'Inter', 'General Sans', -apple-system, sans-serif;
   --font-size-body: 1rem;
   --font-size-body-lg: 1.125rem;
-  --font-size-display: 3.5rem;
+  --font-size-display: clamp(2.5rem, 1.5rem + 5vw, 4.5rem);
   --font-size-h1: 2.5rem;
   --font-size-h2: 1.875rem;
   --font-size-h3: 1.375rem;
@@ -40,6 +41,7 @@
   --line-height-heading: 1.2;
   --motion-base: 0.25s ease;
   --motion-fast: 0.15s ease;
+  --radius-lg: 2rem;
   --radius-md: 12px;
   --radius-pill: 999px;
   --radius-sm: 6px;

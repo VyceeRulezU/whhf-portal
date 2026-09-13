@@ -26,7 +26,7 @@ export default function ImpactPage() {
           <div className="grid-auto">
             <Card>
               <h3>₦1.5M+</h3>
-              <p style={{ color: "var(--color-text-secondary)" }}>
+              <p className={styles.description}>
                 Distributed to five indigent cancer patients at National
                 Hospital, Abuja, on the 4th memorial anniversary of Rev. (Mrs)
                 Helen Okoye.
@@ -34,9 +34,7 @@ export default function ImpactPage() {
             </Card>
             <Card>
               <h3>5</h3>
-              <p style={{ color: "var(--color-text-secondary)" }}>
-                Patients directly supported in this distribution.
-              </p>
+              <p className={styles.description}>Patients directly supported in this distribution.</p>
             </Card>
             {/* TODO: pull real cumulative totals from the admin/donation data once live — do not hardcode further placeholder figures. */}
           </div>

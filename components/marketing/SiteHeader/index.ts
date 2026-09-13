@@ -1,1 +1,2 @@
-export { SiteHeader, NAV_LINKS } from "./SiteHeader";
+export { SiteHeader } from "./SiteHeader";
+export { NAV_LINKS } from "./navLinks";

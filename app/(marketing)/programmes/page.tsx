@@ -27,8 +27,8 @@ export default function ProgrammesPage() {
                 />
               </div>
               <Badge featured>Flagship</Badge>
-              <h3 style={{ marginTop: "var(--space-4)" }}>Indigent Cancer Patient Support</h3>
-              <p style={{ marginTop: "var(--space-2)", color: "var(--color-text-secondary)" }}>
+              <h3 className={styles.cardHeading}>Indigent Cancer Patient Support</h3>
+              <p className={styles.cardBody}>
                 Direct financial grants toward chemotherapy and treatment
                 costs for patients who cannot afford care, distributed in
                 partnership with National Hospital, Abuja.

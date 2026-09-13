@@ -9,6 +9,17 @@
   padding-inline: var(--container-gutter);
 }
 
+/* Modifiers — combine with `.container` (e.g. `"container container--wide"`).
+   Defined in the same stylesheet as `.container` so the override is never
+   dependent on cascade order against another file. */
+.container--narrow {
+  max-width: var(--container-max-width-narrow);
+}
+
+.container--wide {
+  max-width: var(--container-max-width-wide);
+}
+
 .section {
   padding-block: var(--space-11);
 }
@@ -20,6 +31,10 @@
 .stack {
   display: flex;
   flex-direction: column;
+  /* No-op in normal block flow; only matters (and matters a lot) when
+     .stack ends up as a grid/flex item — see page.module.css's
+     .hero__heading comment for the CSS Grid "blowout" this prevents. */
+  min-width: 0;
 }
 
 .stack > * + * {

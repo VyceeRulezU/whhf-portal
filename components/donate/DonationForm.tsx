@@ -102,7 +102,7 @@ export function DonationForm() {
       />
 
       {error && (
-        <p role="alert" style={{ color: "var(--color-error)", fontSize: "var(--font-size-sm)" }}>
+        <p role="alert" className={styles.error}>
           {error}
         </p>
       )}

@@ -9,3 +9,12 @@
 .image {
   object-fit: cover;
 }
+
+.cardHeading {
+  margin-top: var(--space-4);
+}
+
+.cardBody {
+  margin-top: var(--space-2);
+  color: var(--color-text-secondary);
+}

@@ -40,7 +40,7 @@ export default function LeadershipPage() {
                   {initials(member.name)}
                 </span>
                 <h3>{member.name}</h3>
-                <p style={{ color: "var(--color-text-secondary)" }}>{member.role}</p>
+                <p className={styles.role}>{member.role}</p>
               </Card>
             ))}
           </div>

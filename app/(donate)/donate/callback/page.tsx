@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db/prisma";
 import { providers } from "@/lib/payments/router";
+import styles from "./callback.module.css";
 
 /**
  * The provider redirects the donor's browser here after checkout. This is
@@ -12,9 +13,10 @@ import { providers } from "@/lib/payments/router";
 export default async function DonateCallbackPage({
   searchParams
 }: {
-  searchParams: { reference?: string; tx_ref?: string };
+  searchParams: Promise<{ reference?: string; tx_ref?: string }>;
 }) {
-  const reference = searchParams.reference ?? searchParams.tx_ref;
+  const params = await searchParams;
+  const reference = params.reference ?? params.tx_ref;
 
   if (!reference) {
     redirect("/donate");
@@ -38,7 +40,7 @@ export default async function DonateCallbackPage({
   return (
     <div className="stack">
       <h1>Still confirming your donation…</h1>
-      <p style={{ color: "var(--color-text-secondary)" }}>
+      <p className={styles.message}>
         This can take a moment. If this page doesn&rsquo;t update shortly,
         check your email for a receipt or contact us — your payment may
         still have gone through even if this page hasn&rsquo;t caught up

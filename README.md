@@ -1,44 +1,205 @@
 # WHHF Portal
 
-Public website + donation portal for the William & Helen Heritage
-Foundation (WHHF), Abuja.
+Public website + donation portal for the **William & Helen Heritage
+Foundation (WHHF)**, an Abuja-based NGO founded in memory of Rev. (Mrs)
+Helen Titilayo Okoye, under the umbrella of the All Christians Fellowship
+Mission (ACFM).
 
-- **Product spec**: [`PRD.md`](./PRD.md)
-- **Agent/engineering rules**: [`.agent/rules/`](./.agent/rules)
-- **Task-specific patterns**: [`.agent/skills/`](./.agent/skills)
-- **Design tokens**: [`tokens/`](./tokens)
-- **Supporting docs**: [`docs/`](./docs)
+This is a real NGO handling real donor funds. Every payment- and
+data-handling decision in this codebase is treated as production-grade,
+not a prototype — see [`.agent/rules/security.md`](.agent/rules/security.md).
 
-If you're an AI coding agent, start at [`AGENTS.md`](./AGENTS.md), not here.
+- **If you're an AI coding agent, start at [`AGENTS.md`](AGENTS.md), not
+  here.** It links out to the architecture, code-style, design-system, and
+  security rules, plus task-specific skills.
+- **Product spec**: [`PRD.md`](PRD.md)
+- **Build status / what's left**: [`docs/roadmap.md`](docs/roadmap.md)
+- **Security implementation status**: [`docs/security-status.md`](docs/security-status.md)
+- **Contributing**: [`CONTRIBUTING.md`](CONTRIBUTING.md)
 
-## Getting started (once the app is scaffolded)
+This README stays high-level and points to those living documents rather
+than duplicating them — update the doc that actually owns a fact (roadmap
+for "what's done," security-status for "what's implemented vs. stubbed")
+rather than this file, so nothing drifts out of sync.
+
+## What this project is
+
+1. **Public-facing site** — mission, founding story, programmes
+   (cancer/indigent patient support is the founding cause area), impact
+   reporting, board/leadership, and contact.
+2. **Donation portal** — donors give (one-off, recurring planned) via card,
+   bank transfer, and mobile money, in NGN and international currencies
+   (USD/GBP at minimum). WHHF staff can see and export what's come in for
+   their own reporting and regulatory obligations.
+
+See [`PRD.md`](PRD.md) for the full product requirements and
+[`docs/`](docs) for compliance, content-style, and roadmap references.
+
+## Stack
+
+| Layer | Choice |
+|---|---|
+| Framework | Next.js 14 (App Router), TypeScript (strict) |
+| Styling | Vanilla CSS — CSS Modules + BEM-flavoured class names, no Tailwind/CSS-in-JS |
+| Design tokens | JSON source (`tokens/`) → generated `tokens.css` custom properties |
+| Database | PostgreSQL via Prisma ORM |
+| Auth | Minimal signed-cookie session for the admin dashboard only — donors never need an account |
+| Payments | Paystack, Flutterwave, Korapay, behind one shared `PaymentProvider` interface |
+| Email | Not yet selected (transactional email for receipts) |
+| Hosting | Not yet decided — avoid platform-locked primitives |
+
+Full rationale for each choice lives in
+[`.agent/rules/architecture.md`](.agent/rules/architecture.md).
+
+## Getting started
 
 ```bash
 npm install
-cp .env.example .env.local   # fill in real values, never commit .env.local
-node tokens/generate-css-variables.js   # regenerate tokens.css after any token edit
+cp .env.example .env.local     # fill in real values — see "Environment variables" below
+node tokens/generate-css-variables.js   # regenerate tokens.css from the JSON source
+npx prisma generate
 npx prisma migrate dev
 npm run dev
 ```
 
-## Repo structure
+The app runs at `http://localhost:3000`. Marketing pages, the `/donate`
+flow, and `/admin` (after seeding an admin user — see below) are all
+reachable without any payment provider keys configured; the payment
+adapters themselves are currently stubbed (see
+[docs/security-status.md](docs/security-status.md)) and will throw if you
+actually try to initialize a charge.
+
+### Creating a local admin user
+
+`prisma/seed.ts` only creates an admin account if these are set — never
+commit real values for these:
+
+```bash
+SEED_ADMIN_EMAIL=you@example.com SEED_ADMIN_PASSWORD='a-strong-password' npm run prisma:seed
+```
+
+### Environment variables
+
+See [`.env.example`](.env.example) for the full, current list with
+comments — it's the source of truth, not this README. Broadly:
+
+- `DATABASE_URL` — Postgres connection string.
+- `AUTH_SECRET` — HMAC secret for signing admin session cookies.
+- `PAYSTACK_*`, `FLUTTERWAVE_*`, `KORAPAY_*` — provider keys/webhook
+  secrets. Public/checkout keys only are safe client-side; secret keys and
+  webhook signing secrets are server-only — see
+  [`.agent/rules/security.md`](.agent/rules/security.md) before wiring in a
+  new one.
+- `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` — local-only bootstrap admin,
+  see above.
+
+Never commit `.env` or `.env.local` — both are gitignored.
+
+## Available scripts
+
+| Command | What it does |
+|---|---|
+| `npm run dev` | Start the Next.js dev server |
+| `npm run build` | Production build |
+| `npm run start` | Run the production build |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm run lint` | ESLint |
+| `npm run tokens:build` | Regenerate `tokens/tokens.css` from the JSON token source — run after any token edit |
+| `npm run prisma:generate` | Regenerate the Prisma client after a schema change |
+| `npm run prisma:migrate` | Create/apply a local migration |
+| `npm run prisma:seed` | Run `prisma/seed.ts` (see "Creating a local admin user") |
+
+## Project structure
 
 ```
-AGENTS.md              → start here if you're an AI agent
-PRD.md                  → product requirements
+AGENTS.md                → start here if you're an AI agent
+PRD.md                    → product requirements
+CONTRIBUTING.md           → PR checklist, branch/commit conventions
 .agent/
-  rules/                → architecture, code-style, design-system, security
-  skills/               → task-specific how-to's (API routes, components,
-                           migrations, payment provider integrations)
-tokens/                 → design tokens (JSON source + generated CSS)
-docs/                   → compliance, roadmap, and other reference material
-assets/brand/           → logo + favicon source files
-app/, components/, lib/, prisma/, styles/, public/
-                        → application code (created as the build progresses)
+  rules/                  → architecture, code-style, design-system, security
+  skills/                 → task-specific how-tos (API routes, components,
+                             migrations, payment provider integrations)
+app/
+  (marketing)/            → public pages: home, about, programmes, impact,
+                             leadership, contact — shared header/footer layout
+  (donate)/                → donation flow: amount → details → payment → confirmation
+  admin/
+    login/                → outside the auth guard, by design
+    (protected)/          → everything behind the admin session check
+  api/
+    donations/            → create/verify donation records
+    webhooks/{provider}/  → signature-verify → server-side re-verify → idempotent update
+components/
+  ui/                     → generic building blocks (Button, Card, Badge, Input)
+  marketing/              → page-specific/shared marketing sections (SiteHeader, PageHero, …)
+  donate/                 → donation-flow-specific components
+  admin/                  → dashboard-specific components (SignOutButton, …)
+lib/
+  payments/               → one adapter file per provider + the shared interface + router
+  auth/                   → session, password hashing, login rate limiting
+  db/                     → Prisma client singleton
+  validation/             → zod schemas shared by forms + API routes
+  format/                 → display-time formatting (currency, etc.)
+  content/                → non-CMS content constants (placeholder image URLs, etc.)
+prisma/
+  schema.prisma           → Donor, Cause, Donation, WebhookEvent, AdminUser
+  seed.ts                 → local bootstrap admin (env-gated, see above)
+styles/base/              → reset, typography, layout primitives — imported once, globally
+tokens/                   → design tokens: JSON source + generated tokens.css
+assets/brand/             → logo + favicon source files
+docs/                     → compliance, content style guide, roadmap, security status
+public/                   → static files served as-is
 ```
 
-## Stack
+## Design system
 
-Next.js (App Router) + TypeScript, vanilla CSS (CSS Modules, no framework),
-PostgreSQL + Prisma, Flutterwave/Paystack/Korapay for payments. See
-`.agent/rules/architecture.md` for the full picture.
+[`.agent/rules/design-system.md`](.agent/rules/design-system.md) is the
+single source of truth for every visual decision — colors, type scale,
+spacing, component states, accessibility floor. In short:
+
+- **Every** color, spacing, radius, font-size, and transition value used in
+  a component comes from a CSS custom property in `tokens/tokens.css` — no
+  hex codes or magic pixel numbers in component styles. If a value doesn't
+  exist as a token yet, add it to `tokens/design-tokens.json` (and
+  `color-tokens.json` if it's a color) and run
+  `node tokens/generate-css-variables.js` — never hand-edit `tokens.css`,
+  it's generated.
+- Dark theme, black/gold/silver, derived directly from the WHHF logo — not
+  a generic template palette.
+- No inline `style={{...}}` in components — every style lives in that
+  component's colocated `*.module.css` file.
+
+## Payments
+
+Every provider adapter (`lib/payments/{paystack,flutterwave,korapay}.ts`)
+implements the same `PaymentProvider` interface
+(`lib/payments/types.ts`): `initialize`, `verify`, `parseWebhook`. Routing
+between providers is centralized in `lib/payments/router.ts` — UI/API code
+never imports a specific adapter directly.
+
+Webhook handlers never trust the webhook payload's amount or status: they
+verify the signature, then re-verify server-to-server against the
+provider's own API before updating a `Donation` row. See
+[`.agent/rules/security.md`](.agent/rules/security.md) ("Payment
+integrity") and the matching `.agent/skills/*-integration/skill.md` before
+touching any of this.
+
+Current adapter implementation status is tracked in
+[`docs/security-status.md`](docs/security-status.md), not here.
+
+## Testing
+
+No automated test suite exists yet. Per
+[`.agent/rules/code-style.md`](.agent/rules/code-style.md), when tests are
+added: unit-test `lib/payments/*` adapters against recorded fixture
+responses (never live provider calls), and unit-test every `zod` schema in
+`lib/validation/` with at least one valid and one invalid case. Chase
+coverage on anything that touches money or donor PII; marketing pages don't
+need it.
+
+## Contributing
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the PR checklist, branch/commit
+conventions, and review priorities (money correctness and idempotency
+first, then donor data handling, then accessibility, then design-system
+consistency).

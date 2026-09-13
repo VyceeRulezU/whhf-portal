@@ -4,14 +4,6 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import styles from "./donations.module.css";
 
-const STATUS_COLOR: Record<string, string> = {
-  succeeded: "var(--color-success)",
-  pending: "var(--color-text-muted)",
-  processing: "var(--color-gold)",
-  failed: "var(--color-error)",
-  refunded: "var(--color-text-muted)"
-};
-
 /**
  * Reachable only through app/admin/(protected)/layout.tsx's session guard.
  * Minimal v1 per PRD.md §7: aggregate totals + filterable list + CSV export.
@@ -42,7 +34,7 @@ export default async function AdminDonationsPage() {
 
   return (
     <div className="stack">
-      <div className="cluster" style={{ justifyContent: "space-between" }}>
+      <div className={`cluster ${styles.headerRow}`}>
         <h1>Donations</h1>
         <a href="/api/admin/donations/export">
           <Button variant="outline">Export CSV</Button>
@@ -105,7 +97,7 @@ export default async function AdminDonationsPage() {
                   <td>{donation.cause.name}</td>
                   <td>{formatCurrency(donation.amount, donation.currency)}</td>
                   <td>
-                    <span className={styles.status} style={{ color: STATUS_COLOR[donation.status] }}>
+                    <span className={`${styles.status} ${styles[`status--${donation.status}`]}`}>
                       {donation.status}
                     </span>
                   </td>

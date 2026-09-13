@@ -4,7 +4,13 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  // Required to construct PrismaClient with a driver adapter (lib/db/prisma.ts)
+  // instead of Prisma's own connection pooling — Cloudflare Workers can't
+  // hold a raw TCP Postgres connection the normal way, so we go through the
+  // `pg` driver over a Hyperdrive-provided connection string instead. See
+  // README.md ("Deploying to Cloudflare Workers").
+  previewFeatures = ["driverAdapters"]
 }
 
 enum DonationStatus {

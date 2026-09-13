@@ -35,7 +35,7 @@
       "ui": { "value": "'Inter', 'General Sans', -apple-system, sans-serif", "css": "--font-family-ui" }
     },
     "size": {
-      "display": { "value": "3.5rem", "css": "--font-size-display" },
+      "display": { "value": "clamp(2.5rem, 1.5rem + 5vw, 4.5rem)", "css": "--font-size-display" },
       "h1": { "value": "2.5rem", "css": "--font-size-h1" },
       "h2": { "value": "1.875rem", "css": "--font-size-h2" },
       "h3": { "value": "1.375rem", "css": "--font-size-h3" },
@@ -68,6 +68,7 @@
   "radius": {
     "sm": { "value": "6px", "css": "--radius-sm" },
     "md": { "value": "12px", "css": "--radius-md" },
+    "lg": { "value": "2rem", "css": "--radius-lg" },
     "pill": { "value": "999px", "css": "--radius-pill" }
   },
   "motion": {
@@ -75,7 +76,8 @@
     "base": { "value": "0.25s ease", "css": "--motion-base" }
   },
   "container": {
-    "maxWidth": { "value": "1200px", "css": "--container-max-width" },
+    "maxWidthNarrow": { "value": "560px", "css": "--container-max-width-narrow" },
+    "maxWidth": { "value": "1440px", "css": "--container-max-width" },
     "maxWidthWide": { "value": "1880px", "css": "--container-max-width-wide" },
     "gutter": { "value": "24px", "css": "--container-gutter" }
   }

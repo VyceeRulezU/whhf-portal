@@ -38,9 +38,30 @@
   background-color: var(--color-bg-surface-raised);
 }
 
+.headerRow {
+  justify-content: space-between;
+}
+
 .status {
   font-weight: 600;
   text-transform: capitalize;
+}
+
+.status--succeeded {
+  color: var(--color-success);
+}
+
+.status--pending,
+.status--refunded {
+  color: var(--color-text-muted);
+}
+
+.status--processing {
+  color: var(--color-gold);
+}
+
+.status--failed {
+  color: var(--color-error);
 }
 
 .empty {

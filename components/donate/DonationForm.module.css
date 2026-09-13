@@ -31,3 +31,8 @@
   background-color: var(--color-gold);
   color: var(--color-text-on-gold);
 }
+
+.error {
+  color: var(--color-error);
+  font-size: var(--font-size-sm);
+}

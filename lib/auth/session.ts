@@ -26,14 +26,17 @@ function sign(payload: string): string {
  * Creates a signed, httpOnly, sameSite session cookie. Not JWT — a minimal
  * signed-payload scheme is enough here and keeps the auth surface small
  * and auditable. See security.md ("Admin auth").
+ *
+ * `cookies()` is async as of Next.js 15 — every caller must await this.
  */
-export function createSession(payload: Omit<SessionPayload, "exp">) {
+export async function createSession(payload: Omit<SessionPayload, "exp">) {
   const full: SessionPayload = { ...payload, exp: Math.floor(Date.now() / 1000) + SESSION_TTL_SECONDS };
   const body = Buffer.from(JSON.stringify(full)).toString("base64url");
   const signature = sign(body);
   const token = `${body}.${signature}`;
 
-  cookies().set(SESSION_COOKIE, token, {
+  const cookieStore = await cookies();
+  cookieStore.set(SESSION_COOKIE, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
@@ -42,13 +45,15 @@ export function createSession(payload: Omit<SessionPayload, "exp">) {
   });
 }
 
-export function destroySession() {
-  cookies().delete(SESSION_COOKIE);
+export async function destroySession() {
+  const cookieStore = await cookies();
+  cookieStore.delete(SESSION_COOKIE);
 }
 
 /** Returns the session payload if present, signature-valid, and unexpired — otherwise null. */
-export function getSession(): SessionPayload | null {
-  const token = cookies().get(SESSION_COOKIE)?.value;
+export async function getSession(): Promise<SessionPayload | null> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(SESSION_COOKIE)?.value;
   if (!token) return null;
 
   const [body, signature] = token.split(".");

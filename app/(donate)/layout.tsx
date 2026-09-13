@@ -15,9 +15,7 @@ export default function DonateLayout({ children }: { children: React.ReactNode }
         </div>
       </header>
       <main className="section">
-        <div className="container" style={{ maxWidth: "560px" }}>
-          {children}
-        </div>
+        <div className="container container--narrow">{children}</div>
       </main>
     </>
   );

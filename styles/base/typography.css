@@ -20,10 +20,16 @@ h1,
 h2,
 h3 {
   font-family: var(--font-family-display);
-  font-weight: 600;
+  font-weight: 300;
   line-height: var(--line-height-heading);
   margin: 0;
   color: var(--color-text-primary);
+  /* Fallback only — normal wrapping happens at word boundaries first. A
+     heading's `max-width: Nch` constrains normal wrapping, but at the
+     display size (4.5rem) a single long word can still be wider than a
+     narrow (375px) column has room for; without this it forces the page
+     to scroll horizontally instead of breaking that one word. */
+  overflow-wrap: break-word;
 }
 
 h1 {
@@ -41,6 +47,7 @@ h3 {
 p {
   margin: 0;
   max-width: 70ch;
+  overflow-wrap: break-word;
 }
 
 .eyebrow-label {

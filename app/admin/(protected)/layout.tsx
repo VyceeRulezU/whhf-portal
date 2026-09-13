@@ -12,8 +12,8 @@ import styles from "./admin-layout.module.css";
  * gated behind the session check it's trying to create. See security.md
  * ("Admin auth") — fail closed: no session, no access, full stop.
  */
-export default function ProtectedAdminLayout({ children }: { children: React.ReactNode }) {
-  const session = getSession();
+export default async function ProtectedAdminLayout({ children }: { children: React.ReactNode }) {
+  const session = await getSession();
 
   if (!session) {
     redirect("/admin/login");

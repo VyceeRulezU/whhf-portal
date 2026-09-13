@@ -10,7 +10,7 @@ import { prisma } from "@/lib/db/prisma";
  * line before streaming the CSV.
  */
 export async function GET(req: NextRequest) {
-  const session = getSession();
+  const session = await getSession();
   if (!session) {
     return NextResponse.json({ error: { code: "unauthorized" } }, { status: 401 });
   }

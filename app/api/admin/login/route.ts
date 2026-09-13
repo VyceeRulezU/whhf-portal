@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
   }
 
   clearAttempts(rateLimitKey);
-  createSession({ adminUserId: admin.id, role: admin.role });
+  await createSession({ adminUserId: admin.id, role: admin.role });
 
   return NextResponse.json({ data: { ok: true } }, { status: 200 });
 }

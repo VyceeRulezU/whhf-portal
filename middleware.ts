@@ -8,6 +8,7 @@ import type { NextRequest } from "next/server";
  */
 export function middleware(req: NextRequest) {
   const res = NextResponse.next();
+  const isDev = process.env.NODE_ENV !== "production";
 
   res.headers.set(
     "Content-Security-Policy",
@@ -16,7 +17,15 @@ export function middleware(req: NextRequest) {
       // Payment providers' checkout widgets/redirects need their own
       // frame/script sources — add each provider's exact domain here as
       // it's wired in, never a wildcard.
-      "script-src 'self'",
+      // 'unsafe-eval'/'unsafe-inline' are a dev-only concession: webpack's
+      // dev-mode module runtime (React Refresh) both eval()s code and
+      // injects literal inline <script> tags for the HMR/hydration
+      // bootstrap. A strict script-src blocks these outright — not just
+      // makes noisier, it silently breaks all client-side interactivity
+      // (onClick, useEffect, forms) in `next dev`, with no visible error
+      // short of a CSP violation logged to the browser console. Production
+      // builds don't need either; never add them there.
+      isDev ? "script-src 'self' 'unsafe-eval' 'unsafe-inline'" : "script-src 'self'",
       "style-src 'self' 'unsafe-inline'", // CSS Modules inject inline <style> in dev; revisit for a stricter policy at build time
       "img-src 'self' data: https:",
       "frame-src 'self'",

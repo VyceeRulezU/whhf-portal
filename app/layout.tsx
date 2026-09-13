@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter } from "next/font/google";
+import { MotionConfig } from "framer-motion";
 import "../tokens/tokens.css";
 import "../styles/base/reset.css";
 import "../styles/base/typography.css";
@@ -9,7 +10,7 @@ import "../styles/base/layout.css";
 // consumed by tokens.css's font-family variables — see typography.css.
 const fraunces = Fraunces({
   subsets: ["latin"],
-  weight: ["500", "600"],
+  weight: ["300", "500", "600"],
   variable: "--font-fraunces"
 });
 
@@ -35,7 +36,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${fraunces.variable} ${inter.variable}`}>
-      <body>{children}</body>
+      <body>
+        {/* reducedMotion="user" makes every Framer Motion animation in the
+            app honor prefers-reduced-motion automatically — see
+            design-system.md ("Accessibility floor"). */}
+        <MotionConfig reducedMotion="user">{children}</MotionConfig>
+      </body>
     </html>
   );
 }

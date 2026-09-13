@@ -10,7 +10,7 @@ export default function HomePage() {
   return (
     <>
       <section className={`${styles.hero} section`}>
-        <div className="container">
+        <div className="container container--wide">
           <div className={styles.hero__top}>
             <h1 className={styles.hero__heading}>
               Continuing a legacy of giving, one life at a time.

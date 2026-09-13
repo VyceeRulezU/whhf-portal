@@ -1,0 +1,6 @@
+# Cloudflare Pages/Workers static-asset cache rules. Next.js fingerprints
+# everything under /_next/static/* by content hash, so it's safe to cache
+# forever; nothing else here should be cached at the edge — /api and
+# /admin responses are dynamic and must always be revalidated.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable

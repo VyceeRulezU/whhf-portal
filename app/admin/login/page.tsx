@@ -50,9 +50,7 @@ export default function AdminLoginPage() {
         <form onSubmit={handleSubmit} className="stack">
           <div className={styles.heading}>
             <h1>Admin sign in</h1>
-            <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--font-size-sm)" }}>
-              Staff access only.
-            </p>
+            <p className={styles.subtitle}>Staff access only.</p>
           </div>
           <Input label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           <Input
@@ -63,7 +61,7 @@ export default function AdminLoginPage() {
             required
           />
           {error && (
-            <p role="alert" style={{ color: "var(--color-error)", fontSize: "var(--font-size-sm)" }}>
+            <p role="alert" className={styles.error}>
               {error}
             </p>
           )}

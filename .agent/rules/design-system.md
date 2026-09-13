@@ -71,7 +71,7 @@ Type scale (rem, 16px root):
 
 | Token | Size | Line-height | Use |
 |---|---|---|---|
-| `--font-size-display` | 3.5rem | 1.05 | Hero H1 |
+| `--font-size-display` | clamp(2.5rem, 1.5rem + 5vw, 4.5rem) | 1.05 | Hero H1 — fluid: scales down on narrow viewports rather than wrapping/breaking a 4.5rem headline into an unreadable mobile column, caps at 4.5rem from roughly tablet width up |
 | `--font-size-h1` | 2.5rem | 1.1 | Page H1 |
 | `--font-size-h2` | 1.875rem | 1.2 | Section headings |
 | `--font-size-h3` | 1.375rem | 1.3 | Card/subsection headings |
@@ -92,6 +92,9 @@ label instead if a section needs one.
 Radius is deliberately restrained and NOT the "rounded card kit" default:
 - `--radius-sm` (6px) — inputs, small tags
 - `--radius-md` (12px) — cards, images
+- `--radius-lg` (2rem) — reserved for larger surface treatments (e.g. a
+  full-bleed hero panel) where `--radius-md` reads too tight; not yet used
+  anywhere — don't reach for it on a standard card, that's still `--radius-md`
 - `--radius-pill` (999px) — buttons and badges only (this is the one place
   full pill radius is used, echoing the reference layout's button shape)
 
