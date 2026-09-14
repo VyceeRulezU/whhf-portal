@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getSession } from "@/lib/auth/session";
 import { SignOutButton } from "@/components/admin/SignOutButton";
-import logo from "@/assets/brand/logo.jpg";
+import logo from "@/assets/brand/logo-transparent.png";
 import styles from "./admin-layout.module.css";
 
 /**
@@ -29,6 +29,8 @@ export default async function ProtectedAdminLayout({ children }: { children: Rea
           </Link>
           <nav className={styles.nav} aria-label="Admin">
             <Link href="/admin/donations">Donations</Link>
+            <Link href="/admin/messages">Messages</Link>
+            <Link href="/admin/inbox">Inbox</Link>
           </nav>
           <SignOutButton />
         </div>

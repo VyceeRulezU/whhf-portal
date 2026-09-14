@@ -1,0 +1,9 @@
+.error {
+  color: var(--color-error);
+  font-size: var(--font-size-sm);
+}
+
+.success {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body-lg);
+}

@@ -29,9 +29,6 @@
   flex-shrink: 0;
 }
 
-.header__logoImage {
-  border-radius: var(--radius-sm);
-}
 
 .header__nav {
   display: flex;

@@ -42,11 +42,14 @@ export function SiteFooter() {
 
           <div className={styles.footer__column}>
             <p className={styles.footer__heading}>Contact</p>
-            {/* TODO: confirm real office address, phone, and email with WHHF
-                board — see the same placeholder pattern on /contact. */}
             <ul className={styles.footer__list}>
-              <li>Pending confirmation from WHHF</li>
-              <li>Abuja, Nigeria</li>
+              <li>
+                <a href="mailto:contact@whheritagefoundation.org">contact@whheritagefoundation.org</a>
+              </li>
+              <li>
+                <a href="tel:+2348064320084">0806 432 0084</a>
+              </li>
+              <li>Maitama, Abuja, Nigeria</li>
             </ul>
             <Link href="/donate" className={styles.footer__donateLink}>
               Donate Now →
@@ -94,7 +97,7 @@ export function SiteFooter() {
         </svg>
 
         <div className={`container ${styles.footer__bottom}`}>
-          <div className={styles.footer__bottomRow}>
+          <div className={styles.footer__bottomGroup}>
             <p>© {new Date().getFullYear()} William &amp; Helen Heritage Foundation, Abuja, Nigeria.</p>
             <p className={styles.footer__registration}>
               {/* Placeholder — do not fabricate a number. See docs/compliance-nigeria-ngo.md */}
@@ -104,6 +107,7 @@ export function SiteFooter() {
           <div className={styles.footer__legalLinks}>
             <Link href="/privacy">Privacy Policy</Link>
             <Link href="/terms">Terms of Use</Link>
+            <Link href="/admin/login">Admin Login</Link>
           </div>
         </div>
       </div>

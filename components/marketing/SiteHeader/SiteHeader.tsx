@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
-import logo from "@/assets/brand/logo.jpg";
+import logo from "@/assets/brand/logo-transparent.png";
 import { NAV_LINKS } from "./navLinks";
 import styles from "./SiteHeader.module.css";
 

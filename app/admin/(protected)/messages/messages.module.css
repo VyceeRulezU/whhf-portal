@@ -1,0 +1,85 @@
+.statLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.statValue {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-h2);
+  color: var(--color-gold);
+  margin-top: var(--space-2);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.messageCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.messageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: var(--space-4);
+}
+
+.name {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 600;
+}
+
+.meta {
+  margin-top: var(--space-1);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.meta a {
+  color: var(--color-text-secondary);
+}
+
+.meta a:hover {
+  color: var(--color-gold);
+}
+
+.subject {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.body {
+  color: var(--color-text-secondary);
+  white-space: pre-wrap;
+}
+
+.status {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: capitalize;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-bg-surface-raised);
+}
+
+.status--unread {
+  color: var(--color-gold);
+}
+
+.status--read,
+.status--replied {
+  color: var(--color-text-muted);
+}
+
+.empty {
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: var(--space-8);
+}

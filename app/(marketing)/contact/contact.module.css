@@ -1,5 +1,17 @@
+.grid {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: var(--space-6);
+  align-items: start;
+}
+
 .card {
-  max-width: 520px;
+  position: sticky;
+  top: var(--space-6);
+}
+
+.formCard {
+  min-width: 0;
 }
 
 .list {
@@ -23,4 +35,14 @@
 .value {
   margin: 0;
   color: var(--color-text-primary);
+}
+
+@media (max-width: 800px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    position: static;
+  }
 }

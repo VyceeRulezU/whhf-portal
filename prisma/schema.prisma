@@ -28,6 +28,12 @@ enum PaymentProviderName {
   manual
 }
 
+enum ContactMessageStatus {
+  unread
+  read
+  replied
+}
+
 model Donor {
   id        String     @id @default(cuid())
   name      String
@@ -89,4 +95,43 @@ model AdminUser {
   passwordHash String
   role         String   @default("admin") // "admin" | "content_editor" — see security.md
   createdAt    DateTime @default(now())
+}
+
+// Submissions from the public /contact form. Each one is also emailed to
+// CONTACT_INBOX_EMAIL via Resend (see lib/email/resend.ts) — this table is
+// the durable record + what the admin dashboard reads, since an inbox
+// alone isn't shared/searchable/auditable the way a DB table is.
+model ContactMessage {
+  id        String               @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String?
+  message   String
+  status    ContactMessageStatus @default(unread)
+  createdAt DateTime             @default(now())
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+// Real inbound email delivered to ANY @whheritagefoundation.org address
+// (contact@, info@, hello@, etc.) — not form submissions. Populated by
+// POST /api/webhooks/inbound-email, which the separate workers/email-router
+// Cloudflare Worker calls after Cloudflare Email Routing hands it a raw
+// message. See workers/email-router/README.md for the required Cloudflare
+// dashboard setup this depends on (not something this codebase can do on
+// its own — it's DNS/nameserver + Email Routing configuration).
+model InboundEmail {
+  id          String   @id @default(cuid())
+  fromAddress String
+  toAddress   String
+  subject     String?
+  textBody    String?
+  htmlBody    String?
+  receivedAt  DateTime @default(now())
+  isRead      Boolean  @default(false)
+
+  @@index([toAddress])
+  @@index([receivedAt])
 }

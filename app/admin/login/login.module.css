@@ -17,10 +17,6 @@
   margin-bottom: var(--space-6);
 }
 
-.brand img {
-  border-radius: var(--radius-sm);
-}
-
 .heading {
   display: flex;
   flex-direction: column;

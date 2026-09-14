@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Card } from "@/components/ui/Card";
 import { PageHero } from "@/components/marketing/PageHero";
+import { ContactForm } from "@/components/contact";
 import styles from "./contact.module.css";
 
 export const metadata: Metadata = {
@@ -9,9 +10,9 @@ export const metadata: Metadata = {
 };
 
 const CONTACT_ROWS = [
-  { label: "Office address", value: "Pending confirmation from WHHF" },
-  { label: "Phone", value: "Pending confirmation from WHHF" },
-  { label: "Email", value: "Pending confirmation from WHHF" }
+  { label: "Office address", value: "3FVM+H9M, Along Nile Street, Maitama, Abuja 904101, Federal Capital Territory" },
+  { label: "Phone", value: "0806 432 0084" },
+  { label: "Email", value: "contact@whheritagefoundation.org" }
 ];
 
 export default function ContactPage() {
@@ -24,17 +25,21 @@ export default function ContactPage() {
       />
       <section className="section">
         <div className="container">
-          <Card className={styles.card}>
-            {/* TODO: confirm real office address, phone, and email with WHHF board. */}
-            <dl className={styles.list}>
-              {CONTACT_ROWS.map((row) => (
-                <div key={row.label} className={styles.row}>
-                  <dt className={styles.label}>{row.label}</dt>
-                  <dd className={styles.value}>{row.value}</dd>
-                </div>
-              ))}
-            </dl>
-          </Card>
+          <div className={styles.grid}>
+            <Card className={styles.card}>
+              <dl className={styles.list}>
+                {CONTACT_ROWS.map((row) => (
+                  <div key={row.label} className={styles.row}>
+                    <dt className={styles.label}>{row.label}</dt>
+                    <dd className={styles.value}>{row.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </Card>
+            <Card className={styles.formCard}>
+              <ContactForm />
+            </Card>
+          </div>
         </div>
       </section>
     </>

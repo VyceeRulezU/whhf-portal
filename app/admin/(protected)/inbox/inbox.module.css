@@ -1,0 +1,66 @@
+.intro {
+  color: var(--color-text-secondary);
+  max-width: 70ch;
+}
+
+.statLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.statValue {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-h2);
+  color: var(--color-gold);
+  margin-top: var(--space-2);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.emailCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.emailHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: var(--space-4);
+}
+
+.subject {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 600;
+}
+
+.unreadDot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-gold);
+}
+
+.meta {
+  margin-top: var(--space-1);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.body {
+  color: var(--color-text-secondary);
+  white-space: pre-wrap;
+}
+
+.empty {
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: var(--space-8);
+}

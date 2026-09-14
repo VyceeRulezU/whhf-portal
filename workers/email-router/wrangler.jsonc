@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "whhf-email-router",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-13",
+  "compatibility_flags": ["nodejs_compat"],
+  "vars": {
+    // Not sensitive — the main site's inbound-email webhook endpoint.
+    // e.g. "https://whheritagefoundation.org/api/webhooks/inbound-email"
+    "APP_WEBHOOK_URL": "https://whheritagefoundation.org/api/webhooks/inbound-email"
+  }
+  // INBOUND_EMAIL_WEBHOOK_SECRET must be set via
+  // `npx wrangler secret put INBOUND_EMAIL_WEBHOOK_SECRET`, NEVER written
+  // here in plaintext (this file is committed to the repo) — see README.md.
+}

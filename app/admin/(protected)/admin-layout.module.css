@@ -16,10 +16,6 @@
   gap: var(--space-3);
 }
 
-.brandImage {
-  border-radius: var(--radius-sm);
-}
-
 .brandText {
   font-family: var(--font-family-display);
   font-size: var(--font-size-h3);

@@ -223,6 +223,22 @@ touching any of this.
 Current adapter implementation status is tracked in
 [`docs/security-status.md`](docs/security-status.md), not here.
 
+## Email
+
+Two separate paths, both surfaced in the admin dashboard:
+
+- **Contact form** (`/contact` → `POST /api/contact`) — saves to
+  `ContactMessage` and best-effort emails `CONTACT_INBOX_EMAIL` via Resend
+  (`lib/email/resend.ts`). Visible under Admin → Messages.
+- **Real inbound email** to any `@whheritagefoundation.org` address (not
+  just the contact form) — a separate Cloudflare Worker
+  (`workers/email-router/`) receives it via Cloudflare Email Routing and
+  forwards it to `POST /api/webhooks/inbound-email`, which saves it to
+  `InboundEmail`. Visible under Admin → Inbox. This depends on Cloudflare
+  dashboard configuration (Email Routing enabled + a routing rule) that
+  isn't part of this codebase — see
+  [`workers/email-router/README.md`](workers/email-router/README.md).
+
 ## Testing
 
 No automated test suite exists yet. Per

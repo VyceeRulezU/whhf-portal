@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
-import logo from "@/assets/brand/logo.jpg";
+import logo from "@/assets/brand/logo-transparent.png";
 import styles from "./login.module.css";
 
 export default function AdminLoginPage() {
