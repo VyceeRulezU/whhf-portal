@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter } from "next/font/google";
 import { MotionConfig } from "framer-motion";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/content/siteConfig";
+import { AlertModalProvider } from "@/components/ui/AlertModal";
 import "../tokens/tokens.css";
 import "../styles/base/reset.css";
 import "../styles/base/typography.css";
@@ -75,11 +76,12 @@ export const viewport: Viewport = {
   initialScale: 1
 };
 
-// Structured data for search engines (NGO rich results). Only confirmed
-// facts — no address/phone/registration numbers, those are still "pending
-// confirmation" per docs/compliance-nigeria-ngo.md. Set as literal <script>
-// text content (not dangerouslySetInnerHTML) since it's static JSON, not
-// interpolated user input.
+// Structured data for search engines (NGO rich results). Registration
+// numbers are still "pending confirmation" per
+// docs/compliance-nigeria-ngo.md and deliberately excluded — address and
+// phone are real, confirmed by WHHF. Set as literal <script> text content
+// (not dangerouslySetInnerHTML) since it's static JSON, not interpolated
+// user input.
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "NGO",
@@ -88,7 +90,16 @@ const organizationJsonLd = {
   url: SITE_URL,
   logo: `${SITE_URL}/icon.png`,
   description: SITE_DESCRIPTION,
-  areaServed: "NG"
+  areaServed: "NG",
+  telephone: "+2348064320084",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "3FVM+H9M, Along Nile Street, Maitama",
+    addressLocality: "Abuja",
+    addressRegion: "Federal Capital Territory",
+    postalCode: "904101",
+    addressCountry: "NG"
+  }
 };
 
 export default function RootLayout({
@@ -103,7 +114,9 @@ export default function RootLayout({
         {/* reducedMotion="user" makes every Framer Motion animation in the
             app honor prefers-reduced-motion automatically — see
             design-system.md ("Accessibility floor"). */}
-        <MotionConfig reducedMotion="user">{children}</MotionConfig>
+        <MotionConfig reducedMotion="user">
+          <AlertModalProvider>{children}</AlertModalProvider>
+        </MotionConfig>
       </body>
     </html>
   );

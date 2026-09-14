@@ -64,7 +64,12 @@ export function SiteHeader() {
         </Link>
         <nav className={styles.header__nav} aria-label="Primary">
           {NAV_LINKS.map((link) => (
-            <Link key={link.href} href={link.href} className={styles.header__navLink}>
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`${styles.header__navLink} ${pathname === link.href ? styles["header__navLink--active"] : ""}`}
+              aria-current={pathname === link.href ? "page" : undefined}
+            >
               {link.label}
             </Link>
           ))}
@@ -116,7 +121,12 @@ export function SiteHeader() {
               <ul className={styles.mobileNav__list}>
                 {NAV_LINKS.map((link) => (
                   <li key={link.href}>
-                    <Link href={link.href} className={styles.mobileNav__link} onClick={() => setIsMenuOpen(false)}>
+                    <Link
+                      href={link.href}
+                      className={`${styles.mobileNav__link} ${pathname === link.href ? styles["mobileNav__link--active"] : ""}`}
+                      aria-current={pathname === link.href ? "page" : undefined}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
                       {link.label}
                     </Link>
                   </li>

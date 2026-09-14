@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
+import { useAlert } from "@/components/ui/AlertModal";
 import styles from "./ContactForm.module.css";
 
 /**
@@ -12,21 +13,24 @@ import styles from "./ContactForm.module.css";
  * via Resend. See app/api/contact/route.ts.
  */
 export function ContactForm() {
+  const { showAlert } = useAlert();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [isSent, setIsSent] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError(null);
 
     if (!name || !email || message.trim().length < 10) {
-      setError("Please fill in your name, email, and a message of at least 10 characters.");
+      showAlert({
+        title: "Check your details",
+        message: "Please fill in your name, email, and a message of at least 10 characters.",
+        variant: "error"
+      });
       return;
     }
 
@@ -46,13 +50,21 @@ export function ContactForm() {
 
       const json = await res.json();
       if (!res.ok) {
-        setError(json.error?.message ?? "Something went wrong. Please try again.");
+        showAlert({
+          title: "Message not sent",
+          message: json.error?.message ?? "Something went wrong. Please try again.",
+          variant: "error"
+        });
         return;
       }
 
       setIsSent(true);
     } catch {
-      setError("Something went wrong. Please try again.");
+      showAlert({
+        title: "Message not sent",
+        message: "Something went wrong. Please try again.",
+        variant: "error"
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -91,12 +103,6 @@ export function ContactForm() {
         required
         placeholder="How can we help?"
       />
-
-      {error && (
-        <p role="alert" className={styles.error}>
-          {error}
-        </p>
-      )}
 
       <Button type="submit" variant="primary" disabled={isSubmitting}>
         {isSubmitting ? "Sending…" : "Send message"}

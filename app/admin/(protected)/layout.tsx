@@ -23,11 +23,12 @@ export default async function ProtectedAdminLayout({ children }: { children: Rea
     <div>
       <header className={styles.header}>
         <div className={`container ${styles.header__inner}`}>
-          <Link href="/admin/donations" className={styles.brand}>
+          <Link href="/admin" className={styles.brand}>
             <Image src={logo} alt="" width={36} height={36} className={styles.brandImage} />
             <span className={styles.brandText}>WHHF Admin</span>
           </Link>
           <nav className={styles.nav} aria-label="Admin">
+            <Link href="/admin">Dashboard</Link>
             <Link href="/admin/donations">Donations</Link>
             <Link href="/admin/messages">Messages</Link>
             <Link href="/admin/inbox">Inbox</Link>

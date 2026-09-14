@@ -1,0 +1,88 @@
+.statLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.statValue {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-h2);
+  color: var(--color-gold);
+  margin-top: var(--space-2);
+}
+
+.statMuted {
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.quickLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.sectionHeading {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-h3);
+  margin-bottom: var(--space-4);
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+}
+
+.table th {
+  text-align: left;
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--color-border-strong);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.table td {
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.table tbody tr:hover {
+  background-color: var(--color-bg-surface-raised);
+}
+
+.empty {
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: var(--space-8);
+}
+
+.status--succeeded {
+  color: var(--color-success);
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status--pending,
+.status--refunded {
+  color: var(--color-text-muted);
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status--processing {
+  color: var(--color-gold);
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status--failed {
+  color: var(--color-error);
+  font-weight: 600;
+  text-transform: capitalize;
+}

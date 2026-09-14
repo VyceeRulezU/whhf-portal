@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
+import { useAlert } from "@/components/ui/AlertModal";
 import styles from "./DonationForm.module.css";
 
 const PRESET_AMOUNTS_NGN = [5000, 10000, 25000, 50000];
@@ -13,21 +14,24 @@ const PRESET_AMOUNTS_NGN = [5000, 10000, 25000, 50000];
  * See architecture.md ("Data flow: a donation, end to end").
  */
 export function DonationForm() {
+  const { showAlert } = useAlert();
   const [amount, setAmount] = useState<number>(PRESET_AMOUNTS_NGN[1] ?? 10000);
   const [customAmount, setCustomAmount] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const effectiveAmountNaira = customAmount ? Number(customAmount) : amount;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError(null);
 
     if (!name || !email || !effectiveAmountNaira) {
-      setError("Please fill in your name, email, and an amount.");
+      showAlert({
+        title: "Check your details",
+        message: "Please fill in your name, email, and an amount.",
+        variant: "error"
+      });
       return;
     }
 
@@ -48,13 +52,21 @@ export function DonationForm() {
 
       const json = await res.json();
       if (!res.ok) {
-        setError(json.error?.message ?? "Something went wrong. Please try again.");
+        showAlert({
+          title: "Donation not started",
+          message: json.error?.message ?? "Something went wrong. Please try again.",
+          variant: "error"
+        });
         return;
       }
 
       window.location.href = json.data.redirectUrl;
     } catch {
-      setError("Something went wrong. Please try again.");
+      showAlert({
+        title: "Donation not started",
+        message: "Something went wrong. Please try again.",
+        variant: "error"
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -100,12 +112,6 @@ export function DonationForm() {
         required
         hint="We'll send your receipt here."
       />
-
-      {error && (
-        <p role="alert" className={styles.error}>
-          {error}
-        </p>
-      )}
 
       <Button type="submit" variant="primary" disabled={isSubmitting}>
         {isSubmitting ? "Processing…" : "Continue to payment"}

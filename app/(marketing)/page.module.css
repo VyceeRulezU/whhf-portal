@@ -166,19 +166,18 @@
 
 .aboutUs__fillWrap {
   position: relative;
-  flex: 1;
-  min-height: 160px;
+  /* This graphic is roughly square with its caption text low in frame —
+     a fixed aspect-ratio close to the source's own shape (rather than the
+     old flex:1, which could end up too short/wide and crop the caption)
+     lets it fill the column's full width via object-fit: cover with
+     little to no cropping, no letterbox background needed. */
+  aspect-ratio: 4 / 3;
   border-radius: var(--radius-md);
   overflow: hidden;
-  /* This photo is a near-black branded graphic, not a full-bleed photo —
-     contain (not cover) keeps its caption text from being cropped in a
-     short/wide box, and this background blends into its own near-black
-     canvas so there's no visible letterboxing seam. */
-  background-color: var(--color-bg-true-black);
 }
 
 .aboutUs__fillImage {
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .story {

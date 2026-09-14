@@ -5,20 +5,20 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
+import { useAlert } from "@/components/ui/AlertModal";
+import { placeholderImages } from "@/lib/content/placeholderImages";
 import logo from "@/assets/brand/logo-transparent.png";
 import styles from "./login.module.css";
 
 export default function AdminLoginPage() {
   const router = useRouter();
+  const { showAlert } = useAlert();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError(null);
     setIsSubmitting(true);
 
     try {
@@ -30,11 +30,15 @@ export default function AdminLoginPage() {
       const json = await res.json();
 
       if (!res.ok) {
-        setError(json.error?.message ?? "Something went wrong.");
+        showAlert({
+          title: "Sign in failed",
+          message: json.error?.message ?? "Something went wrong.",
+          variant: "error"
+        });
         return;
       }
 
-      router.push("/admin/donations");
+      router.push("/admin");
       router.refresh();
     } finally {
       setIsSubmitting(false);
@@ -43,7 +47,9 @@ export default function AdminLoginPage() {
 
   return (
     <div className={styles.page}>
-      <Card className={styles.card}>
+      <Image src={placeholderImages.homeHero} alt="" fill sizes="100vw" className={styles.bgImage} />
+      <div className={styles.scrim} />
+      <div className={styles.card}>
         <div className={styles.brand}>
           <Image src={logo} alt="William & Helen Heritage Foundation" width={56} height={56} />
         </div>
@@ -60,16 +66,11 @@ export default function AdminLoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          {error && (
-            <p role="alert" className={styles.error}>
-              {error}
-            </p>
-          )}
           <Button type="submit" variant="primary" disabled={isSubmitting}>
             {isSubmitting ? "Signing in…" : "Sign in"}
           </Button>
         </form>
-      </Card>
+      </div>
     </div>
   );
 }

@@ -1,14 +1,43 @@
 .page {
+  position: relative;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: var(--space-6);
+  overflow: hidden;
+  background-color: var(--color-bg-true-black);
+}
+
+.bgImage {
+  object-fit: cover;
+  /* Same very-faint-texture-behind-dark-overlay treatment as the footer
+     and the 404 page, for a consistent look wherever a photo sits behind
+     UI chrome rather than being the main content. */
+  opacity: 0.18;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.65);
 }
 
 .card {
+  position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 400px;
+  padding: var(--space-8) var(--space-6);
+  /* "Glass" — translucent + blurred — but tinted dark rather than light,
+     so the light text sitting on it stays readable regardless of what's
+     showing through from the background photo. */
+  background-color: rgba(10, 10, 10, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
 }
 
 .brand {
@@ -25,10 +54,5 @@
 
 .subtitle {
   color: var(--color-text-secondary);
-  font-size: var(--font-size-sm);
-}
-
-.error {
-  color: var(--color-error);
   font-size: var(--font-size-sm);
 }
