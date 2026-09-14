@@ -23,3 +23,39 @@
 .role {
   color: var(--color-text-secondary);
 }
+
+.photoCard {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.photoCard__image {
+  object-fit: cover;
+}
+
+.photoCard__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.1) 55%, rgba(0, 0, 0, 0) 100%);
+}
+
+.photoCard__caption {
+  position: absolute;
+  left: var(--space-5);
+  right: var(--space-5);
+  bottom: var(--space-5);
+}
+
+.photoCard__name {
+  font-family: var(--font-family-display);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-h3);
+}
+
+.photoCard__role {
+  margin-top: var(--space-1);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}

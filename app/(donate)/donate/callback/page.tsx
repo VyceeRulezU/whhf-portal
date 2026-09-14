@@ -38,14 +38,16 @@ export default async function DonateCallbackPage({
   }
 
   return (
-    <div className="stack">
-      <h1>Still confirming your donation…</h1>
-      <p className={styles.message}>
-        This can take a moment. If this page doesn&rsquo;t update shortly,
-        check your email for a receipt or contact us — your payment may
-        still have gone through even if this page hasn&rsquo;t caught up
-        yet.
-      </p>
+    <div className="section">
+      <div className="container container--narrow stack">
+        <h1>Still confirming your donation…</h1>
+        <p className={styles.message}>
+          This can take a moment. If this page doesn&rsquo;t update shortly,
+          check your email for a receipt or contact us — your payment may
+          still have gone through even if this page hasn&rsquo;t caught up
+          yet.
+        </p>
+      </div>
     </div>
   );
 }

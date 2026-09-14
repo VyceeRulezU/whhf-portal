@@ -215,14 +215,14 @@
 
 .story__bottom {
   display: grid;
-  grid-template-columns: 1.6fr 1fr;
+  grid-template-columns: 1fr 1.3fr;
   gap: var(--space-6);
   margin-top: var(--space-8);
 }
 
 .story__imageWrap {
   position: relative;
-  aspect-ratio: 16 / 11;
+  aspect-ratio: 4 / 5;
   border-radius: var(--radius-md);
   overflow: hidden;
 }

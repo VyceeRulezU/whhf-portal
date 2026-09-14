@@ -69,8 +69,8 @@ export default function HomePage() {
           <div className={styles.aboutUs__grid}>
             <div className={styles.aboutUs__imageWrap}>
               <Image
-                src={placeholderImages.whoWeAre}
-                alt="Placeholder — WHHF programme photography pending"
+                src={sitePhotos.aboutUsMain}
+                alt=""
                 fill
                 sizes="(max-width: 900px) 100vw, 560px"
                 className={styles.aboutUs__image}
@@ -146,10 +146,10 @@ export default function HomePage() {
             <div className={styles.story__bottom}>
               <div className={styles.story__imageWrap}>
                 <Image
-                  src={sitePhotos.ourStory}
-                  alt="Rev. (Mrs) Helen Titilayo Okoye"
+                  src={sitePhotos.storyMain}
+                  alt=""
                   fill
-                  sizes="(max-width: 900px) 100vw, 1100px"
+                  sizes="(max-width: 900px) 100vw, 700px"
                   className={styles.story__image}
                 />
               </div>

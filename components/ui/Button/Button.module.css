@@ -6,6 +6,11 @@
   --button-border-width: 1.5px;
   display: inline-flex;
   align-items: center;
+  /* A button that ends up wider than its content (e.g. stretched full-width
+     by a flex-column parent like .stack) would otherwise leave the label
+     hugging the left edge, since inline-flex alone doesn't center content
+     against extra box width. */
+  justify-content: center;
   gap: var(--space-2);
   padding: var(--space-3) var(--space-6);
   border-radius: var(--radius-pill);

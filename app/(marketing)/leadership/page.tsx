@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Card } from "@/components/ui/Card";
 import { PageHero } from "@/components/marketing/PageHero";
+import { sitePhotos } from "@/lib/content/sitePhotos";
 import styles from "./leadership.module.css";
 
 export const metadata: Metadata = {
@@ -13,7 +15,8 @@ const BOARD = [
   { name: "Joy Okoye", role: "Programmes Manager" },
   { name: "Victor Okoye", role: "Board Member" },
   { name: "Emma Okoye", role: "Board Member" },
-  { name: "Pauline Okoye", role: "Board Member" },
+  { name: "Pauline Okoye", role: "Board Member", photo: sitePhotos.boardPauline },
+  { name: "Sarah Okoye", role: "Board Member", photo: sitePhotos.boardSarah },
   { name: "Barr. Patrick Abah", role: "Legal Adviser" }
 ];
 
@@ -36,19 +39,37 @@ export default function LeadershipPage() {
       />
       <section className="section">
         <div className="container">
-          {/* TODO: confirm this is the current full roster, and add bios/headshots — see PRD.md §10 item 2.
-              Initials avatars are used deliberately in place of stock photography — do not
-              substitute generic stock headshots for named individuals; wait for real photos. */}
+          {/* TODO: confirm this is the current full roster, and add bios/headshots for the
+              rest — see PRD.md §10 item 2. Initials avatars are used deliberately in place
+              of stock photography for members without a supplied photo — do not substitute
+              generic stock headshots for named individuals; wait for real photos. */}
           <div className="grid-auto">
-            {BOARD.map((member) => (
-              <Card key={member.name} className={styles.card}>
-                <span className={styles.avatar} aria-hidden="true">
-                  {initials(member.name)}
-                </span>
-                <h3>{member.name}</h3>
-                <p className={styles.role}>{member.role}</p>
-              </Card>
-            ))}
+            {BOARD.map((member) =>
+              member.photo ? (
+                <div key={member.name} className={styles.photoCard}>
+                  <Image
+                    src={member.photo}
+                    alt={member.name}
+                    fill
+                    sizes="(max-width: 900px) 100vw, 360px"
+                    className={styles.photoCard__image}
+                  />
+                  <div className={styles.photoCard__scrim} />
+                  <div className={styles.photoCard__caption}>
+                    <p className={styles.photoCard__name}>{member.name}</p>
+                    <p className={styles.photoCard__role}>{member.role}</p>
+                  </div>
+                </div>
+              ) : (
+                <Card key={member.name} className={styles.card}>
+                  <span className={styles.avatar} aria-hidden="true">
+                    {initials(member.name)}
+                  </span>
+                  <h3>{member.name}</h3>
+                  <p className={styles.role}>{member.role}</p>
+                </Card>
+              )
+            )}
           </div>
         </div>
       </section>
