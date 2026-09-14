@@ -5,6 +5,17 @@ const nextConfig = {
   // confused by an unrelated lockfile elsewhere on disk and mis-trace
   // server output files, which matters for the Cloudflare Workers build.
   outputFileTracingRoot: __dirname,
+  // Next's build tracer decides which node_modules files get copied into
+  // the standalone output by statically following require()/import calls
+  // — it doesn't follow Prisma's dynamic `import('#wasm-compiler-loader')`
+  // subpath import, so the WASM query compiler + its loader files were
+  // silently missing from every build output, on every route (confirmed:
+  // zero .wasm files anywhere in .open-next). This forces them in
+  // explicitly. See prisma/schema.prisma (engineType "client") and the
+  // README ("Deploying to Cloudflare Workers").
+  outputFileTracingIncludes: {
+    "/**": ["./node_modules/.prisma/client/**/*"]
+  },
   images: {
     // TEMPORARY: Unsplash serves placeholder photography (topically
     // relevant, free-licensed) until real WHHF programme/beneficiary

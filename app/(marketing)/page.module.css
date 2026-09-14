@@ -93,11 +93,13 @@
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
   gap: var(--space-9);
-  /* stretch (not start): .aboutUs__content needs to fill the row's full
-     height — set by .aboutUs__imageWrap's aspect-ratio — so its flex:1
-     fillWrap child has real remaining space to grow into and its bottom
-     edge lines up with the image's bottom edge. */
-  align-items: stretch;
+  /* start, not stretch: .aboutUs__fillWrap now has its own fixed aspect
+     ratio (so it can show its full caption without cropping) rather than
+     a flex:1 that absorbed exactly whatever space stretch left over —
+     forcing this column to match the image column's exact height would
+     make its content taller than that constrained box and overflow/
+     overlap whatever follows. Columns now size independently instead. */
+  align-items: start;
 }
 
 .aboutUs__imageWrap {
