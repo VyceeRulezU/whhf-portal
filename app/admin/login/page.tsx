@@ -51,7 +51,7 @@ export default function AdminLoginPage() {
       <div className={styles.scrim} />
       <div className={styles.card}>
         <div className={styles.brand}>
-          <Image src={logo} alt="William & Helen Heritage Foundation" width={56} height={56} />
+          <Image src={logo} alt="William & Helen Heritage Foundation" width={100} height={100} />
         </div>
         <form onSubmit={handleSubmit} className="stack">
           <div className={styles.heading}>

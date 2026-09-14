@@ -9,21 +9,16 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "tokens:build": "node tokens/generate-css-variables.js",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:seed": "prisma db seed",
-    "postinstall": "prisma generate",
+    "db:seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} lib/db/seed.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
     "cf:build": "opennextjs-cloudflare build",
     "cf:preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "cf:deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy"
   },
-  "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
-  },
   "dependencies": {
-    "@prisma/adapter-pg": "^7.10.0",
-    "@prisma/client": "^7.10.0",
     "aws4fetch": "^1.0.20",
+    "drizzle-orm": "^0.45.2",
     "framer-motion": "^13.2.0",
     "next": "^15.5.24",
     "pg": "^8.23.0",
@@ -38,9 +33,9 @@
     "@types/pg": "^8.23.1",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
+    "drizzle-kit": "^0.31.10",
     "eslint": "^8.57.0",
     "eslint-config-next": "^15.5.24",
-    "prisma": "^7.10.0",
     "ts-node": "^10.9.0",
     "typescript": "^5.5.0",
     "wrangler": "^4.131.1"

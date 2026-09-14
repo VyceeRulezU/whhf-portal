@@ -7,7 +7,7 @@
 | Framework | Next.js 14+ (App Router) | Server components by default; client components only where interactivity requires it |
 | Language | TypeScript, strict mode | No `any` without a `// TODO(reason)` comment |
 | Styling | Vanilla CSS | See `code-style.md` for methodology. No Tailwind, no CSS-in-JS |
-| Database | PostgreSQL + Prisma ORM | See `db-migration-runner` skill for migrations |
+| Database | PostgreSQL + Drizzle ORM, Cloudflare Hyperdrive binding in production | See `db-migration-runner` skill for migrations |
 | Auth | Admin-only auth (NextAuth or a minimal session-cookie system) | Public donors never need an account to give |
 | Payments | Flutterwave, Paystack, Korapay | Each behind a common internal interface — see "Payment abstraction" below |
 | Email | Transactional email provider (e.g. Resend/Postmark) for receipts | Not yet selected — flag if you need to pick one |
@@ -34,11 +34,10 @@
   /admin                → dashboard-specific components
 /lib
   /payments             → one adapter file per provider + a shared interface
-  /db                   → Prisma client singleton, query helpers
+  /db                   → Drizzle schema + withDb() connection helper
   /email
   /validation           → zod schemas shared by forms + API routes
-/prisma
-  schema.prisma
+/drizzle
   /migrations
 /styles
   /base                 → reset, typography, layout primitives

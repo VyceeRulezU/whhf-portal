@@ -7,7 +7,7 @@ as work lands; don't let this drift from what's actually shipped.
 
 - [x] Repo structure, `.agent` rules + skills
 - [x] Design tokens (JSON source + generated `tokens.css`)
-- [ ] Next.js app initialized, Prisma connected to a real Postgres instance
+- [x] Next.js app initialized, Drizzle connected to a real Postgres instance
 - [ ] Base layout + typography/reset in `/styles/base`
 - [ ] `Button`, `Card`, `Badge`, `Input` components built to
       `design-system.md`

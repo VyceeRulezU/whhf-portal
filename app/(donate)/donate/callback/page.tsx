@@ -1,5 +1,7 @@
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/db/prisma";
+import { eq } from "drizzle-orm";
+import { withDb } from "@/lib/db/client";
+import { donations } from "@/lib/db/schema";
 import { providers } from "@/lib/payments/router";
 import styles from "./callback.module.css";
 
@@ -22,7 +24,9 @@ export default async function DonateCallbackPage({
     redirect("/donate");
   }
 
-  const donation = await prisma.donation.findUnique({ where: { providerReference: reference } });
+  const donation = await withDb((db) =>
+    db.query.donations.findFirst({ where: eq(donations.providerReference, reference) })
+  );
 
   if (!donation) {
     redirect("/donate");

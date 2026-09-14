@@ -1,4 +1,6 @@
-import { prisma } from "@/lib/db/prisma";
+import { eq, desc, count, sum } from "drizzle-orm";
+import { withDb } from "@/lib/db/client";
+import { donations as donationsTable } from "@/lib/db/schema";
 import { formatCurrency } from "@/lib/format/currency";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -12,24 +14,29 @@ import styles from "./donations.module.css";
  */
 export default async function AdminDonationsPage() {
   const [donations, totalsByCurrency, succeededDonorRows] = await Promise.all([
-    prisma.donation.findMany({
-      include: { donor: true, cause: true },
-      orderBy: { createdAt: "desc" },
-      take: 50
-    }),
-    prisma.donation.groupBy({
-      by: ["currency"],
-      where: { status: "succeeded" },
-      _sum: { amount: true },
-      _count: true
-    }),
-    prisma.donation.groupBy({
-      by: ["donorId"],
-      where: { status: "succeeded" }
-    })
+    withDb((db) =>
+      db.query.donations.findMany({
+        with: { donor: true, cause: true },
+        orderBy: [desc(donationsTable.createdAt)],
+        limit: 50
+      })
+    ),
+    withDb((db) =>
+      db
+        .select({ currency: donationsTable.currency, total: sum(donationsTable.amount), count: count() })
+        .from(donationsTable)
+        .where(eq(donationsTable.status, "succeeded"))
+        .groupBy(donationsTable.currency)
+    ),
+    withDb((db) =>
+      db
+        .selectDistinct({ donorId: donationsTable.donorId })
+        .from(donationsTable)
+        .where(eq(donationsTable.status, "succeeded"))
+    )
   ]);
 
-  const totalSucceededCount = totalsByCurrency.reduce((sum, row) => sum + row._count, 0);
+  const totalSucceededCount = totalsByCurrency.reduce((sum, row) => sum + row.count, 0);
   const uniqueDonorCount = succeededDonorRows.length;
 
   return (
@@ -51,7 +58,7 @@ export default async function AdminDonationsPage() {
           totalsByCurrency.map((row) => (
             <Card key={row.currency}>
               <p className={styles.statLabel}>Total raised ({row.currency})</p>
-              <p className={styles.statValue}>{formatCurrency(row._sum.amount ?? 0, row.currency)}</p>
+              <p className={styles.statValue}>{formatCurrency(Number(row.total ?? 0), row.currency)}</p>
             </Card>
           ))
         )}

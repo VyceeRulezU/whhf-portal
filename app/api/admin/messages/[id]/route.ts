@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { eq } from "drizzle-orm";
 import { getSession } from "@/lib/auth/session";
-import { prisma } from "@/lib/db/prisma";
+import { withDb } from "@/lib/db/client";
+import { contactMessages } from "@/lib/db/schema";
 
 const updateStatusSchema = z.object({
   status: z.enum(["unread", "read", "replied"])
@@ -25,10 +27,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   }
 
   try {
-    const message = await prisma.contactMessage.update({
-      where: { id },
-      data: { status: parsed.data.status }
-    });
+    const [message] = await withDb((db) =>
+      db.update(contactMessages).set({ status: parsed.data.status }).where(eq(contactMessages.id, id)).returning()
+    );
     return NextResponse.json({ data: message });
   } catch (err) {
     console.error("[api/admin/messages] unexpected error", err);

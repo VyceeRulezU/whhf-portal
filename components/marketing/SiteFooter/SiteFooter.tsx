@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/Badge";
 // barrel also re-exports the "use client" SiteHeader component, and a
 // Server Component importing a non-component export through a client
 // module only gets a client reference back, not the real array.
-import { NAV_LINKS } from "@/components/marketing/SiteHeader/navLinks";
+import { ALL_NAV_LINKS } from "@/components/marketing/SiteHeader/navLinks";
 // Transparent cutout of assets/brand/logo.jpg (its background keyed out) —
 // see assets/brand/README or the generation note in docs — so the mark
 // sits directly on the footer panel's own surface color instead of
@@ -35,7 +35,7 @@ export function SiteFooter() {
           <div className={styles.footer__column}>
             <p className={styles.footer__heading}>Explore</p>
             <ul className={styles.footer__list}>
-              {NAV_LINKS.map((link) => (
+              {ALL_NAV_LINKS.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href}>{link.label}</Link>
                 </li>

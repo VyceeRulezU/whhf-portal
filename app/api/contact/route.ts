@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createContactMessageSchema } from "@/lib/validation/contact";
-import { prisma } from "@/lib/db/prisma";
+import { withDb } from "@/lib/db/client";
+import { contactMessages } from "@/lib/db/schema";
 import { sendEmail } from "@/lib/email/resend";
 
 /**
@@ -23,7 +24,10 @@ export async function POST(req: NextRequest) {
   const input = parsed.data;
 
   try {
-    const contactMessage = await prisma.contactMessage.create({ data: input });
+    const [contactMessage] = await withDb((db) => db.insert(contactMessages).values(input).returning());
+    if (!contactMessage) {
+      throw new Error("insert returned no row");
+    }
 
     const inbox = process.env.CONTACT_INBOX_EMAIL;
     if (inbox) {

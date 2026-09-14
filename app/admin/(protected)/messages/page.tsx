@@ -1,4 +1,6 @@
-import { prisma } from "@/lib/db/prisma";
+import { eq, desc, count } from "drizzle-orm";
+import { withDb } from "@/lib/db/client";
+import { contactMessages } from "@/lib/db/schema";
 import { Card } from "@/components/ui/Card";
 import { MarkReadButton } from "@/components/admin/MarkReadButton";
 import styles from "./messages.module.css";
@@ -9,10 +11,11 @@ import styles from "./messages.module.css";
  * is a best-effort convenience on top of it, not the source of truth.
  */
 export default async function AdminMessagesPage() {
-  const [messages, unreadCount] = await Promise.all([
-    prisma.contactMessage.findMany({ orderBy: { createdAt: "desc" }, take: 100 }),
-    prisma.contactMessage.count({ where: { status: "unread" } })
+  const [messages, unreadCountRows] = await Promise.all([
+    withDb((db) => db.query.contactMessages.findMany({ orderBy: [desc(contactMessages.createdAt)], limit: 100 })),
+    withDb((db) => db.select({ count: count() }).from(contactMessages).where(eq(contactMessages.status, "unread")))
   ]);
+  const unreadCount = unreadCountRows[0]?.count ?? 0;
 
   return (
     <div className="stack">

@@ -1,0 +1,56 @@
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { PageHero } from "@/components/marketing/PageHero";
+import { Badge } from "@/components/ui/Badge";
+import { blogPosts } from "@/lib/content/blogPosts";
+import styles from "./blog.module.css";
+
+export const metadata: Metadata = {
+  title: "Blog",
+  description: "Stories, updates, and reflections from the William & Helen Heritage Foundation."
+};
+
+export default function BlogPage() {
+  return (
+    <>
+      <PageHero
+        eyebrow="Blog"
+        title="Stories, updates, and reflections."
+        lede="News from WHHF's programmes, the community behind them, and the faith that carries the work forward."
+      />
+      <section className="section">
+        <div className="container">
+          <div className={styles.grid}>
+            {blogPosts.map((post) => (
+              <Link key={post.slug} href={`/blog/${post.slug}`} className={styles.card}>
+                <div className={styles.cardImageWrap}>
+                  <Image
+                    src={post.image}
+                    alt=""
+                    fill
+                    sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 380px"
+                    className={styles.cardImage}
+                  />
+                </div>
+                <div className={styles.cardBody}>
+                  <Badge>{post.category}</Badge>
+                  <h2 className={styles.cardTitle}>{post.title}</h2>
+                  <p className={styles.cardExcerpt}>{post.excerpt}</p>
+                  <p className={styles.cardMeta}>
+                    {new Date(post.date).toLocaleDateString("en-US", {
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric"
+                    })}{" "}
+                    · {post.readTime}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}

@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import logo from "@/assets/brand/logo-transparent.png";
-import { NAV_LINKS } from "./navLinks";
+import { ALL_NAV_LINKS, MORE_LINKS, NAV_LINKS } from "./navLinks";
 import styles from "./SiteHeader.module.css";
 
 // The home hero has its own gold "Donate Now" button — design-system.md
@@ -23,6 +23,9 @@ export function SiteHeader() {
   const isHome = pathname === "/";
   const [isPastHero, setIsPastHero] = useState(!isHome);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMoreOpen, setIsMoreOpen] = useState(false);
+  const moreRef = useRef<HTMLDivElement>(null);
+  const isMoreLinkActive = MORE_LINKS.some((link) => link.href === pathname);
 
   useEffect(() => {
     if (!isHome) {
@@ -39,20 +42,37 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isHome]);
 
-  // Route change closes the mobile menu rather than leaving it open behind
-  // the newly-navigated page.
+  // Route change closes the mobile menu and mega menu rather than leaving
+  // either open behind the newly-navigated page.
   useEffect(() => {
     setIsMenuOpen(false);
+    setIsMoreOpen(false);
   }, [pathname]);
 
   useEffect(() => {
-    if (!isMenuOpen) return;
+    if (!isMenuOpen && !isMoreOpen) return;
     function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") setIsMenuOpen(false);
+      if (e.key === "Escape") {
+        setIsMenuOpen(false);
+        setIsMoreOpen(false);
+      }
     }
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isMenuOpen]);
+  }, [isMenuOpen, isMoreOpen]);
+
+  // Mega menu closes on any click outside its trigger/panel — a plain
+  // dropdown convention users already expect.
+  useEffect(() => {
+    if (!isMoreOpen) return;
+    function handleClickOutside(e: MouseEvent) {
+      if (moreRef.current && !moreRef.current.contains(e.target as Node)) {
+        setIsMoreOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isMoreOpen]);
 
   const ctaVariant = isPastHero ? "primary" : "outline";
 
@@ -73,6 +93,43 @@ export function SiteHeader() {
               {link.label}
             </Link>
           ))}
+          <div className={styles.moreMenu} ref={moreRef}>
+            <button
+              type="button"
+              className={`${styles.header__navLink} ${styles.moreMenu__trigger} ${isMoreLinkActive ? styles["header__navLink--active"] : ""}`}
+              aria-expanded={isMoreOpen}
+              aria-haspopup="true"
+              onClick={() => setIsMoreOpen((open) => !open)}
+            >
+              More
+              <span className={`${styles.moreMenu__chevron} ${isMoreOpen ? styles["moreMenu__chevron--open"] : ""}`} aria-hidden="true">
+                ▾
+              </span>
+            </button>
+            <AnimatePresence>
+              {isMoreOpen && (
+                <motion.div
+                  className={styles.moreMenu__panel}
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.15, ease: "easeInOut" }}
+                >
+                  {MORE_LINKS.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className={styles.moreMenu__link}
+                      onClick={() => setIsMoreOpen(false)}
+                    >
+                      <span className={styles.moreMenu__linkLabel}>{link.label}</span>
+                      <span className={styles.moreMenu__linkDescription}>{link.description}</span>
+                    </Link>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </nav>
         <div className={styles.header__actions}>
           <Link href="/donate" className={styles.header__cta}>
@@ -119,7 +176,7 @@ export function SiteHeader() {
               transition={{ duration: 0.2, ease: "easeInOut" }}
             >
               <ul className={styles.mobileNav__list}>
-                {NAV_LINKS.map((link) => (
+                {ALL_NAV_LINKS.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import { eq } from "drizzle-orm";
 import { adminLoginSchema } from "@/lib/validation/adminLogin";
-import { prisma } from "@/lib/db/prisma";
+import { withDb } from "@/lib/db/client";
+import { adminUsers } from "@/lib/db/schema";
 import { verifyPassword } from "@/lib/auth/password";
 import { createSession } from "@/lib/auth/session";
 import { isRateLimited, recordFailedAttempt, clearAttempts } from "@/lib/auth/rateLimit";
@@ -31,7 +33,9 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const admin = await prisma.adminUser.findUnique({ where: { email: email.toLowerCase() } });
+  const admin = await withDb((db) =>
+    db.query.adminUsers.findFirst({ where: eq(adminUsers.email, email.toLowerCase()) })
+  );
   const isValid = admin ? await verifyPassword(password, admin.passwordHash) : false;
 
   if (!admin || !isValid) {

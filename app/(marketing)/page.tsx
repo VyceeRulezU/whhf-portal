@@ -8,6 +8,7 @@ import { PartnerCarousel } from "@/components/marketing/PartnerCarousel";
 import { ImpactCarousel } from "@/components/marketing/ImpactCarousel";
 import { placeholderImages } from "@/lib/content/placeholderImages";
 import { sitePhotos } from "@/lib/content/sitePhotos";
+import { blogPosts } from "@/lib/content/blogPosts";
 import styles from "./page.module.css";
 
 export default function HomePage() {
@@ -338,28 +339,28 @@ export default function HomePage() {
                     image: placeholderImages.programmeFlagship,
                     title: "Treatment & Recovery",
                     body: "Direct financial grants toward chemotherapy and treatment costs, distributed in partnership with National Hospital, Abuja. Every case is reviewed individually, so support reaches the patients who need it most, without unnecessary delay.",
-                    href: "/programmes",
+                    href: "/impact/treatment-and-recovery",
                     linkLabel: "Read More"
                   },
                   {
                     image: placeholderImages.whoWeAre,
                     title: "Faith & Community",
                     body: "Rooted in the All Christians Fellowship Mission, our work carries forward a legacy of compassion within the community Helen served — grounded in faith, and carried out in practical, everyday ways.",
-                    href: "/about",
+                    href: "/impact/faith-and-community",
                     linkLabel: "Read More"
                   },
                   {
                     image: sitePhotos.howWeWork,
                     title: "Community Outreach",
                     body: "From hospital visits to community engagements, WHHF stays connected to the people it serves — because lasting support starts with genuinely knowing the families behind every case.",
-                    href: "/impact",
+                    href: "/impact/community-outreach",
                     linkLabel: "Read More"
                   },
                   {
                     image: placeholderImages.impactHero,
                     title: "Transparency & Accountability",
                     body: "Every donation is tracked and reported, so donors can see exactly how their generosity is put to work — no hidden fees, no unexplained gaps.",
-                    href: "/donate",
+                    href: "/impact/transparency-and-accountability",
                     linkLabel: "Read More"
                   }
                 ]}
@@ -411,10 +412,45 @@ export default function HomePage() {
                 support for the struggling, and faith put into action rather
                 than left as words alone.
               </p>
-              <Link href="/about">
+              <Link href="/faith">
                 <Button variant="outline">Learn More About WHHF</Button>
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <div className={styles.blogSection__header}>
+            <div className={styles.programmes__headingGroup}>
+              <p className="eyebrow-label">/ From the Blog /</p>
+              <h2>Stories, updates, and reflections.</h2>
+            </div>
+            <Link href="/blog">
+              <Button variant="outline">View All Posts</Button>
+            </Link>
+          </div>
+          <div className={styles.blogSection__grid}>
+            {blogPosts.slice(0, 3).map((post) => (
+              <Link key={post.slug} href={`/blog/${post.slug}`} className={styles.blogSection__card}>
+                <div className={styles.blogSection__cardImageWrap}>
+                  <Image
+                    src={post.image}
+                    alt=""
+                    fill
+                    sizes="(max-width: 900px) 100vw, 360px"
+                    className={styles.blogSection__cardImage}
+                  />
+                </div>
+                <Badge>{post.category}</Badge>
+                <h3 className={styles.cardHeading}>{post.title}</h3>
+                <p className={styles.cardBody}>{post.excerpt}</p>
+                <span className={styles.blogSection__cardLink}>
+                  Read More <span aria-hidden="true">→</span>
+                </span>
+              </Link>
+            ))}
           </div>
         </div>
       </section>

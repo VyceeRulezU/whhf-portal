@@ -1,4 +1,6 @@
-import { prisma } from "@/lib/db/prisma";
+import { eq, desc, count } from "drizzle-orm";
+import { withDb } from "@/lib/db/client";
+import { inboundEmails } from "@/lib/db/schema";
 import { Card } from "@/components/ui/Card";
 import { MarkInboxReadButton } from "@/components/admin/MarkInboxReadButton";
 import styles from "./inbox.module.css";
@@ -11,10 +13,11 @@ import styles from "./inbox.module.css";
  * the domain — see workers/email-router/README.md.
  */
 export default async function AdminInboxPage() {
-  const [emails, unreadCount] = await Promise.all([
-    prisma.inboundEmail.findMany({ orderBy: { receivedAt: "desc" }, take: 100 }),
-    prisma.inboundEmail.count({ where: { isRead: false } })
+  const [emails, unreadCountRows] = await Promise.all([
+    withDb((db) => db.query.inboundEmails.findMany({ orderBy: [desc(inboundEmails.receivedAt)], limit: 100 })),
+    withDb((db) => db.select({ count: count() }).from(inboundEmails).where(eq(inboundEmails.isRead, false)))
   ]);
+  const unreadCount = unreadCountRows[0]?.count ?? 0;
 
   return (
     <div className="stack">

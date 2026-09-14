@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import { eq } from "drizzle-orm";
 import { getSession } from "@/lib/auth/session";
-import { prisma } from "@/lib/db/prisma";
+import { withDb } from "@/lib/db/client";
+import { inboundEmails } from "@/lib/db/schema";
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await getSession();
@@ -11,7 +13,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const { id } = await params;
 
   try {
-    const email = await prisma.inboundEmail.update({ where: { id }, data: { isRead: true } });
+    const [email] = await withDb((db) =>
+      db.update(inboundEmails).set({ isRead: true }).where(eq(inboundEmails.id, id)).returning()
+    );
     return NextResponse.json({ data: email });
   } catch (err) {
     console.error("[api/admin/inbox] unexpected error", err);

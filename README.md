@@ -42,7 +42,7 @@ See [`PRD.md`](PRD.md) for the full product requirements and
 | Framework | Next.js 15 (App Router), React 19, TypeScript (strict) |
 | Styling | Vanilla CSS — CSS Modules + BEM-flavoured class names, no Tailwind/CSS-in-JS |
 | Design tokens | JSON source (`tokens/`) → generated `tokens.css` custom properties |
-| Database | PostgreSQL via Prisma ORM, `pg` driver adapter (Workers-compatible) |
+| Database | PostgreSQL via Drizzle ORM, `pg` driver, Cloudflare Hyperdrive binding in production |
 | Auth | Minimal signed-cookie session for the admin dashboard only — donors never need an account |
 | Payments | Paystack, Flutterwave, Korapay, behind one shared `PaymentProvider` interface |
 | Storage | Cloudflare R2 (S3-compatible) — site images, backups, general files |
@@ -58,8 +58,6 @@ Full rationale for each choice lives in
 npm install
 cp .env.example .env.local     # fill in real values — see "Environment variables" below
 node tokens/generate-css-variables.js   # regenerate tokens.css from the JSON source
-npx prisma generate
-npx prisma migrate dev
 npm run dev
 ```
 
@@ -72,11 +70,11 @@ actually try to initialize a charge.
 
 ### Creating a local admin user
 
-`prisma/seed.ts` only creates an admin account if these are set — never
+`lib/db/seed.ts` only creates an admin account if these are set — never
 commit real values for these:
 
 ```bash
-SEED_ADMIN_EMAIL=you@example.com SEED_ADMIN_PASSWORD='a-strong-password' npm run prisma:seed
+SEED_ADMIN_EMAIL=you@example.com SEED_ADMIN_PASSWORD='a-strong-password' npm run db:seed
 ```
 
 ### Environment variables
@@ -108,9 +106,9 @@ Never commit `.env` or `.env.local` — both are gitignored.
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run lint` | ESLint |
 | `npm run tokens:build` | Regenerate `tokens/tokens.css` from the JSON token source — run after any token edit |
-| `npm run prisma:generate` | Regenerate the Prisma client after a schema change |
-| `npm run prisma:migrate` | Create/apply a local migration |
-| `npm run prisma:seed` | Run `prisma/seed.ts` (see "Creating a local admin user") |
+| `npm run db:generate` | Generate a Drizzle migration after a `lib/db/schema.ts` change |
+| `npm run db:migrate` | Apply pending Drizzle migrations |
+| `npm run db:seed` | Run `lib/db/seed.ts` (see "Creating a local admin user") |
 | `npm run cf:build` | Build the Cloudflare Workers bundle (`.open-next/`) — see "Deploying to Cloudflare Workers" |
 | `npm run cf:preview` | Build, then run the Worker locally under `wrangler` |
 | `npm run cf:deploy` | Build, then deploy to Cloudflare Workers |
@@ -127,16 +125,19 @@ deploy step will fail with `Could not find compiled Open Next config` —
 `.open-next/` never gets generated. Set the **Build command** to
 `npm run cf:build` and leave the **Deploy command** as `npx wrangler deploy`.
 
-Known gaps before this is production-ready on Workers, both already
-flagged inline where they matter:
+**Database**: `lib/db/client.ts` exports `withDb(fn)`, which resolves a
+connection string — the [Cloudflare Hyperdrive](https://developers.cloudflare.com/hyperdrive/)
+binding (`env.HYPERDRIVE`, read per-request via `getCloudflareContext()`)
+in production, `process.env.DATABASE_URL` in local dev — and creates a
+fresh `pg.Pool` per call. Workers reuses warm isolates across requests, so
+a module-level Pool singleton (the usual Node.js pattern) leaves stale
+sockets that hang the next request; every DB call must go through `withDb`
+rather than importing a shared client. See the comment in that file, and
+the `hyperdrive` binding in `wrangler.jsonc`.
 
-- **Database**: `lib/db/prisma.ts` reads `process.env.DATABASE_URL`
-  directly, which works in local dev and on any normal Node host, but
-  Workers can't hold a raw TCP Postgres connection — production traffic
-  there needs a [Cloudflare Hyperdrive](https://developers.cloudflare.com/hyperdrive/)
-  binding, read per-request via `getCloudflareContext()` from
-  `@opennextjs/cloudflare`, not `process.env`. See the comment in that
-  file and the TODO in `wrangler.jsonc`.
+Known gaps before this is production-ready on Workers, already flagged
+inline where they matter:
+
 - **Rate limiting**: `lib/auth/rateLimit.ts` is in-memory, which doesn't
   meaningfully work across Workers' distributed isolates — needs a shared
   store (KV, Durable Objects) before relying on it there.
@@ -173,13 +174,10 @@ components/
 lib/
   payments/               → one adapter file per provider + the shared interface + router
   auth/                   → session, password hashing, login rate limiting
-  db/                     → Prisma client singleton
+  db/                     → Drizzle schema + withDb() connection helper
   validation/             → zod schemas shared by forms + API routes
   format/                 → display-time formatting (currency, etc.)
   content/                → non-CMS content constants (placeholder image URLs, etc.)
-prisma/
-  schema.prisma           → Donor, Cause, Donation, WebhookEvent, AdminUser
-  seed.ts                 → local bootstrap admin (env-gated, see above)
 styles/base/              → reset, typography, layout primitives — imported once, globally
 tokens/                   → design tokens: JSON source + generated tokens.css
 assets/brand/             → logo + favicon source files

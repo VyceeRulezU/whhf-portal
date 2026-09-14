@@ -1,5 +1,7 @@
 import Link from "next/link";
-import { prisma } from "@/lib/db/prisma";
+import { eq, desc, count, sum } from "drizzle-orm";
+import { withDb } from "@/lib/db/client";
+import { donations as donationsTable, contactMessages, inboundEmails } from "@/lib/db/schema";
 import { formatCurrency } from "@/lib/format/currency";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -11,23 +13,38 @@ import styles from "./dashboard.module.css";
  * needs attention without visiting each page in turn.
  */
 export default async function AdminDashboardPage() {
-  const [totalsByCurrency, recentDonations, unreadMessages, totalMessages, unreadEmails, totalEmails] =
-    await Promise.all([
-      prisma.donation.groupBy({
-        by: ["currency"],
-        where: { status: "succeeded" },
-        _sum: { amount: true }
-      }),
-      prisma.donation.findMany({
-        include: { donor: true },
-        orderBy: { createdAt: "desc" },
-        take: 5
-      }),
-      prisma.contactMessage.count({ where: { status: "unread" } }),
-      prisma.contactMessage.count(),
-      prisma.inboundEmail.count({ where: { isRead: false } }),
-      prisma.inboundEmail.count()
-    ]);
+  const [
+    totalsByCurrency,
+    recentDonations,
+    unreadMessagesRows,
+    totalMessagesRows,
+    unreadEmailsRows,
+    totalEmailsRows
+  ] = await Promise.all([
+    withDb((db) =>
+      db
+        .select({ currency: donationsTable.currency, total: sum(donationsTable.amount) })
+        .from(donationsTable)
+        .where(eq(donationsTable.status, "succeeded"))
+        .groupBy(donationsTable.currency)
+    ),
+    withDb((db) =>
+      db.query.donations.findMany({
+        with: { donor: true },
+        orderBy: [desc(donationsTable.createdAt)],
+        limit: 5
+      })
+    ),
+    withDb((db) => db.select({ count: count() }).from(contactMessages).where(eq(contactMessages.status, "unread"))),
+    withDb((db) => db.select({ count: count() }).from(contactMessages)),
+    withDb((db) => db.select({ count: count() }).from(inboundEmails).where(eq(inboundEmails.isRead, false))),
+    withDb((db) => db.select({ count: count() }).from(inboundEmails))
+  ]);
+
+  const unreadMessages = unreadMessagesRows[0]?.count ?? 0;
+  const totalMessages = totalMessagesRows[0]?.count ?? 0;
+  const unreadEmails = unreadEmailsRows[0]?.count ?? 0;
+  const totalEmails = totalEmailsRows[0]?.count ?? 0;
 
   return (
     <div className="stack">
@@ -41,7 +58,7 @@ export default async function AdminDashboardPage() {
           ) : (
             totalsByCurrency.map((row) => (
               <p key={row.currency} className={styles.statValue}>
-                {formatCurrency(row._sum.amount ?? 0, row.currency)}
+                {formatCurrency(Number(row.total ?? 0), row.currency)}
               </p>
             ))
           )}

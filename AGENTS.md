@@ -45,7 +45,9 @@ will be (Nigerian CSO fundraising rules + SCUML AML registration apply — see
 - **Styling**: Vanilla CSS only — no Tailwind, no CSS-in-JS, no component
   library CSS. See `code-style.md` for the CSS methodology and `tokens/` for
   the variables every stylesheet must consume.
-- **Database**: Postgres via Prisma
+- **Database**: Postgres via Drizzle ORM, Cloudflare Hyperdrive binding in
+  production — every query goes through `withDb()` in `lib/db/client.ts`,
+  never a cached client (see `db-migration-runner` skill)
 - **Payments**: Flutterwave, Paystack, and Korapay — see the three
   `*-integration` skills. Do not add a fourth provider without updating
   `PRD.md` and `security.md` first.

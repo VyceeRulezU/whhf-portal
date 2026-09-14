@@ -1,0 +1,184 @@
+.article {
+  padding-block: var(--space-8) var(--space-11);
+}
+
+.breadcrumbRow {
+  margin-bottom: var(--space-6);
+}
+
+.breadcrumbList {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+}
+
+.breadcrumbItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.breadcrumbLink {
+  color: var(--color-text-secondary);
+  transition: color var(--motion-fast);
+}
+
+.breadcrumbLink:hover {
+  color: var(--color-gold);
+}
+
+.breadcrumbCurrent {
+  color: var(--color-text-muted);
+}
+
+.breadcrumbSeparator {
+  color: var(--color-text-muted);
+}
+
+.header {
+  max-width: 800px;
+  margin-bottom: var(--space-8);
+}
+
+.eyebrow {
+  margin-bottom: var(--space-3);
+}
+
+.title {
+  font-size: var(--font-size-h1);
+  line-height: var(--line-height-heading);
+  margin-bottom: var(--space-3);
+}
+
+.meta {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: var(--space-9);
+  align-items: start;
+}
+
+.main {
+  min-width: 0;
+}
+
+.imageWrap {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: var(--space-7);
+}
+
+.image {
+  object-fit: cover;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  font-size: var(--font-size-body-lg);
+  line-height: var(--line-height-body);
+  color: var(--color-text-secondary);
+  max-width: 68ch;
+}
+
+.body :global(h2),
+.body :global(h3) {
+  color: var(--color-text-primary);
+  margin-top: var(--space-3);
+}
+
+.sidebar {
+  min-width: 0;
+}
+
+/* Sticky against the viewport, not the grid item — this is what makes the
+   sidebar "float" alongside the article as the reader scrolls. Offset
+   clears the sticky SiteHeader (see SiteHeader.module.css) plus a gap. */
+.sidebarSticky {
+  position: sticky;
+  top: calc(var(--space-8) + 80px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.donateCard {
+  text-align: center;
+}
+
+.donateCardLogo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+}
+
+.donateCardHeading {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-h3);
+  margin-bottom: var(--space-2);
+}
+
+.donateCardBody {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-5);
+}
+
+.donateCardLink {
+  display: block;
+}
+
+.donateCardButton {
+  width: 100%;
+}
+
+.linksHeading {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-body-lg);
+  margin-bottom: var(--space-4);
+}
+
+.linksList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.linksLink {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-3) var(--space-2);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  transition: background-color var(--motion-fast), color var(--motion-fast);
+}
+
+.linksLink:hover {
+  background-color: var(--color-bg-surface-raised);
+  color: var(--color-gold);
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebarSticky {
+    position: static;
+  }
+
+  .title {
+    font-size: var(--font-size-h2);
+  }
+}

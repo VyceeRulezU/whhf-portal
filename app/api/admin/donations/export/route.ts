@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import { desc } from "drizzle-orm";
 import { getSession } from "@/lib/auth/session";
-import { prisma } from "@/lib/db/prisma";
+import { withDb } from "@/lib/db/client";
+import { donations } from "@/lib/db/schema";
 
 /**
  * See security.md: "Any admin export of donor data must be behind
@@ -15,21 +17,23 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: { code: "unauthorized" } }, { status: 401 });
   }
 
-  const donations = await prisma.donation.findMany({
-    include: { donor: true, cause: true },
-    orderBy: { createdAt: "desc" }
-  });
+  const rowsData = await withDb((db) =>
+    db.query.donations.findMany({
+      with: { donor: true, cause: true },
+      orderBy: [desc(donations.createdAt)]
+    })
+  );
 
   // Audit trail: who exported, when, how many rows. Kept minimal and
   // append-only — do not let this write block the export on failure, but
   // do log if it fails so a missing audit trail is at least visible in
   // server logs.
   console.info(
-    `[admin export] adminUserId=${session.adminUserId} rows=${donations.length} at=${new Date().toISOString()}`
+    `[admin export] adminUserId=${session.adminUserId} rows=${rowsData.length} at=${new Date().toISOString()}`
   );
 
   const header = ["Date", "Donor Name", "Donor Email", "Cause", "Amount", "Currency", "Status", "Provider", "Reference"];
-  const rows = donations.map((d) => [
+  const rows = rowsData.map((d) => [
     d.createdAt.toISOString(),
     d.donor.name,
     d.donor.email,

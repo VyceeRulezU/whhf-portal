@@ -1,0 +1,169 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-4);
+}
+
+.thumb {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform var(--motion-fast);
+}
+
+.thumb:hover {
+  transform: scale(1.02);
+}
+
+.thumb:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.thumbImage {
+  object-fit: cover;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.9);
+  padding: var(--space-6);
+  animation: fadeIn 0.2s ease;
+}
+
+.lightboxContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  max-width: 1000px;
+  width: 100%;
+}
+
+.imageWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.lightboxImage {
+  object-fit: contain;
+  background-color: var(--color-bg-true-black);
+}
+
+.caption {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body-lg);
+  text-align: center;
+}
+
+.count {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.closeButton {
+  position: absolute;
+  top: var(--space-5);
+  right: var(--space-5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-pill);
+  color: var(--color-text-primary);
+  background-color: rgba(255, 255, 255, 0.08);
+  transition: background-color var(--motion-fast);
+  z-index: 2;
+}
+
+.closeButton:hover {
+  background-color: rgba(255, 255, 255, 0.16);
+}
+
+/* Positioned against .overlay (the fixed containing block) rather than as
+   flex siblings of the content — keeps the image centered and the arrows
+   at a fixed, predictable edge position at every viewport width. */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: var(--radius-pill);
+  color: var(--color-text-primary);
+  background-color: rgba(255, 255, 255, 0.08);
+  transition: background-color var(--motion-fast);
+  z-index: 2;
+}
+
+.arrow:hover {
+  background-color: rgba(255, 255, 255, 0.16);
+}
+
+.arrow--prev {
+  left: var(--space-4);
+}
+
+.arrow--next {
+  right: var(--space-4);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay {
+    animation: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .overlay {
+    padding: var(--space-4);
+  }
+
+  .arrow {
+    width: 40px;
+    height: 40px;
+  }
+
+  .arrow--prev {
+    left: var(--space-2);
+  }
+
+  .arrow--next {
+    right: var(--space-2);
+  }
+
+  .closeButton {
+    top: var(--space-3);
+    right: var(--space-3);
+    width: 40px;
+    height: 40px;
+  }
+
+  .caption {
+    font-size: var(--font-size-sm);
+  }
+}

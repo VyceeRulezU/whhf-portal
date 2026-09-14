@@ -18,14 +18,12 @@
       "binding": "WORKER_SELF_REFERENCE",
       "service": "whhf-portal"
     }
-  ]
-  // TODO before deploying: Postgres (via Prisma) doesn't work over a raw
-  // TCP connection on Workers — provision a Hyperdrive binding pointed at
-  // the real database (`npx wrangler hyperdrive create whhf-db --connection-string=<DATABASE_URL>`),
-  // then add it here, e.g.:
-  //   "hyperdrive": [{ "binding": "HYPERDRIVE", "id": "<id from the create command>" }]
-  // lib/db/prisma.ts still needs a follow-up change to read that binding
-  // per-request (via getCloudflareContext() from @opennextjs/cloudflare)
-  // instead of process.env.DATABASE_URL when running on Workers — see the
-  // comment in that file and README.md ("Deploying to Cloudflare Workers").
+  ],
+  // Raw pg TCP connections don't survive Cloudflare reusing a warm Worker
+  // isolate across requests — a pooled socket from a prior request can go
+  // stale and hang the next request indefinitely. Hyperdrive is Cloudflare's
+  // supported fix: lib/db/client.ts reads env.HYPERDRIVE.connectionString
+  // per-request (via getCloudflareContext()) instead of process.env.DATABASE_URL
+  // when running on Workers.
+  "hyperdrive": [{ "binding": "HYPERDRIVE", "id": "1f29bf84d84a48cf90a28479568f7152" }]
 }

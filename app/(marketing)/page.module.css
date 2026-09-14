@@ -1,10 +1,8 @@
 .hero {
   background-color: var(--color-bg-true-black);
-  /* Overrides the shared .section utility's bottom padding — without
-     this, the hero image bleeds to its own edge but the section box
-     still adds 96px of empty black space beneath it before the partner
-     carousel band starts, reading as a large accidental gap. */
-  padding-block-end: 0;
+  /* Overrides the shared .section utility's larger bottom padding (96px)
+     with a smaller, deliberate gap before the partner carousel band. */
+  padding-block-end: var(--space-8);
 }
 
 .hero__top {
@@ -93,13 +91,13 @@
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
   gap: var(--space-9);
-  /* start, not stretch: .aboutUs__fillWrap now has its own fixed aspect
-     ratio (so it can show its full caption without cropping) rather than
-     a flex:1 that absorbed exactly whatever space stretch left over —
-     forcing this column to match the image column's exact height would
-     make its content taller than that constrained box and overflow/
-     overlap whatever follows. Columns now size independently instead. */
-  align-items: start;
+  /* stretch: .aboutUs__content needs to fill the row's full height — set
+     by .aboutUs__imageWrap's aspect-ratio — so its flex:1 fillWrap child
+     has real remaining space to grow into and its bottom edge lines up
+     with the image's bottom edge. See .aboutUs__fillWrap/.aboutUs__fillImage
+     for how the resulting (sometimes short) box still keeps the caption
+     visible via object-position instead of a fixed aspect-ratio. */
+  align-items: stretch;
 }
 
 .aboutUs__imageWrap {
@@ -168,18 +166,21 @@
 
 .aboutUs__fillWrap {
   position: relative;
-  /* This graphic is roughly square with its caption text low in frame —
-     a fixed aspect-ratio close to the source's own shape (rather than the
-     old flex:1, which could end up too short/wide and crop the caption)
-     lets it fill the column's full width via object-fit: cover with
-     little to no cropping, no letterbox background needed. */
-  aspect-ratio: 4 / 3;
+  /* flex:1 (not a fixed aspect-ratio) so this bottom-aligns exactly with
+     the image column via the grid's stretch above — whatever height that
+     leaves it, object-position below keeps the caption itself visible. */
+  flex: 1;
+  min-height: 120px;
   border-radius: var(--radius-md);
   overflow: hidden;
 }
 
 .aboutUs__fillImage {
   object-fit: cover;
+  /* This graphic's caption text sits low in frame — anchor the crop to
+     the bottom so a short box crops from the top (plain background)
+     rather than cutting the caption off. */
+  object-position: center bottom;
 }
 
 .story {
@@ -388,6 +389,53 @@
 }
 
 .programmes__cardLink:hover {
+  color: var(--color-gold-hover);
+}
+
+/* ---- From the Blog ---- */
+
+.blogSection__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: var(--space-6);
+  margin-bottom: var(--space-8);
+}
+
+.blogSection__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+
+.blogSection__card {
+  display: flex;
+  flex-direction: column;
+}
+
+.blogSection__cardImageWrap {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin-bottom: var(--space-4);
+}
+
+.blogSection__cardImage {
+  object-fit: cover;
+}
+
+.blogSection__cardLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  color: var(--color-gold);
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+}
+
+.blogSection__card:hover .blogSection__cardLink {
   color: var(--color-gold-hover);
 }
 
@@ -606,7 +654,7 @@
 .donateCta__scrim {
   position: absolute;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.68);
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .donateCta__content {
@@ -627,7 +675,7 @@
 }
 
 .donateCta__body {
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
 }
 
 @media (max-width: 900px) {
@@ -636,14 +684,6 @@
   .story__top,
   .story__bottom {
     grid-template-columns: 1fr;
-  }
-
-  /* Desktop zeroes this out (see .hero comment above) so the image can
-     bleed straight into the carousel band — on mobile the image is taller
-     and reads cramped without a break before the carousel, so restore a
-     gap here only. */
-  .hero {
-    padding-block-end: var(--space-8);
   }
 
   .hero__imageWrap {
@@ -704,7 +744,8 @@
 
   .programmes__header,
   .impact__header,
-  .faq__header {
+  .faq__header,
+  .blogSection__header {
     flex-direction: column;
     align-items: start;
   }
@@ -714,7 +755,8 @@
   }
 
   .programmes__grid,
-  .explore__grid {
+  .explore__grid,
+  .blogSection__grid {
     grid-template-columns: 1fr;
   }
 

@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { PageHero } from "@/components/marketing/PageHero";
 import { placeholderImages } from "@/lib/content/placeholderImages";
+import { impactStories } from "@/lib/content/impactStories";
 import styles from "./impact.module.css";
 
 export const metadata: Metadata = {
@@ -44,6 +46,37 @@ export default function ImpactPage() {
               <p className={styles.description}>Patients directly supported in this distribution.</p>
             </Card>
             {/* TODO: pull real cumulative totals from the admin/donation data once live — do not hardcode further placeholder figures. */}
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container stack">
+          <div>
+            <p className="eyebrow-label">/ Read More /</p>
+            <h2>Where your support goes.</h2>
+          </div>
+          <div className={styles.storyGrid}>
+            {impactStories.map((story) => (
+              <Link key={story.slug} href={`/impact/${story.slug}`} className={styles.storyCard}>
+                <div className={styles.storyCardImageWrap}>
+                  <Image
+                    src={story.image}
+                    alt=""
+                    fill
+                    sizes="(max-width: 900px) 100vw, 300px"
+                    className={styles.storyCardImage}
+                  />
+                </div>
+                <div className={styles.storyCardBody}>
+                  <h3 className={styles.storyCardTitle}>{story.title}</h3>
+                  <p className={styles.storyCardExcerpt}>{story.excerpt}</p>
+                  <span className={styles.storyCardLink}>
+                    Read More <span aria-hidden="true">→</span>
+                  </span>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>

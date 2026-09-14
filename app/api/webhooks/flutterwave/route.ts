@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/db/prisma";
+import { eq } from "drizzle-orm";
+import { withDb } from "@/lib/db/client";
+import { webhookEvents, donations } from "@/lib/db/schema";
 import { providers } from "@/lib/payments/router";
 
 /**
@@ -17,21 +19,27 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    await prisma.webhookEvent.create({
-      data: { provider: "flutterwave", eventId: event.rawEventId, rawPayload: JSON.parse(rawBody) }
-    });
+    await withDb((db) =>
+      db.insert(webhookEvents).values({
+        provider: "flutterwave",
+        eventId: event.rawEventId,
+        rawPayload: JSON.parse(rawBody)
+      })
+    );
   } catch {
     // Duplicate delivery — safe to continue.
   }
 
   const verified = await providers.flutterwave.verify(event.reference);
 
-  await prisma.donation.updateMany({
-    where: { providerReference: event.reference },
-    data: {
-      status: verified.status === "success" ? "succeeded" : verified.status === "failed" ? "failed" : "processing"
-    }
-  });
+  await withDb((db) =>
+    db
+      .update(donations)
+      .set({
+        status: verified.status === "success" ? "succeeded" : verified.status === "failed" ? "failed" : "processing"
+      })
+      .where(eq(donations.providerReference, event.reference))
+  );
 
   // TODO: send receipt email on success, outside the response path.
 

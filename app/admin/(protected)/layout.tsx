@@ -1,10 +1,6 @@
 import { redirect } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
 import { getSession } from "@/lib/auth/session";
-import { SignOutButton } from "@/components/admin/SignOutButton";
-import logo from "@/assets/brand/logo-transparent.png";
-import styles from "./admin-layout.module.css";
+import { AdminShell } from "@/components/admin/AdminShell";
 
 /**
  * Guards everything under app/admin/(protected)/**. app/admin/login lives
@@ -19,24 +15,5 @@ export default async function ProtectedAdminLayout({ children }: { children: Rea
     redirect("/admin/login");
   }
 
-  return (
-    <div>
-      <header className={styles.header}>
-        <div className={`container ${styles.header__inner}`}>
-          <Link href="/admin" className={styles.brand}>
-            <Image src={logo} alt="" width={36} height={36} className={styles.brandImage} />
-            <span className={styles.brandText}>WHHF Admin</span>
-          </Link>
-          <nav className={styles.nav} aria-label="Admin">
-            <Link href="/admin">Dashboard</Link>
-            <Link href="/admin/donations">Donations</Link>
-            <Link href="/admin/messages">Messages</Link>
-            <Link href="/admin/inbox">Inbox</Link>
-          </nav>
-          <SignOutButton />
-        </div>
-      </header>
-      <main className="section container">{children}</main>
-    </div>
-  );
+  return <AdminShell>{children}</AdminShell>;
 }

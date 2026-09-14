@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Standardize how schema changes are made to the Prisma/Postgres database so
+Standardize how schema changes are made to the Drizzle/Postgres database so
 migrations stay reversible, reviewable, and safe to run against a database
 that already has real donation data in it post-launch.
 
@@ -11,16 +11,30 @@ that already has real donation data in it post-launch.
 Read `.agent/rules/architecture.md` for the current data model context and
 `.agent/rules/security.md` for what donor data may/may not be stored.
 
+## Before the first migration ever
+
+`lib/db/schema.ts` was hand-written to match tables that already exist in
+production (originally created by a since-removed Prisma migration — see
+`drizzle.config.ts`). No baseline migration has been recorded, so
+`drizzle-kit generate` has nothing to diff against and will emit a full
+`CREATE TABLE ...` for every table, even though they already exist —
+running `db:migrate` with that file would collide with the live schema.
+Before running `db:migrate` for the very first real schema change,
+establish a baseline: generate the migration, then mark it as already
+applied (insert its record into drizzle's migrations-tracking table
+directly) instead of letting the migrator execute the `CREATE TABLE`
+statements against a database that already has those tables.
+
 ## Workflow
 
-1. Edit `prisma/schema.prisma` with the desired model change.
+1. Edit `lib/db/schema.ts` with the desired model change.
 2. Generate a migration with a descriptive name:
    ```
-   npx prisma migrate dev --name add_donation_recurring_flag
+   npx drizzle-kit generate --name add_donation_recurring_flag
    ```
    Never use a generic name like `update` or `fix`.
-3. Review the generated SQL in `prisma/migrations/<timestamp>_<name>/`
-   before applying it — Prisma's diff is usually right but destructive
+3. Review the generated SQL in `drizzle/migrations/<timestamp>_<name>.sql`
+   before applying it — Drizzle's diff is usually right but destructive
    column drops/renames need a human (or agent) sanity check.
 4. If the change is potentially destructive against production data
    (dropping/renaming a column, changing a type, adding a `NOT NULL` without
@@ -33,7 +47,7 @@ Read `.agent/rules/architecture.md` for the current data model context and
 5. Update any affected `zod` validation schemas in `lib/validation/` and
    TypeScript types in the same PR as the migration — don't let the schema
    and the validation layer drift.
-6. Run `npx prisma generate` so the Prisma client types stay in sync.
+6. Run `npm run db:migrate` (`drizzle-kit migrate`) to apply it.
 
 ## Core models to keep in mind (extend, don't fight)
 
@@ -49,6 +63,14 @@ Read `.agent/rules/architecture.md` for the current data model context and
   by provider + event id, so a replay/debugging tool doesn't need to hit the
   provider again and idempotency has an audit trail.
 
+## Every query must go through `withDb`
+
+`lib/db/client.ts` exports `withDb(fn)`, not a shared `db` singleton —
+Cloudflare Workers reuses warm isolates across requests, so a module-level
+connection pool leaves stale sockets that hang the next request. Any new
+query code must call `withDb((db) => ...)` rather than importing a client
+directly; see existing routes under `app/api/` for the pattern.
+
 ## Checklist before considering a migration "done"
 
 - [ ] Descriptive migration name
@@ -56,5 +78,6 @@ Read `.agent/rules/architecture.md` for the current data model context and
 - [ ] Destructive changes split into additive-then-cleanup steps if the
       table may already hold production data
 - [ ] Corresponding `zod` schema + TS types updated
-- [ ] `prisma generate` run
+- [ ] `npm run db:migrate` run
+- [ ] New queries use `withDb`, not a cached client
 - [ ] No donor payment-instrument fields introduced (see `security.md`)

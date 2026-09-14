@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { timingSafeEqual } from "crypto";
 import { inboundEmailSchema } from "@/lib/validation/inboundEmail";
-import { prisma } from "@/lib/db/prisma";
+import { withDb } from "@/lib/db/client";
+import { inboundEmails } from "@/lib/db/schema";
 
 /**
  * Called by the separate workers/email-router Cloudflare Worker after
@@ -32,15 +33,21 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const email = await prisma.inboundEmail.create({
-      data: {
-        fromAddress: parsed.data.from,
-        toAddress: parsed.data.to,
-        subject: parsed.data.subject,
-        textBody: parsed.data.text,
-        htmlBody: parsed.data.html
-      }
-    });
+    const [email] = await withDb((db) =>
+      db
+        .insert(inboundEmails)
+        .values({
+          fromAddress: parsed.data.from,
+          toAddress: parsed.data.to,
+          subject: parsed.data.subject,
+          textBody: parsed.data.text,
+          htmlBody: parsed.data.html
+        })
+        .returning()
+    );
+    if (!email) {
+      throw new Error("insert returned no row");
+    }
     return NextResponse.json({ data: { id: email.id } }, { status: 201 });
   } catch (err) {
     console.error("[webhooks/inbound-email] unexpected error", err);

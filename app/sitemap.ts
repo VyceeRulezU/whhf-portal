@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/content/siteConfig";
+import { blogPosts } from "@/lib/content/blogPosts";
+import { impactStories } from "@/lib/content/impactStories";
 
 /**
  * Public marketing + donate routes only — no admin, API, or the
@@ -17,8 +19,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/leadership", changeFrequency: "monthly", priority: 0.5 },
     { path: "/contact", changeFrequency: "yearly", priority: 0.5 },
     { path: "/donate", changeFrequency: "monthly", priority: 0.9 },
+    { path: "/blog", changeFrequency: "weekly", priority: 0.7 },
+    { path: "/gallery", changeFrequency: "monthly", priority: 0.5 },
+    { path: "/faith", changeFrequency: "yearly", priority: 0.5 },
     { path: "/privacy", changeFrequency: "yearly", priority: 0.2 },
-    { path: "/terms", changeFrequency: "yearly", priority: 0.2 }
+    { path: "/terms", changeFrequency: "yearly", priority: 0.2 },
+    ...blogPosts.map((post) => ({
+      path: `/blog/${post.slug}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.6
+    })),
+    ...impactStories.map((story) => ({
+      path: `/impact/${story.slug}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.6
+    }))
   ];
 
   return routes.map((route) => ({

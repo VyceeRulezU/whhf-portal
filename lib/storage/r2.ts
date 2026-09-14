@@ -9,8 +9,8 @@ import { AwsClient } from "aws4fetch";
  * Uses aws4fetch (a thin request-signer over fetch) rather than the full
  * AWS SDK — Cloudflare's own recommendation for R2 on Workers, since the
  * full SDK's dependency weight is a real problem for Workers bundle size
- * (see the Next.js/React/Prisma compatibility work already done for this
- * project's Workers deployment). It also just means one code path works
+ * (see the Next.js/React/database compatibility work already done for
+ * this project's Workers deployment). It also just means one code path works
  * identically in local Node dev and on Workers, no fallback needed.
  */
 

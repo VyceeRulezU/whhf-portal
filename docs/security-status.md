@@ -38,7 +38,7 @@ documented intent. Update this as real implementation lands.
   only in server-side files (`lib/payments/*`, API routes); `.env.example`
   documents every variable name with no real values.
 - **Bootstrap admin creation without a hardcoded password** —
-  `prisma/seed.ts` only creates an admin user if `SEED_ADMIN_EMAIL` /
+  `lib/db/seed.ts` only creates an admin user if `SEED_ADMIN_EMAIL` /
   `SEED_ADMIN_PASSWORD` are explicitly set in the environment.
 
 ## Deliberately stubbed / still needs real implementation
