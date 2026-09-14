@@ -23,6 +23,7 @@
   "dependencies": {
     "@prisma/adapter-pg": "^5.22.0",
     "@prisma/client": "^5.16.0",
+    "aws4fetch": "^1.0.20",
     "framer-motion": "^13.2.0",
     "next": "^15.5.24",
     "pg": "^8.23.0",

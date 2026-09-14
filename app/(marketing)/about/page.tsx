@@ -1,7 +1,14 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { PageHero } from "@/components/marketing/PageHero";
 import { placeholderImages } from "@/lib/content/placeholderImages";
 import styles from "./about.module.css";
+
+export const metadata: Metadata = {
+  title: "Our Story",
+  description:
+    "The William & Helen Heritage Foundation was established in memory of Rev. (Mrs) Helen Titilayo Okoye, continuing the generosity she was known for."
+};
 
 export default function AboutPage() {
   return (

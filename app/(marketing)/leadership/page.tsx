@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import { Card } from "@/components/ui/Card";
 import { PageHero } from "@/components/marketing/PageHero";
 import styles from "./leadership.module.css";
+
+export const metadata: Metadata = {
+  title: "Leadership",
+  description: "The board and leadership behind the William & Helen Heritage Foundation."
+};
 
 const BOARD = [
   { name: "Engr. Titus Omolewa", role: "Vice Chairman" },

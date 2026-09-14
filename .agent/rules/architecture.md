@@ -11,7 +11,8 @@
 | Auth | Admin-only auth (NextAuth or a minimal session-cookie system) | Public donors never need an account to give |
 | Payments | Flutterwave, Paystack, Korapay | Each behind a common internal interface — see "Payment abstraction" below |
 | Email | Transactional email provider (e.g. Resend/Postmark) for receipts | Not yet selected — flag if you need to pick one |
-| Hosting | Undecided | Avoid platform-locked primitives |
+| Hosting | Cloudflare Workers, via `@opennextjs/cloudflare` | See `wrangler.jsonc` and README.md ("Deploying to Cloudflare Workers") |
+| Storage | Cloudflare R2 (S3-compatible) | Site images, backups, general file storage — kept separate from Supabase's own storage quota. See `lib/storage/r2.ts` |
 
 ## Folder layout
 

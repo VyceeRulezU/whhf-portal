@@ -94,25 +94,47 @@ export function SiteHeader() {
 
       <AnimatePresence>
         {isMenuOpen && (
-          <motion.nav
-            id="mobile-nav"
-            aria-label="Mobile"
-            className={styles.mobileNav}
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeInOut" }}
-          >
-            <ul className={styles.mobileNav__list}>
-              {NAV_LINKS.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className={styles.mobileNav__link} onClick={() => setIsMenuOpen(false)}>
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </motion.nav>
+          <>
+            <motion.div
+              className={styles.mobileNavScrim}
+              aria-hidden="true"
+              onClick={() => setIsMenuOpen(false)}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2, ease: "easeInOut" }}
+            />
+            <motion.nav
+              id="mobile-nav"
+              aria-label="Mobile"
+              className={styles.mobileNav}
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2, ease: "easeInOut" }}
+            >
+              <ul className={styles.mobileNav__list}>
+                {NAV_LINKS.map((link) => (
+                  <li key={link.href}>
+                    <Link href={link.href} className={styles.mobileNav__link} onClick={() => setIsMenuOpen(false)}>
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <div className={styles.mobileNav__ctaRow}>
+                <Link href="/donate" className={styles.mobileNav__ctaLink} onClick={() => setIsMenuOpen(false)}>
+                  <Button
+                    variant={ctaVariant}
+                    showIconChip={ctaVariant === "primary"}
+                    className={styles.mobileNav__ctaButton}
+                  >
+                    Donate Now
+                  </Button>
+                </Link>
+              </div>
+            </motion.nav>
+          </>
         )}
       </AnimatePresence>
     </header>

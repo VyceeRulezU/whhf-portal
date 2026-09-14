@@ -1,0 +1,56 @@
+.band {
+  background-color: var(--color-gold);
+  overflow: hidden;
+  padding-block: var(--space-5);
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  gap: var(--space-9);
+  width: max-content;
+  animation: scroll 28s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3) var(--space-5);
+  flex-shrink: 0;
+}
+
+.logoImage {
+  /* Fixed box + contain rather than a bare height, since these placeholder
+     logos aren't all the same aspect ratio (some are wide wordmarks, one
+     is a stacked icon-over-text layout) — without this, a tall/narrow
+     logo shrinks to near-illegibility next to the wide ones. */
+  width: 140px;
+  height: 52px;
+  object-fit: contain;
+  /* Forced to solid black regardless of the placeholder logos' own
+     colors — see design-system.md: gold carries all emphasis, no second
+     accent hue, and these full-color placeholders (red/purple/green/
+     yellow) were a real violation of that. brightness(0) recolors any
+     non-transparent pixel to black without needing per-logo tweaking. */
+  filter: brightness(0);
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* Exactly half the track width (the list is duplicated once), so this
+       lands precisely back on the first copy for a seamless loop. */
+    transform: translateX(-50%);
+  }
+}

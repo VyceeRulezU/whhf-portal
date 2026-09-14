@@ -1,0 +1,108 @@
+.carousel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  width: 100%;
+}
+
+.carousel__card {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: var(--space-8);
+  align-items: center;
+  width: 100%;
+  min-height: 380px;
+  padding: var(--space-8);
+}
+
+.carousel__imageWrap {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.carousel__image {
+  object-fit: cover;
+}
+
+.carousel__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.carousel__count {
+  color: var(--color-gold);
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-sm);
+  letter-spacing: 0.05em;
+}
+
+.carousel__title {
+  font-size: var(--font-size-h2);
+  color: var(--color-text-primary);
+}
+
+.carousel__body {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body-lg);
+  max-width: 55ch;
+}
+
+.carousel__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  color: var(--color-gold);
+  font-weight: 600;
+}
+
+.carousel__link:hover {
+  color: var(--color-gold-hover);
+}
+
+.carousel__controls {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.carousel__arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-bg-true-black);
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-gold);
+  cursor: pointer;
+  transition: background-color var(--motion-fast), border-color var(--motion-fast);
+}
+
+.carousel__arrow:hover {
+  background-color: var(--color-gold);
+  border-color: var(--color-gold);
+  color: var(--color-text-on-gold);
+}
+
+.carousel__arrow:focus-visible {
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
+  outline: none;
+}
+
+@media (max-width: 700px) {
+  .carousel__card {
+    grid-template-columns: 1fr;
+    padding: var(--space-5);
+    min-height: 0;
+  }
+
+  .carousel__imageWrap {
+    aspect-ratio: 16 / 10;
+  }
+}

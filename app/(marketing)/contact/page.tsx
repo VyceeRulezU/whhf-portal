@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import { Card } from "@/components/ui/Card";
 import { PageHero } from "@/components/marketing/PageHero";
 import styles from "./contact.module.css";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description: "Get in touch with the William & Helen Heritage Foundation about partnerships, volunteering, or general enquiries."
+};
 
 const CONTACT_ROWS = [
   { label: "Office address", value: "Pending confirmation from WHHF" },

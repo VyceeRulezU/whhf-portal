@@ -1,5 +1,10 @@
 .hero {
   background-color: var(--color-bg-true-black);
+  /* Overrides the shared .section utility's bottom padding — without
+     this, the hero image bleeds to its own edge but the section box
+     still adds 96px of empty black space beneath it before the partner
+     carousel band starts, reading as a large accidental gap. */
+  padding-block-end: 0;
 }
 
 .hero__top {
@@ -35,10 +40,14 @@
   max-width: 50ch;
 }
 
+.hero__media {
+  position: relative;
+  margin-top: var(--space-8);
+}
+
 .hero__imageWrap {
   position: relative;
   aspect-ratio: 16 / 9;
-  margin-top: var(--space-8);
   border-radius: var(--radius-lg);
   overflow: hidden;
 }
@@ -61,7 +70,8 @@
 
 .hero__statValue {
   font-family: var(--font-family-display);
-  font-size: var(--font-size-h1);
+  font-size: var(--font-size-h2);
+  line-height: var(--line-height-heading);
   color: var(--color-gold);
   margin-block: var(--space-2);
 }
@@ -71,68 +81,241 @@
   font-size: var(--font-size-xs);
 }
 
-.affiliation {
-  border-bottom: 1px solid var(--color-border);
-}
-
-.affiliation__row {
+.aboutUs__header {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-4);
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: 60ch;
+  margin-bottom: var(--space-8);
 }
 
-.whoWeAre {
+.aboutUs__grid {
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
   gap: var(--space-9);
-  align-items: center;
+  /* stretch (not start): .aboutUs__content needs to fill the row's full
+     height — set by .aboutUs__imageWrap's aspect-ratio — so its flex:1
+     fillWrap child has real remaining space to grow into and its bottom
+     edge lines up with the image's bottom edge. */
+  align-items: stretch;
 }
 
-.whoWeAre__imageWrap {
+.aboutUs__imageWrap {
   position: relative;
   aspect-ratio: 4 / 5;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   overflow: hidden;
 }
 
-.whoWeAre__image {
+.aboutUs__image {
   object-fit: cover;
 }
 
-.whoWeAre__badges {
-  position: absolute;
-  left: var(--space-4);
-  right: var(--space-4);
-  bottom: var(--space-4);
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-
-.whoWeAre__content {
+.aboutUs__content {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-5);
   /* Same CSS Grid blowout fix as .hero__heading/.hero__intro above. */
   min-width: 0;
 }
 
-.whoWeAre__body {
+.aboutUs__statRow {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-4);
+}
+
+.aboutUs__statCard {
+  flex: 1.3;
+}
+
+.aboutUs__statValue {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-h1);
+  color: var(--color-gold);
+  line-height: 1;
+}
+
+.aboutUs__statLabel {
+  margin-top: var(--space-2);
+  font-weight: 600;
+}
+
+.aboutUs__statCaption {
+  margin-top: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.aboutUs__thumbWrap {
+  position: relative;
+  flex: 1;
+  min-height: 160px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.aboutUs__thumbImage {
+  object-fit: cover;
+}
+
+.aboutUs__body {
   color: var(--color-text-secondary);
   font-size: var(--font-size-body-lg);
 }
 
-.programmeImageWrap {
+.aboutUs__fillWrap {
   position: relative;
-  aspect-ratio: 3 / 2;
-  border-radius: var(--radius-sm);
+  flex: 1;
+  min-height: 160px;
+  border-radius: var(--radius-md);
   overflow: hidden;
-  margin-bottom: var(--space-4);
+  /* This photo is a near-black branded graphic, not a full-bleed photo —
+     contain (not cover) keeps its caption text from being cropped in a
+     short/wide box, and this background blends into its own near-black
+     canvas so there's no visible letterboxing seam. */
+  background-color: var(--color-bg-true-black);
 }
 
-.programmeImage {
+.aboutUs__fillImage {
+  object-fit: contain;
+}
+
+.story {
+  background-color: var(--color-bg-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-9);
+}
+
+.story__top {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: var(--space-9);
+  align-items: start;
+}
+
+.story__heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.story__intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  align-items: start;
+  min-width: 0;
+}
+
+.story__lede {
+  color: var(--color-text-secondary);
+}
+
+.story__bottom {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+
+.story__imageWrap {
+  position: relative;
+  aspect-ratio: 16 / 11;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.story__image {
   object-fit: cover;
+  /* This is a portrait — cropping from the center cuts the face off in a
+     short/wide box, so anchor to the top instead. */
+  object-position: center top;
+}
+
+.story__stats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.story__statCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.story__statValue {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-h3);
+  color: var(--color-gold);
+}
+
+.story__statCaption {
+  margin-top: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.howWeWork__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: 60ch;
+  margin-bottom: var(--space-8);
+}
+
+.howWeWork__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: repeat(2, 1fr);
+  gap: var(--space-5);
+}
+
+.howWeWork__imageWrap {
+  position: relative;
+  grid-column: 1;
+  grid-row: 1 / 3;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  min-height: 320px;
+}
+
+.howWeWork__image {
+  object-fit: cover;
+}
+
+.howWeWork__stepCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.howWeWork__stepCard--cta {
+  border: 1px solid var(--color-gold);
+  justify-content: center;
+}
+
+.howWeWork__stepNumber {
+  font-family: var(--font-family-display);
+  color: var(--color-gold);
+  font-size: var(--font-size-h3);
+}
+
+.howWeWork__stepHeading {
+  margin-top: var(--space-1);
+}
+
+.howWeWork__stepBody {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.howWeWork__ctaLink {
+  margin-top: var(--space-2);
 }
 
 .cardHeading {
@@ -148,36 +331,417 @@
   margin-top: var(--space-4);
 }
 
-.cta {
-  background-color: var(--color-bg-true-black);
-  border-top: 1px solid var(--color-border);
-  padding-block: var(--space-11);
+/* ---- Ways to support the work (Programmes, redesigned) ---- */
+
+.programmes__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: var(--space-8);
+  margin-bottom: var(--space-8);
 }
 
-.cta__inner {
+.programmes__headingGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.programmes__intro {
+  color: var(--color-text-secondary);
+  max-width: 40ch;
+  text-align: right;
+}
+
+.programmes__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+
+.programmes__card {
+  display: flex;
+  flex-direction: column;
+}
+
+.programmes__imageWrap {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin-bottom: var(--space-4);
+}
+
+.programmes__image {
+  object-fit: cover;
+}
+
+.programmes__cardLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  color: var(--color-gold);
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+}
+
+.programmes__cardLink:hover {
+  color: var(--color-gold-hover);
+}
+
+/* ---- Where your support goes ---- */
+
+.impact__panel {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+}
+
+.impact__panelImage {
+  object-fit: cover;
+}
+
+.impact__panelScrim {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.72);
+}
+
+.impact__panelContent {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: var(--space-9);
+}
+
+.impact__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: var(--space-8);
+  margin-bottom: var(--space-8);
+}
+
+/* ---- A Word of Faith ---- */
+
+.faith__grid {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: var(--space-9);
+  align-items: start;
+}
+
+.faith__left {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  align-items: start;
+  min-width: 0;
+}
+
+.faith__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.faith__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-gold);
+  flex-shrink: 0;
+}
+
+.faith__heading em {
+  color: var(--color-gold);
+  font-style: italic;
+}
+
+.faith__imageWrap {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.faith__image {
+  object-fit: cover;
+  /* Portrait — anchor to the top so a short/wide box doesn't crop the face. */
+  object-position: center top;
+}
+
+.faith__right {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  min-width: 0;
+  padding-top: var(--space-2);
+}
+
+.faith__body {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body-lg);
+}
+
+/* ---- FAQ ---- */
+
+.faq__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: var(--space-8);
+  margin-bottom: var(--space-8);
+}
+
+.faq__grid {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: var(--space-9);
+  align-items: start;
+}
+
+.faq__side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  align-items: start;
+  position: sticky;
+  top: calc(var(--space-9) + 80px);
+}
+
+.faq__sideHeading {
+  font-size: var(--font-size-h2);
+}
+
+.faq__sideHeading em {
+  color: var(--color-gold);
+  font-style: italic;
+}
+
+.faq__sideBody {
+  color: var(--color-text-secondary);
+}
+
+/* ---- Explore more from WHHF ---- */
+
+.explore__header {
+  margin-bottom: var(--space-8);
+}
+
+.explore__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+
+.explore__card {
+  display: block;
+}
+
+.explore__cardImageWrap {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.explore__cardImage {
+  object-fit: cover;
+  transition: transform var(--motion-fast);
+}
+
+.explore__card:hover .explore__cardImage {
+  transform: scale(1.04);
+}
+
+.explore__cardScrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.1) 55%, rgba(0, 0, 0, 0) 100%);
+}
+
+.explore__cardCaption {
+  position: absolute;
+  left: var(--space-5);
+  right: var(--space-5);
+  bottom: var(--space-5);
+}
+
+.explore__cardTitle {
+  font-family: var(--font-family-display);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-h3);
+}
+
+.explore__cardLine {
+  margin-top: var(--space-1);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+/* ---- Final donation CTA ---- */
+
+.donateCta {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.donateCta__image {
+  object-fit: cover;
+}
+
+.donateCta__scrim {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.68);
+}
+
+.donateCta__content {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   gap: var(--space-4);
+  max-width: 640px;
+  padding: var(--space-8);
 }
 
-.cta__heading {
+.donateCta__heading {
   font-size: var(--font-size-h1);
+  color: var(--color-text-primary);
 }
 
-.cta__body {
+.donateCta__body {
   color: var(--color-text-secondary);
-  max-width: 50ch;
 }
 
 @media (max-width: 900px) {
   .hero__top,
-  .whoWeAre {
+  .aboutUs__grid,
+  .story__top,
+  .story__bottom {
     grid-template-columns: 1fr;
   }
 
-  .whoWeAre__imageWrap {
+  /* Desktop zeroes this out (see .hero comment above) so the image can
+     bleed straight into the carousel band — on mobile the image is taller
+     and reads cramped without a break before the carousel, so restore a
+     gap here only. */
+  .hero {
+    padding-block-end: var(--space-8);
+  }
+
+  .hero__imageWrap {
+    aspect-ratio: 3 / 4;
+  }
+
+  /* On desktop this overlays the bottom-left of the photo — at mobile's
+     taller/narrower crop that leaves too little breathing room over the
+     image, so it becomes its own block below it instead. Card's overlay
+     variant is a near-black scrim meant to sit on a photo; standalone
+     against the page's own black background it would be nearly invisible,
+     so it also gets a real surface background + border here instead. */
+  .hero__stat {
+    position: static;
+    max-width: none;
+    width: 100%;
+    margin-top: var(--space-4);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    backdrop-filter: none;
+  }
+
+  .aboutUs__imageWrap {
+    /* Taller than the desktop crop (16/10) — this photo is a portrait and
+       reads too squeezed at a landscape ratio on narrow screens. */
+    aspect-ratio: 3 / 4;
+  }
+
+  .aboutUs__statRow {
+    flex-direction: column;
+  }
+
+  .aboutUs__thumbWrap {
+    min-height: 120px;
+  }
+
+  .story {
+    padding: var(--space-6);
+  }
+
+  .story__imageWrap {
+    /* Same reasoning as .aboutUs__imageWrap above — a portrait photo. */
+    aspect-ratio: 3 / 4;
+  }
+
+  .howWeWork__grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .howWeWork__imageWrap {
+    grid-column: 1;
+    grid-row: auto;
+    min-height: 220px;
     aspect-ratio: 16 / 10;
+  }
+
+  .programmes__header,
+  .impact__header,
+  .faq__header {
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .programmes__intro {
+    text-align: left;
+  }
+
+  .programmes__grid,
+  .explore__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .impact__panel {
+    min-height: 0;
+  }
+
+  .impact__panelContent {
+    padding: var(--space-6);
+  }
+
+  .faith__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .faith__imageWrap {
+    aspect-ratio: 3 / 4;
+  }
+
+  .faq__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .faq__side {
+    position: static;
+  }
+
+  .donateCta {
+    min-height: 320px;
   }
 }

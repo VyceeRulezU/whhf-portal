@@ -1,0 +1,31 @@
+.doc {
+  max-width: 70ch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.doc h2 {
+  margin-top: var(--space-4);
+}
+
+.doc p {
+  color: var(--color-text-secondary);
+}
+
+.doc a {
+  color: var(--color-gold);
+}
+
+.doc a:hover {
+  color: var(--color-gold-hover);
+}
+
+.doc .notice {
+  padding: var(--space-4);
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}

@@ -6,10 +6,15 @@ const nextConfig = {
   // server output files, which matters for the Cloudflare Workers build.
   outputFileTracingRoot: __dirname,
   images: {
-    // TEMPORARY: picsum.photos serves placeholder photography until real
-    // WHHF programme/beneficiary photos are supplied — see
-    // lib/content/placeholderImages.ts. Remove once real images land.
-    remotePatterns: [{ protocol: "https", hostname: "picsum.photos" }]
+    // TEMPORARY: Unsplash serves placeholder photography (topically
+    // relevant, free-licensed) until real WHHF programme/beneficiary
+    // photos are supplied — see lib/content/placeholderImages.ts. Remove
+    // once real images land.
+    remotePatterns: [
+      { protocol: "https", hostname: "images.unsplash.com" },
+      // Cloudflare R2 public bucket — see lib/storage/r2.ts.
+      { protocol: "https", hostname: "pub-edb75a29dec547999359fcf854521a0f.r2.dev" }
+    ]
   }
 };
 

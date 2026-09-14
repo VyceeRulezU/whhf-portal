@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { Card } from "@/components/ui/Card";
 import { PageHero } from "@/components/marketing/PageHero";
 import { placeholderImages } from "@/lib/content/placeholderImages";
 import styles from "./impact.module.css";
+
+export const metadata: Metadata = {
+  title: "Impact",
+  description:
+    "₦1.5M+ distributed to indigent cancer patients at National Hospital, Abuja — see what your generosity has made possible."
+};
 
 export default function ImpactPage() {
   return (

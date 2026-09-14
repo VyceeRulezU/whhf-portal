@@ -1,0 +1,1 @@
+export { PartnerCarousel } from "./PartnerCarousel";

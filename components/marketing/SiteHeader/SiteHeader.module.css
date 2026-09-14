@@ -99,41 +99,78 @@
   transform: translateY(-7px) rotate(-45deg);
 }
 
+/* Positioned against .header (position: sticky establishes the containing
+   block for these) rather than in normal flow, so opening the menu floats
+   it over the page instead of pushing all the content below it down. */
+.mobileNavScrim {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
 .mobileNav {
-  overflow: hidden;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 80vh;
+  overflow-y: auto;
   border-top: 1px solid var(--color-border);
-  background-color: var(--color-bg-true-black);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  background-color: var(--color-bg-surface);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
 }
 
 .mobileNav__list {
   display: flex;
   flex-direction: column;
-  padding: var(--space-4) var(--container-gutter);
+  gap: var(--space-1);
+  padding: var(--space-4) var(--container-gutter) 0;
 }
 
 .mobileNav__link {
   display: block;
-  padding-block: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
   color: var(--color-text-secondary);
   font-size: var(--font-size-body-lg);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.mobileNav__list li:last-child .mobileNav__link {
-  border-bottom: none;
+  transition: background-color var(--motion-fast), color var(--motion-fast);
 }
 
 .mobileNav__link:hover {
+  background-color: var(--color-bg-surface-raised);
   color: var(--color-gold);
+}
+
+.mobileNav__ctaRow {
+  padding: var(--space-4) var(--container-gutter);
+  margin-top: var(--space-2);
+  border-top: 1px solid var(--color-border);
+}
+
+.mobileNav__ctaLink {
+  display: block;
+}
+
+.mobileNav__ctaButton {
+  width: 100%;
+  justify-content: center;
 }
 
 @media (max-width: 768px) {
   .header__logoImage {
-    width: 48px;
-    height: 48px;
+    width: 64px;
+    height: 64px;
   }
 
   .header__nav {
+    display: none;
+  }
+
+  .header__cta {
     display: none;
   }
 

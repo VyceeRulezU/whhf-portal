@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { PageHero } from "@/components/marketing/PageHero";
 import { placeholderImages } from "@/lib/content/placeholderImages";
+
+export const metadata: Metadata = {
+  title: "Programmes",
+  description:
+    "Direct financial grants toward chemotherapy and treatment costs for indigent cancer patients, distributed in partnership with National Hospital, Abuja."
+};
 import styles from "./programmes.module.css";
 
 export default function ProgrammesPage() {

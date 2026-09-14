@@ -39,14 +39,15 @@ See [`PRD.md`](PRD.md) for the full product requirements and
 
 | Layer | Choice |
 |---|---|
-| Framework | Next.js 14 (App Router), TypeScript (strict) |
+| Framework | Next.js 15 (App Router), React 19, TypeScript (strict) |
 | Styling | Vanilla CSS — CSS Modules + BEM-flavoured class names, no Tailwind/CSS-in-JS |
 | Design tokens | JSON source (`tokens/`) → generated `tokens.css` custom properties |
-| Database | PostgreSQL via Prisma ORM |
+| Database | PostgreSQL via Prisma ORM, `pg` driver adapter (Workers-compatible) |
 | Auth | Minimal signed-cookie session for the admin dashboard only — donors never need an account |
 | Payments | Paystack, Flutterwave, Korapay, behind one shared `PaymentProvider` interface |
+| Storage | Cloudflare R2 (S3-compatible) — site images, backups, general files |
 | Email | Not yet selected (transactional email for receipts) |
-| Hosting | Not yet decided — avoid platform-locked primitives |
+| Hosting | Cloudflare Workers, via `@opennextjs/cloudflare` — see "Deploying to Cloudflare Workers" below |
 
 Full rationale for each choice lives in
 [`.agent/rules/architecture.md`](.agent/rules/architecture.md).
@@ -92,6 +93,8 @@ comments — it's the source of truth, not this README. Broadly:
   new one.
 - `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` — local-only bootstrap admin,
   see above.
+- `R2_*` — Cloudflare R2 object storage credentials. See `lib/storage/r2.ts`.
+  Scope the API token to the one bucket only, not account-wide.
 
 Never commit `.env` or `.env.local` — both are gitignored.
 
@@ -108,6 +111,39 @@ Never commit `.env` or `.env.local` — both are gitignored.
 | `npm run prisma:generate` | Regenerate the Prisma client after a schema change |
 | `npm run prisma:migrate` | Create/apply a local migration |
 | `npm run prisma:seed` | Run `prisma/seed.ts` (see "Creating a local admin user") |
+| `npm run cf:build` | Build the Cloudflare Workers bundle (`.open-next/`) — see "Deploying to Cloudflare Workers" |
+| `npm run cf:preview` | Build, then run the Worker locally under `wrangler` |
+| `npm run cf:deploy` | Build, then deploy to Cloudflare Workers |
+
+## Deploying to Cloudflare Workers
+
+The app deploys to Cloudflare Workers via
+[`@opennextjs/cloudflare`](https://opennext.js.org/cloudflare) — config in
+`wrangler.jsonc` and `open-next.config.ts`.
+
+**Cloudflare Pages project settings must run the OpenNext build, not plain
+`next build`.** If the dashboard's "Build command" is `npm run build`, the
+deploy step will fail with `Could not find compiled Open Next config` —
+`.open-next/` never gets generated. Set the **Build command** to
+`npm run cf:build` and leave the **Deploy command** as `npx wrangler deploy`.
+
+Known gaps before this is production-ready on Workers, both already
+flagged inline where they matter:
+
+- **Database**: `lib/db/prisma.ts` reads `process.env.DATABASE_URL`
+  directly, which works in local dev and on any normal Node host, but
+  Workers can't hold a raw TCP Postgres connection — production traffic
+  there needs a [Cloudflare Hyperdrive](https://developers.cloudflare.com/hyperdrive/)
+  binding, read per-request via `getCloudflareContext()` from
+  `@opennextjs/cloudflare`, not `process.env`. See the comment in that
+  file and the TODO in `wrangler.jsonc`.
+- **Rate limiting**: `lib/auth/rateLimit.ts` is in-memory, which doesn't
+  meaningfully work across Workers' distributed isolates — needs a shared
+  store (KV, Durable Objects) before relying on it there.
+- **CSP**: `script-src` needs `'unsafe-inline'` in production (Next.js
+  delivers its hydration payload via inline `<script>` tags) — see the
+  comment in `middleware.ts` for why a per-request nonce isn't a drop-in
+  fix here (it would force every page into dynamic rendering).
 
 ## Project structure
 
