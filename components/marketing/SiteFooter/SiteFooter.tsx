@@ -11,6 +11,7 @@ import { NAV_LINKS } from "@/components/marketing/SiteHeader/navLinks";
 // sits directly on the footer panel's own surface color instead of
 // showing the logo's own black background plate as a visible square.
 import logo from "@/assets/brand/logo-transparent.png";
+import { placeholderImages } from "@/lib/content/placeholderImages";
 import styles from "./SiteFooter.module.css";
 
 const VALUES = ["Faith-Led", "Direct to Patients", "Transparent", "Community-Rooted"];
@@ -19,6 +20,8 @@ export function SiteFooter() {
   return (
     <footer className={styles.footer}>
       <div className={styles.footer__panel}>
+        <Image src={placeholderImages.homeHero} alt="" fill sizes="1880px" className={styles.footer__bgImage} />
+        <div className={styles.footer__bgScrim} />
         <div className={`container ${styles.footer__grid}`}>
           <div className={styles.footer__brand}>
             <Image src={logo} alt="William & Helen Heritage Foundation" width={220} height={220} className={styles.footer__logo} />
@@ -49,7 +52,7 @@ export function SiteFooter() {
               <li>
                 <a href="tel:+2348064320084">0806 432 0084</a>
               </li>
-              <li>Maitama, Abuja, Nigeria</li>
+              <li>3FVM+H9M, Along Nile Street, Maitama, Abuja 904101, FCT</li>
             </ul>
             <Link href="/donate" className={styles.footer__donateLink}>
               Donate Now →

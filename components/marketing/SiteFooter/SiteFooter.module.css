@@ -11,6 +11,21 @@
   border: 1px solid var(--color-border);
 }
 
+.footer__bgImage {
+  object-fit: cover;
+  /* Very faint — a texture behind the panel, not a photo competing with
+     the text on top of it. */
+  opacity: 0.14;
+}
+
+.footer__bgScrim {
+  position: absolute;
+  inset: 0;
+  /* On top of the faint image so every column of text stays readable
+     regardless of what's underneath it. */
+  background-color: rgba(0, 0, 0, 0.55);
+}
+
 .footer__grid {
   display: grid;
   grid-template-columns: 1.3fr 1fr 1fr 1fr;

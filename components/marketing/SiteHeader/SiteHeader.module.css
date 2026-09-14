@@ -153,8 +153,7 @@
 }
 
 .mobileNav__ctaButton {
-  width: 100%;
-  justify-content: center;
+  width: fit-content;
 }
 
 @media (max-width: 768px) {
