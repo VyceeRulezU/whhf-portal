@@ -14,7 +14,7 @@ export default function GalleryPage() {
       <PageHero
         eyebrow="Gallery"
         title="Moments from the work."
-        lede="A look at WHHF's programmes and the community carrying them forward — click any photo to view it full-size."
+        lede="A look at WHHF's programmes and the community carrying them forward. Click any photo to view it full-size."
       />
       <section className="section">
         <div className="container">

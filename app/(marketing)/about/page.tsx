@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 const VALUES = [
   {
     title: "Faith-Led",
-    body: "Every act of generosity is grounded in the same conviction WHHF was founded on — cheerful, practical faith in action.",
+    body: "Every act of generosity is grounded in the same conviction WHHF was founded on, cheerful, practical faith in action.",
     icon: (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
         <path d="M12 21c-2.2 0-4-1.8-4-4 0-2.5 4-8 4-8s4 5.5 4 8c0 2.2-1.8 4-4 4z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
@@ -27,7 +27,7 @@ const VALUES = [
   },
   {
     title: "Direct to Patients",
-    body: "Grants go straight toward chemotherapy and treatment costs — not overhead, not intermediaries.",
+    body: "Grants go straight toward chemotherapy and treatment costs, not overhead, not intermediaries.",
     icon: (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
         <path
@@ -77,7 +77,7 @@ export default function AboutPage() {
           <div className={styles.imageWrap}>
             <Image
               src={placeholderImages.aboutStory}
-              alt="Placeholder — WHHF programme photography pending"
+              alt="Placeholder: WHHF programme photography pending"
               fill
               sizes="(max-width: 900px) 100vw, 520px"
               className={styles.image}
@@ -103,12 +103,12 @@ export default function AboutPage() {
               need it most, without unnecessary delay.
             </p>
             <p>
-              That approach has already translated into real support —
+              That approach has already translated into real support,
               including a distribution of over ₦1.5M to five indigent
               cancer patients, made on the 4th memorial anniversary of Rev.
               (Mrs) Helen Okoye. It is a small, tangible expression of a
               much larger conviction: that generosity, offered cheerfully
-              and without compulsion, is worth continuing — one life at a
+              and without compulsion, is worth continuing, one life at a
               time.
             </p>
             {/*

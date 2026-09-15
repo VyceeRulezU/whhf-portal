@@ -31,7 +31,7 @@ export default function PrivacyPage() {
               address, and the donation amount, along with a payment
               reference from our payment provider so we can confirm and
               reconcile the transaction. We do not collect or store your
-              card or bank details directly — these are handled by our
+              card or bank details directly. These are handled by our
               payment providers.
             </p>
 

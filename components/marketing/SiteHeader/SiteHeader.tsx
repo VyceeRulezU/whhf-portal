@@ -79,7 +79,7 @@ export function SiteHeader() {
   return (
     <header className={styles.header}>
       <div className={styles.header__inner}>
-        <Link href="/" className={styles.header__logo} aria-label="William & Helen Heritage Foundation — home">
+        <Link href="/" className={styles.header__logo} aria-label="William & Helen Heritage Foundation, home">
           <Image src={logo} alt="" width={120} height={120} priority className={styles.header__logoImage} />
         </Link>
         <nav className={styles.header__nav} aria-label="Primary">

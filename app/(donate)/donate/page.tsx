@@ -5,7 +5,7 @@ import { PageHero } from "@/components/marketing/PageHero";
 
 export const metadata: Metadata = {
   title: "Donate",
-  description: "Make a donation to the William & Helen Heritage Foundation — every gift goes directly toward supporting indigent cancer patients."
+  description: "Make a donation to the William & Helen Heritage Foundation. Every gift goes directly toward supporting indigent cancer patients."
 };
 
 export default function DonatePage() {

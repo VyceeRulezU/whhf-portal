@@ -10,7 +10,7 @@ import styles from "./impact.module.css";
 export const metadata: Metadata = {
   title: "Impact",
   description:
-    "₦1.5M+ distributed to indigent cancer patients at National Hospital, Abuja — see what your generosity has made possible."
+    "₦1.5M+ distributed to indigent cancer patients at National Hospital, Abuja. See what your generosity has made possible."
 };
 
 export default function ImpactPage() {
@@ -19,7 +19,7 @@ export default function ImpactPage() {
       <PageHero
         eyebrow="Impact"
         title="What your generosity has made possible."
-        lede="Confirmed figures below — updated as new distributions are made and admin reporting comes online."
+        lede="Confirmed figures below, updated as new distributions are made and admin reporting comes online."
       />
       <section className="section">
         <div className="container stack">

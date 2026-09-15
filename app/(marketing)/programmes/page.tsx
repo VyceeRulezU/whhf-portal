@@ -24,7 +24,7 @@ const STEPS = [
   {
     number: "02",
     heading: "Board Verification",
-    body: "Every case is reviewed by the board before any funds move — confirming the medical need first."
+    body: "Every case is reviewed by the board before any funds move, confirming the medical need first."
   },
   {
     number: "03",
@@ -44,7 +44,7 @@ export default function ProgrammesPage() {
       <PageHero
         eyebrow="Programmes"
         title="Where your gift goes."
-        lede="WHHF's programme work starts with direct, practical support for indigent cancer patients — with more programmes to follow as they're confirmed."
+        lede="WHHF's programme work starts with direct, practical support for indigent cancer patients, with more programmes to follow as they're confirmed."
       />
 
       <section className="section">
@@ -53,7 +53,7 @@ export default function ProgrammesPage() {
             <div className={styles.flagshipImageWrap}>
               <Image
                 src={placeholderImages.programmeFlagship}
-                alt="Placeholder — cancer patient support programme photography pending"
+                alt="Placeholder: cancer patient support programme photography pending"
                 fill
                 sizes="(max-width: 900px) 100vw, 480px"
                 className={styles.flagshipImage}
@@ -111,8 +111,8 @@ export default function ProgrammesPage() {
               <p className="eyebrow-label">/ Looking Ahead /</p>
               <h2>Depth first, then scale.</h2>
               <p className={styles.approachText}>
-                WHHF chose to start narrow on purpose — one programme, one hospital partnership, reviewed case by
-                case — rather than spread support thin across many causes before learning what real, effective help
+                WHHF chose to start narrow on purpose: one programme, one hospital partnership, reviewed case by
+                case, rather than spread support thin across many causes before learning what real, effective help
                 looks like.
               </p>
               <p className={styles.approachText}>
@@ -144,7 +144,7 @@ export default function ProgrammesPage() {
           {
             question: "Where does the money actually go?",
             answer:
-              "Directly toward chemotherapy and treatment costs at National Hospital, Abuja, for the flagship programme — not toward overhead or intermediaries."
+              "Directly toward chemotherapy and treatment costs at National Hospital, Abuja, for the flagship programme, not toward overhead or intermediaries."
           },
           {
             question: "How fast can a grant be paid?",
@@ -154,12 +154,12 @@ export default function ProgrammesPage() {
           {
             question: "Will WHHF add more programmes?",
             answer:
-              "Yes, over time — following the same standard: verified need, a real partner institution, and direct impact. Announcements will be published here once confirmed."
+              "Yes, over time, following the same standard: verified need, a real partner institution, and direct impact. Announcements will be published here once confirmed."
           },
           {
             question: "Can a hospital or organization refer a patient?",
             answer:
-              "Yes — reach out through our Contact page to start that conversation."
+              "Yes, reach out through our Contact page to start that conversation."
           }
         ]}
       />

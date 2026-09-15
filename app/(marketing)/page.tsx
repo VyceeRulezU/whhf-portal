@@ -24,7 +24,7 @@ export default function HomePage() {
             <div className={styles.hero__intro}>
               <p className={styles.hero__lede}>
                 The William &amp; Helen Heritage Foundation supports indigent
-                cancer patients in Abuja and beyond — carrying forward the
+                cancer patients in Abuja and beyond, carrying forward the
                 generosity of Rev. (Mrs) Helen Titilayo Okoye.
               </p>
               <div className="cluster">
@@ -100,8 +100,8 @@ export default function HomePage() {
               <p className={styles.aboutUs__body}>
                 WHHF was established in memory of Rev. (Mrs) Helen Titilayo
                 Okoye, under the umbrella of the All Christians Fellowship
-                Mission. What began as a single act of giving — support for
-                indigent cancer patients — continues as an ongoing
+                Mission. What began as a single act of giving, support for
+                indigent cancer patients, continues as an ongoing
                 commitment to carry her generosity forward.
               </p>
               <Link href="/about">
@@ -134,7 +134,7 @@ export default function HomePage() {
                   Rev. (Mrs) Helen Titilayo Okoye passed away in 2019. WHHF
                   was established in her memory, under the umbrella of the
                   All Christians Fellowship Mission, to continue the
-                  generosity she was known for — starting with support for
+                  generosity she was known for, starting with support for
                   indigent cancer patients who cannot afford treatment.
                 </p>
                 <Link href="/about">
@@ -209,7 +209,7 @@ export default function HomePage() {
               <span className={styles.howWeWork__stepNumber}>02</span>
               <h3 className={styles.howWeWork__stepHeading}>Board Verification</h3>
               <p className={styles.howWeWork__stepBody}>
-                Every case is reviewed by the board before any funds move —
+                Every case is reviewed by the board before any funds move,
                 confirming the medical need first.
               </p>
             </Card>
@@ -253,7 +253,7 @@ export default function HomePage() {
               <div className={styles.programmes__imageWrap}>
                 <Image
                   src={placeholderImages.programmeFlagship}
-                  alt="Placeholder — cancer patient support programme photography pending"
+                  alt="Placeholder: cancer patient support programme photography pending"
                   fill
                   sizes="(max-width: 900px) 100vw, 400px"
                   className={styles.programmes__image}
@@ -292,7 +292,7 @@ export default function HomePage() {
               <div className={styles.programmes__imageWrap}>
                 <Image
                   src={placeholderImages.impactHero}
-                  alt="Placeholder — WHHF programme photography pending"
+                  alt="Placeholder: WHHF programme photography pending"
                   fill
                   sizes="(max-width: 900px) 100vw, 400px"
                   className={styles.programmes__image}
@@ -330,7 +330,7 @@ export default function HomePage() {
                   <h2>Where your support goes.</h2>
                 </div>
                 <p className={styles.programmes__intro}>
-                  Four things carry every gift forward — browse through what
+                  Four things carry every gift forward, browse through what
                   your support makes possible.
                 </p>
               </div>
@@ -346,21 +346,21 @@ export default function HomePage() {
                   {
                     image: placeholderImages.whoWeAre,
                     title: "Faith & Community",
-                    body: "Rooted in the All Christians Fellowship Mission, our work carries forward a legacy of compassion within the community Helen served — grounded in faith, and carried out in practical, everyday ways.",
+                    body: "Rooted in the All Christians Fellowship Mission, our work carries forward a legacy of compassion within the community Helen served, grounded in faith, and carried out in practical, everyday ways.",
                     href: "/impact/faith-and-community",
                     linkLabel: "Read More"
                   },
                   {
                     image: sitePhotos.howWeWork,
                     title: "Community Outreach",
-                    body: "From hospital visits to community engagements, WHHF stays connected to the people it serves — because lasting support starts with genuinely knowing the families behind every case.",
+                    body: "From hospital visits to community engagements, WHHF stays connected to the people it serves, because lasting support starts with genuinely knowing the families behind every case.",
                     href: "/impact/community-outreach",
                     linkLabel: "Read More"
                   },
                   {
                     image: placeholderImages.impactHero,
                     title: "Transparency & Accountability",
-                    body: "Every donation is tracked and reported, so donors can see exactly how their generosity is put to work — no hidden fees, no unexplained gaps.",
+                    body: "Every donation is tracked and reported, so donors can see exactly how their generosity is put to work, no hidden fees, no unexplained gaps.",
                     href: "/impact/transparency-and-accountability",
                     linkLabel: "Read More"
                   }
@@ -400,11 +400,11 @@ export default function HomePage() {
               <p className={styles.faith__body}>
                 &ldquo;Each of you should give what you have decided in your
                 heart to give, not reluctantly or under compulsion, for God
-                loves a cheerful giver.&rdquo; — 2 Corinthians 9:7
+                loves a cheerful giver.&rdquo; (2 Corinthians 9:7)
               </p>
               <p className={styles.faith__body}>
-                In loving memory of Rev. Dr. William Okoye, whose ministry —
-                alongside Rev. (Mrs) Helen Titilayo Okoye — helped carry that
+                In loving memory of Rev. Dr. William Okoye, whose ministry,
+                alongside Rev. (Mrs) Helen Titilayo Okoye, helped carry that
                 spirit of cheerful, practical generosity through the All
                 Christians Fellowship Mission for years.
               </p>
@@ -458,7 +458,7 @@ export default function HomePage() {
 
       <FaqSection
         heading="Frequently asked questions."
-        intro="Straightforward answers about giving, our programmes, and how WHHF operates — no pressure, just what you need to know."
+        intro="Straightforward answers about giving, our programmes, and how WHHF operates, no pressure, just what you need to know."
         sideHeading={
           <>
             Real answers. <em>No pressure.</em>
@@ -483,7 +483,7 @@ export default function HomePage() {
           },
           {
             question: "Can I volunteer or partner with WHHF?",
-            answer: "Yes — reach out through our Contact page to discuss partnership or volunteering opportunities."
+            answer: "Yes, reach out through our Contact page to discuss partnership or volunteering opportunities."
           },
           {
             question: "Who founded WHHF?",
