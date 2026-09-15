@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { PageHero } from "@/components/marketing/PageHero";
-import { placeholderImages } from "@/lib/content/placeholderImages";
+import { sitePhotos } from "@/lib/content/sitePhotos";
 import { impactStories } from "@/lib/content/impactStories";
 import styles from "./impact.module.css";
 
@@ -24,13 +24,7 @@ export default function ImpactPage() {
       <section className="section">
         <div className="container stack">
           <div className={styles.imageWrap}>
-            <Image
-              src={placeholderImages.impactHero}
-              alt="Placeholder — WHHF programme photography pending"
-              fill
-              sizes="100vw"
-              className={styles.image}
-            />
+            <Image src={sitePhotos.impactMain} alt="" fill sizes="100vw" className={styles.image} />
           </div>
           <div className="grid-auto">
             <Card>

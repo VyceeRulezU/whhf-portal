@@ -103,16 +103,24 @@ export function SiteHeader() {
             >
               More
               <span className={`${styles.moreMenu__chevron} ${isMoreOpen ? styles["moreMenu__chevron--open"] : ""}`} aria-hidden="true">
-                ▾
+                <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                  <path d="M2 4.5L7 9.5L12 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               </span>
             </button>
             <AnimatePresence>
               {isMoreOpen && (
                 <motion.div
                   className={styles.moreMenu__panel}
-                  initial={{ opacity: 0, y: -6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
+                  // Framer Motion owns the whole `transform` property once
+                  // any x/y/scale prop is animated — it does not merge with
+                  // a CSS-defined transform, so the panel's horizontal
+                  // centering has to be expressed as `x`, not left in CSS
+                  // (confirmed: without this, the panel rendered ~210px
+                  // off-center, exactly half its own width).
+                  initial={{ opacity: 0, x: "-50%", y: -6 }}
+                  animate={{ opacity: 1, x: "-50%", y: 0 }}
+                  exit={{ opacity: 0, x: "-50%", y: -6 }}
                   transition={{ duration: 0.15, ease: "easeInOut" }}
                 >
                   {MORE_LINKS.map((link) => (

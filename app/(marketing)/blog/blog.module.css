@@ -26,6 +26,7 @@
 
 .cardImage {
   object-fit: cover;
+  object-position: top;
 }
 
 .cardBody {

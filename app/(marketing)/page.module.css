@@ -423,6 +423,7 @@
 
 .blogSection__cardImage {
   object-fit: cover;
+  object-position: top;
 }
 
 .blogSection__cardLink {
@@ -541,43 +542,6 @@
 
 /* ---- FAQ ---- */
 
-.faq__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  gap: var(--space-8);
-  margin-bottom: var(--space-8);
-}
-
-.faq__grid {
-  display: grid;
-  grid-template-columns: 0.8fr 1.2fr;
-  gap: var(--space-9);
-  align-items: start;
-}
-
-.faq__side {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  align-items: start;
-  position: sticky;
-  top: calc(var(--space-9) + 80px);
-}
-
-.faq__sideHeading {
-  font-size: var(--font-size-h2);
-}
-
-.faq__sideHeading em {
-  color: var(--color-gold);
-  font-style: italic;
-}
-
-.faq__sideBody {
-  color: var(--color-text-secondary);
-}
-
 /* ---- Explore more from WHHF ---- */
 
 .explore__header {
@@ -633,49 +597,6 @@
   margin-top: var(--space-1);
   color: var(--color-text-secondary);
   font-size: var(--font-size-sm);
-}
-
-/* ---- Final donation CTA ---- */
-
-.donateCta {
-  position: relative;
-  overflow: hidden;
-  border-radius: var(--radius-lg);
-  min-height: 60vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.donateCta__image {
-  object-fit: cover;
-}
-
-.donateCta__scrim {
-  position: absolute;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.8);
-}
-
-.donateCta__content {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: var(--space-4);
-  max-width: 640px;
-  padding: var(--space-8);
-}
-
-.donateCta__heading {
-  font-size: var(--font-size-h1);
-  color: var(--color-text-primary);
-}
-
-.donateCta__body {
-  color: var(--color-text-primary);
 }
 
 @media (max-width: 900px) {
@@ -774,17 +695,5 @@
 
   .faith__imageWrap {
     aspect-ratio: 3 / 4;
-  }
-
-  .faq__grid {
-    grid-template-columns: 1fr;
-  }
-
-  .faq__side {
-    position: static;
-  }
-
-  .donateCta {
-    min-height: 320px;
   }
 }

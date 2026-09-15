@@ -3,9 +3,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
-import { Accordion } from "@/components/ui/Accordion";
 import { PartnerCarousel } from "@/components/marketing/PartnerCarousel";
 import { ImpactCarousel } from "@/components/marketing/ImpactCarousel";
+import { FaqSection } from "@/components/marketing/FaqSection";
+import { DonateCta } from "@/components/marketing/DonateCta";
 import { placeholderImages } from "@/lib/content/placeholderImages";
 import { sitePhotos } from "@/lib/content/sitePhotos";
 import { blogPosts } from "@/lib/content/blogPosts";
@@ -455,71 +456,46 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section">
-        <div className="container">
-          <div className={styles.faq__header}>
-            <div className={styles.programmes__headingGroup}>
-              <p className="eyebrow-label">/ FAQ /</p>
-              <h2>Frequently asked questions.</h2>
-            </div>
-            <p className={styles.programmes__intro}>
-              Straightforward answers about giving, our programmes, and how
-              WHHF operates — no pressure, just what you need to know.
-            </p>
-          </div>
-          <div className={styles.faq__grid}>
-            <div className={styles.faq__side}>
-              <h3 className={styles.faq__sideHeading}>
-                Real answers. <em>No pressure.</em>
-              </h3>
-              <p className={styles.faq__sideBody}>
-                We answer common questions about giving, our programmes, and
-                how WHHF operates with full transparency, before you ever
-                commit to anything.
-              </p>
-              <Link href="/donate">
-                <Button variant="primary" showIconChip>
-                  Donate Now
-                </Button>
-              </Link>
-            </div>
-            <Accordion
-              items={[
-                {
-                  question: "How can I donate?",
-                  answer:
-                    "You can give directly through our Donate page using bank transfer or card payment. Every gift goes toward supporting indigent cancer patients."
-                },
-                {
-                  question: "Where does my donation go?",
-                  answer:
-                    "Donations go directly toward chemotherapy and treatment costs for patients supported through our flagship programme, distributed in partnership with National Hospital, Abuja."
-                },
-                {
-                  question: "Is WHHF a registered organization?",
-                  answer:
-                    "WHHF operates under the umbrella of the All Christians Fellowship Mission. Our formal registration details are being finalized and will be published here once confirmed."
-                },
-                {
-                  question: "Can I volunteer or partner with WHHF?",
-                  answer:
-                    "Yes — reach out through our Contact page to discuss partnership or volunteering opportunities."
-                },
-                {
-                  question: "Who founded WHHF?",
-                  answer:
-                    "WHHF was established in memory of Rev. (Mrs) Helen Titilayo Okoye, continuing the generosity she was known for during her lifetime."
-                },
-                {
-                  question: "How do I get started?",
-                  answer:
-                    "Visit our Donate page to give directly, or use our Contact page to reach out with questions first."
-                }
-              ]}
-            />
-          </div>
-        </div>
-      </section>
+      <FaqSection
+        heading="Frequently asked questions."
+        intro="Straightforward answers about giving, our programmes, and how WHHF operates — no pressure, just what you need to know."
+        sideHeading={
+          <>
+            Real answers. <em>No pressure.</em>
+          </>
+        }
+        sideBody="We answer common questions about giving, our programmes, and how WHHF operates with full transparency, before you ever commit to anything."
+        items={[
+          {
+            question: "How can I donate?",
+            answer:
+              "You can give directly through our Donate page using bank transfer or card payment. Every gift goes toward supporting indigent cancer patients."
+          },
+          {
+            question: "Where does my donation go?",
+            answer:
+              "Donations go directly toward chemotherapy and treatment costs for patients supported through our flagship programme, distributed in partnership with National Hospital, Abuja."
+          },
+          {
+            question: "Is WHHF a registered organization?",
+            answer:
+              "WHHF operates under the umbrella of the All Christians Fellowship Mission. Our formal registration details are being finalized and will be published here once confirmed."
+          },
+          {
+            question: "Can I volunteer or partner with WHHF?",
+            answer: "Yes — reach out through our Contact page to discuss partnership or volunteering opportunities."
+          },
+          {
+            question: "Who founded WHHF?",
+            answer:
+              "WHHF was established in memory of Rev. (Mrs) Helen Titilayo Okoye, continuing the generosity she was known for during her lifetime."
+          },
+          {
+            question: "How do I get started?",
+            answer: "Visit our Donate page to give directly, or use our Contact page to reach out with questions first."
+          }
+        ]}
+      />
 
       <section className="section">
         <div className="container">
@@ -582,32 +558,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section">
-        <div className="container container--wide">
-          <div className={styles.donateCta}>
-            <Image
-              src={sitePhotos.howWeWork}
-              alt=""
-              fill
-              sizes="(max-width: 900px) 100vw, 1880px"
-              className={styles.donateCta__image}
-            />
-            <div className={styles.donateCta__scrim} />
-            <div className={styles.donateCta__content}>
-              <h2 className={styles.donateCta__heading}>Your kindness can change a life.</h2>
-              <p className={styles.donateCta__body}>
-                Every gift goes directly toward WHHF&rsquo;s programmes,
-                starting with support for indigent cancer patients.
-              </p>
-              <Link href="/donate">
-                <Button variant="primary" showIconChip>
-                  Donate Now
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <DonateCta image={sitePhotos.howWeWork} imagePosition="center top" />
     </>
   );
 }

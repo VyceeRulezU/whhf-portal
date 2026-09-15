@@ -135,12 +135,15 @@ sockets that hang the next request; every DB call must go through `withDb`
 rather than importing a shared client. See the comment in that file, and
 the `hyperdrive` binding in `wrangler.jsonc`.
 
+**Rate limiting**: `lib/auth/rateLimit.ts` reads/writes the `RATE_LIMIT_KV`
+binding (Cloudflare KV, see `wrangler.jsonc`) in production, since an
+in-memory Map doesn't meaningfully cap attempts across Workers'
+distributed isolates — each isolate has its own memory. Falls back to an
+in-memory Map for local `next dev`, where no KV binding is available.
+
 Known gaps before this is production-ready on Workers, already flagged
 inline where they matter:
 
-- **Rate limiting**: `lib/auth/rateLimit.ts` is in-memory, which doesn't
-  meaningfully work across Workers' distributed isolates — needs a shared
-  store (KV, Durable Objects) before relying on it there.
 - **CSP**: `script-src` needs `'unsafe-inline'` in production (Next.js
   delivers its hydration payload via inline `<script>` tags) — see the
   comment in `middleware.ts` for why a per-request nonce isn't a drop-in

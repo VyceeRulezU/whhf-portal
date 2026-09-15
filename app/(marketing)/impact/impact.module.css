@@ -7,6 +7,7 @@
 
 .image {
   object-fit: cover;
+  object-position: top;
 }
 
 .description {
@@ -41,6 +42,7 @@
 
 .storyCardImage {
   object-fit: cover;
+  object-position: top;
 }
 
 .storyCardBody {

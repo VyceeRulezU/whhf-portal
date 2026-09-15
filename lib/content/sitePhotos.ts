@@ -20,5 +20,13 @@ export const sitePhotos = {
   revWilliam: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/web-images/rev%20dr%20william%20okoye.jpg",
   // Leadership page — board members with a supplied real photo.
   boardPauline: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/web-images/paulineO.jpeg",
-  boardSarah: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/web-images/SarahO.jpeg"
+  boardSarah: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/web-images/SarahO.jpeg",
+  // Our Story page — values section image.
+  aboutValues: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/web-images/WhatsApp%20Image%202026-09-14%20at%204.33.10%20PM%20(2).jpeg",
+  // Impact page hero.
+  impactMain: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/670317138_18121245112616977_1879193932980889521_n.webp",
+  // Gallery — additional programme/event photography.
+  galleryOne: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/654712004_18100318330938352_452443779084317951_n.webp",
+  galleryTwo: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/658187139_18313702102283882_396341819537141756_n.webp",
+  galleryThree: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/659814391_18339030712300134_1657967389436416368_n.webp"
 } as const;

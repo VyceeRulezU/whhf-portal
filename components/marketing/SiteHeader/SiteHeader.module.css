@@ -73,7 +73,9 @@
 }
 
 .moreMenu__chevron {
-  font-size: 0.7em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: transform var(--motion-fast);
 }
 
@@ -85,7 +87,6 @@
   position: absolute;
   top: calc(100% + var(--space-4));
   left: 50%;
-  transform: translateX(-50%);
   width: 420px;
   display: grid;
   grid-template-columns: 1fr 1fr;

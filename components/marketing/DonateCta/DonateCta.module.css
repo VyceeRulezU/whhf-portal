@@ -1,0 +1,46 @@
+.cta {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-4);
+  max-width: 640px;
+  padding: var(--space-8);
+}
+
+.heading {
+  font-size: var(--font-size-h1);
+  color: var(--color-text-primary);
+}
+
+.body {
+  color: var(--color-text-primary);
+}
+
+@media (max-width: 900px) {
+  .cta {
+    min-height: 320px;
+  }
+}

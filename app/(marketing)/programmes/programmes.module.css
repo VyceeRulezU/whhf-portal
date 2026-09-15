@@ -1,20 +1,105 @@
-.imageWrap {
+.flagshipCard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  align-items: center;
+}
+
+.flagshipImageWrap {
   position: relative;
-  aspect-ratio: 3 / 2;
-  border-radius: var(--radius-sm);
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-md);
   overflow: hidden;
-  margin-bottom: var(--space-4);
 }
 
-.image {
+.flagshipImage {
   object-fit: cover;
+  object-position: top;
 }
 
-.cardHeading {
-  margin-top: var(--space-4);
+.flagshipBody {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: var(--space-4);
 }
 
-.cardBody {
-  margin-top: var(--space-2);
+.flagshipHeading {
+  font-size: var(--font-size-h2);
+}
+
+.flagshipText {
   color: var(--color-text-secondary);
+}
+
+.stepsHeader {
+  max-width: 60ch;
+  margin-bottom: var(--space-8);
+}
+
+.stepsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-6);
+}
+
+.stepCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.stepNumber {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-h2);
+  color: var(--color-gold);
+}
+
+.stepHeading {
+  font-size: var(--font-size-h3);
+}
+
+.stepBody {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.approachGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-9);
+  align-items: center;
+}
+
+.approachImageWrap {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.approachImage {
+  object-fit: cover;
+  object-position: top;
+}
+
+.approachText {
+  color: var(--color-text-secondary);
+}
+
+@media (max-width: 900px) {
+  .flagshipCard,
+  .approachGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .stepsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .stepsGrid {
+    grid-template-columns: 1fr;
+  }
 }

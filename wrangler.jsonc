@@ -25,5 +25,8 @@
   // supported fix: lib/db/client.ts reads env.HYPERDRIVE.connectionString
   // per-request (via getCloudflareContext()) instead of process.env.DATABASE_URL
   // when running on Workers.
-  "hyperdrive": [{ "binding": "HYPERDRIVE", "id": "1f29bf84d84a48cf90a28479568f7152" }]
+  "hyperdrive": [{ "binding": "HYPERDRIVE", "id": "1f29bf84d84a48cf90a28479568f7152" }],
+  // Admin login rate-limiting needs to be shared across every Worker
+  // isolate, not per-instance memory — see lib/auth/rateLimit.ts.
+  "kv_namespaces": [{ "binding": "RATE_LIMIT_KV", "id": "1d2060ae865a4a5d8971533ab53a46a5" }]
 }

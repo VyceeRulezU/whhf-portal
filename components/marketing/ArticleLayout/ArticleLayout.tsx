@@ -31,6 +31,9 @@ interface ArticleLayoutProps {
   title: string;
   meta?: string;
   image: string;
+  /** Defaults to top-aligned so faces in portrait/group photos stay in
+      frame — pass "center" to override for a photo where that isn't true. */
+  imagePosition?: "center" | "top";
   children: ReactNode;
   sidebarLinks?: SidebarLink[];
 }
@@ -49,6 +52,7 @@ export function ArticleLayout({
   title,
   meta,
   image,
+  imagePosition = "top",
   children,
   sidebarLinks = DEFAULT_SIDEBAR_LINKS
 }: ArticleLayoutProps) {
@@ -88,7 +92,14 @@ export function ArticleLayout({
       <div className={`container ${styles.layout}`}>
         <div className={styles.main}>
           <div className={styles.imageWrap}>
-            <Image src={image} alt="" fill sizes="(max-width: 900px) 100vw, 760px" className={styles.image} />
+            <Image
+              src={image}
+              alt=""
+              fill
+              sizes="(max-width: 900px) 100vw, 760px"
+              className={styles.image}
+              style={imagePosition === "top" ? { objectPosition: "top" } : undefined}
+            />
           </div>
           <div className={styles.body}>{children}</div>
         </div>
@@ -97,7 +108,7 @@ export function ArticleLayout({
           <div className={styles.sidebarSticky}>
             <Card className={styles.donateCard}>
               <div className={styles.donateCardLogo}>
-                <Image src={logo} alt="William & Helen Heritage Foundation" width={64} height={64} />
+                <Image src={logo} alt="William & Helen Heritage Foundation" width={96} height={96} />
               </div>
               <p className={styles.donateCardHeading}>Support Our Mission</p>
               <p className={styles.donateCardBody}>

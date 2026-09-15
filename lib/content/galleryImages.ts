@@ -18,9 +18,12 @@ export const galleryImages: GalleryImage[] = [
   { src: sitePhotos.storyMain, alt: "", caption: "Community engagement" },
   { src: sitePhotos.howWeWork, alt: "", caption: "Case review and outreach" },
   { src: sitePhotos.aboutUsFill, alt: "", caption: "Promoting godly values" },
+  { src: sitePhotos.galleryOne, alt: "", caption: "WHHF community outreach" },
+  { src: sitePhotos.galleryTwo, alt: "", caption: "WHHF programme activity" },
+  { src: sitePhotos.galleryThree, alt: "", caption: "WHHF in the community" },
+  { src: sitePhotos.impactMain, alt: "", caption: "Celebrating patients supported" },
   { src: placeholderImages.programmeFlagship, alt: "", caption: "Recovery and treatment support" },
   { src: placeholderImages.whoWeAre, alt: "", caption: "Faith and community" },
-  { src: placeholderImages.impactHero, alt: "", caption: "Celebrating patients supported" },
   { src: sitePhotos.aboutUsThumb, alt: "", caption: "WHHF in the community" },
   { src: placeholderImages.aboutStory, alt: "", caption: "Remembering our founding story" },
   { src: placeholderImages.contactHero, alt: "", caption: "Reaching families in Abuja" }

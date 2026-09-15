@@ -134,11 +134,12 @@
 }
 
 .donateCardLink {
-  display: block;
+  display: flex;
+  justify-content: center;
 }
 
 .donateCardButton {
-  width: 100%;
+  width: fit-content;
 }
 
 .linksHeading {

@@ -45,6 +45,9 @@ export function middleware(req: NextRequest) {
       isDev ? "script-src 'self' 'unsafe-eval' 'unsafe-inline'" : "script-src 'self' 'unsafe-inline'",
       "style-src 'self' 'unsafe-inline'", // CSS Modules inject inline <style> in dev; revisit for a stricter policy at build time
       "img-src 'self' data: https:",
+      // WHHF's own Cloudflare R2 bucket — see lib/content/sitePhotos.ts and
+      // siteVideos.ts. Scoped to that one domain, not a broad https: wildcard.
+      "media-src 'self' https://pub-edb75a29dec547999359fcf854521a0f.r2.dev",
       "frame-src 'self'",
       "connect-src 'self'",
       "object-src 'none'",

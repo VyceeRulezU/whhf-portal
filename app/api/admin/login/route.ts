@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
   const { email, password } = parsed.data;
   const rateLimitKey = `login:${email.toLowerCase()}`;
 
-  if (isRateLimited(rateLimitKey)) {
+  if (await isRateLimited(rateLimitKey)) {
     return NextResponse.json(
       { error: { code: "rate_limited", message: "Too many attempts. Try again later." } },
       { status: 429 }
@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
   const isValid = admin ? await verifyPassword(password, admin.passwordHash) : false;
 
   if (!admin || !isValid) {
-    recordFailedAttempt(rateLimitKey);
+    await recordFailedAttempt(rateLimitKey);
     // Generic message regardless of whether the email exists — don't leak which part was wrong.
     return NextResponse.json(
       { error: { code: "invalid_credentials", message: "Incorrect email or password." } },
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  clearAttempts(rateLimitKey);
+  await clearAttempts(rateLimitKey);
   await createSession({ adminUserId: admin.id, role: admin.role });
 
   return NextResponse.json({ data: { ok: true } }, { status: 200 });
