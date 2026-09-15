@@ -2,6 +2,7 @@ import { eq, desc, count, sum } from "drizzle-orm";
 import { withDb } from "@/lib/db/client";
 import { donations as donationsTable, contactMessages, inboundEmails } from "@/lib/db/schema";
 import { formatCurrency } from "@/lib/format/currency";
+import { formatDate } from "@/lib/format/date";
 import { Card } from "@/components/ui/Card";
 import { StatCard } from "@/components/admin/StatCard";
 import { Avatar } from "@/components/admin/Avatar";
@@ -61,7 +62,7 @@ export default async function AdminDashboardPage() {
         </div>
       )
     },
-    { header: "Date", cell: (donation) => donation.createdAt.toLocaleDateString() },
+    { header: "Date", cell: (donation) => formatDate(donation.createdAt) },
     { header: "Amount", cell: (donation) => formatCurrency(donation.amount, donation.currency) },
     {
       header: "Status",

@@ -8,6 +8,7 @@ import { Tabs } from "@/components/admin/Tabs";
 import { ComposeEmailModal } from "@/components/admin/ComposeEmailModal";
 import { EmailDetailModal } from "@/components/admin/EmailDetailModal";
 import { EyeIcon, ReplyIcon, ForwardIcon, CheckIcon, TrashIcon } from "@/components/admin/icons";
+import { formatDateTime } from "@/lib/format/date";
 import styles from "./EmailView.module.css";
 import type { TableColumn } from "@/components/admin/Table";
 
@@ -156,7 +157,7 @@ export function EmailView({ emails, unreadEmailCount, messages, unreadMessageCou
     setComposeTarget({
       to: "",
       subject: email.subject ? `Fwd: ${email.subject}` : "Fwd: (no subject)",
-      body: `\n\n---------- Forwarded message ----------\nFrom: ${email.fromAddress}\nDate: ${email.receivedAt.toLocaleString()}\nSubject: ${email.subject || "(no subject)"}\n\n${email.textBody || ""}`,
+      body: `\n\n---------- Forwarded message ----------\nFrom: ${email.fromAddress}\nDate: ${formatDateTime(email.receivedAt)}\nSubject: ${email.subject || "(no subject)"}\n\n${email.textBody || ""}`,
       title: "Forward"
     });
   }
@@ -173,7 +174,7 @@ export function EmailView({ emails, unreadEmailCount, messages, unreadMessageCou
     setComposeTarget({
       to: "",
       subject: msg.subject ? `Fwd: ${msg.subject}` : "Fwd: contact form message",
-      body: `\n\n---------- Forwarded message ----------\nFrom: ${msg.name} <${msg.email}>\nDate: ${msg.createdAt.toLocaleString()}\n\n${msg.message}`,
+      body: `\n\n---------- Forwarded message ----------\nFrom: ${msg.name} <${msg.email}>\nDate: ${formatDateTime(msg.createdAt)}\n\n${msg.message}`,
       title: "Forward"
     });
   }
@@ -182,7 +183,7 @@ export function EmailView({ emails, unreadEmailCount, messages, unreadMessageCou
     setComposeTarget({
       to: "",
       subject: item.subject ? `Fwd: ${item.subject}` : "Fwd: (no subject)",
-      body: `\n\n---------- Forwarded message ----------\nTo: ${item.toAddress}\nDate: ${item.createdAt.toLocaleString()}\nSubject: ${item.subject}\n\n${item.body}`,
+      body: `\n\n---------- Forwarded message ----------\nTo: ${item.toAddress}\nDate: ${formatDateTime(item.createdAt)}\nSubject: ${item.subject}\n\n${item.body}`,
       title: "Forward"
     });
   }
@@ -198,7 +199,7 @@ export function EmailView({ emails, unreadEmailCount, messages, unreadMessageCou
       )
     },
     { header: "From", cell: (email) => email.fromAddress },
-    { header: "Date", cell: (email) => email.receivedAt.toLocaleString() },
+    { header: "Date", cell: (email) => formatDateTime(email.receivedAt) },
     {
       header: "Actions",
       className: styles.actionsCell,
@@ -215,7 +216,7 @@ export function EmailView({ emails, unreadEmailCount, messages, unreadMessageCou
                 meta: [
                   { label: "From", value: email.fromAddress },
                   { label: "To", value: email.toAddress },
-                  { label: "Date", value: email.receivedAt.toLocaleString() }
+                  { label: "Date", value: formatDateTime(email.receivedAt) }
                 ],
                 body: email.textBody || "(no text body)"
               })
@@ -271,7 +272,7 @@ export function EmailView({ emails, unreadEmailCount, messages, unreadMessageCou
       header: "Status",
       cell: (msg) => <span className={`${styles.statusBadge} ${styles[`statusBadge--${msg.status}`]}`}>{msg.status}</span>
     },
-    { header: "Date", cell: (msg) => msg.createdAt.toLocaleString() },
+    { header: "Date", cell: (msg) => formatDateTime(msg.createdAt) },
     {
       header: "Actions",
       className: styles.actionsCell,
@@ -288,7 +289,7 @@ export function EmailView({ emails, unreadEmailCount, messages, unreadMessageCou
                 meta: [
                   { label: "From", value: `${msg.name} <${msg.email}>` },
                   ...(msg.phone ? [{ label: "Phone", value: msg.phone }] : []),
-                  { label: "Date", value: msg.createdAt.toLocaleString() }
+                  { label: "Date", value: formatDateTime(msg.createdAt) }
                 ],
                 body: msg.message
               })
@@ -332,7 +333,7 @@ export function EmailView({ emails, unreadEmailCount, messages, unreadMessageCou
   const sentColumns: TableColumn<SentEmailRow>[] = [
     { header: "Subject", cell: (item) => item.subject },
     { header: "To", cell: (item) => item.toAddress },
-    { header: "Date", cell: (item) => item.createdAt.toLocaleString() },
+    { header: "Date", cell: (item) => formatDateTime(item.createdAt) },
     {
       header: "Actions",
       className: styles.actionsCell,
@@ -351,7 +352,7 @@ export function EmailView({ emails, unreadEmailCount, messages, unreadMessageCou
                   ...(item.ccAddresses ? [{ label: "Cc", value: item.ccAddresses }] : []),
                   ...(item.bccAddresses ? [{ label: "Bcc", value: item.bccAddresses }] : []),
                   ...(item.attachmentNames ? [{ label: "Attachments", value: item.attachmentNames }] : []),
-                  { label: "Date", value: item.createdAt.toLocaleString() }
+                  { label: "Date", value: formatDateTime(item.createdAt) }
                 ],
                 body: item.body
               })

@@ -6,6 +6,7 @@ import { Avatar } from "@/components/admin/Avatar";
 import { Tabs } from "@/components/admin/Tabs";
 import { Table } from "@/components/admin/Table";
 import { formatCurrency } from "@/lib/format/currency";
+import { formatDate } from "@/lib/format/date";
 import styles from "./DonationsTable.module.css";
 import type { TableColumn } from "@/components/admin/Table";
 
@@ -62,7 +63,7 @@ export function DonationsTable({ donations }: { donations: DonationRow[] }) {
       )
     },
     { header: "Cause", cell: (donation) => donation.cause.name },
-    { header: "Date", cell: (donation) => donation.createdAt.toLocaleDateString() },
+    { header: "Date", cell: (donation) => formatDate(donation.createdAt) },
     { header: "Amount", cell: (donation) => formatCurrency(donation.amount, donation.currency) },
     {
       header: "Status",

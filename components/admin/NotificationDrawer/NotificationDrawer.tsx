@@ -69,6 +69,15 @@ export function NotificationDrawer({ notifications, unreadCount }: NotificationD
   const [dismissedIds, setDismissedIds] = useState<Set<string>>(new Set());
   const [markingId, setMarkingId] = useState<string | null>(null);
   const [isMarkingAll, setIsMarkingAll] = useState(false);
+  // timeAgo() depends on Date.now(), which differs between the server's
+  // render pass and the client's hydration pass — rendering it only after
+  // mount keeps the very first client render identical to the SSR output
+  // (both skip it), avoiding a hydration mismatch.
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -181,7 +190,7 @@ export function NotificationDrawer({ notifications, unreadCount }: NotificationD
                       <span className={styles.itemTitle}>{item.title}</span>
                       <span className={styles.itemDescription}>{item.description}</span>
                     </span>
-                    <span className={styles.itemTime}>{timeAgo(item.createdAt)}</span>
+                    <span className={styles.itemTime}>{mounted ? timeAgo(item.createdAt) : ""}</span>
                   </Link>
                   {canMarkRead && (
                     <button

@@ -89,7 +89,7 @@ export function DonationForm() {
                 setCustomAmount("");
               }}
             >
-              ₦{preset.toLocaleString()}
+              ₦{preset.toLocaleString("en-NG")}
             </button>
           ))}
         </div>

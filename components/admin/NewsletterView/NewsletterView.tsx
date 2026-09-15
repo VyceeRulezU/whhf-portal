@@ -10,6 +10,7 @@ import { Tabs } from "@/components/admin/Tabs";
 import { Table } from "@/components/admin/Table";
 import { TrashIcon } from "@/components/admin/icons";
 import { useAlert } from "@/components/ui/AlertModal";
+import { formatDate, formatDateTime } from "@/lib/format/date";
 import styles from "./NewsletterView.module.css";
 import type { TableColumn } from "@/components/admin/Table";
 
@@ -105,7 +106,7 @@ export function NewsletterView({ subscribers, activeSubscriberCount, history }: 
 
   const subscriberColumns: TableColumn<SubscriberRow>[] = [
     { header: "Email", cell: (subscriber) => <span className={styles.subscriberEmail}>{subscriber.email}</span> },
-    { header: "Subscribed", cell: (subscriber) => subscriber.subscribedAt.toLocaleDateString() },
+    { header: "Subscribed", cell: (subscriber) => formatDate(subscriber.subscribedAt) },
     {
       header: "Actions",
       className: styles.actionsCell,
@@ -178,7 +179,7 @@ export function NewsletterView({ subscribers, activeSubscriberCount, history }: 
                   <p className={styles.subject}>{item.subject}</p>
                   <p className={styles.meta}>
                     Sent to {item.recipientCount} subscriber{item.recipientCount === 1 ? "" : "s"} ·{" "}
-                    {item.createdAt.toLocaleString()}
+                    {formatDateTime(item.createdAt)}
                   </p>
                   <p className={styles.body}>{item.body}</p>
                 </Card>
