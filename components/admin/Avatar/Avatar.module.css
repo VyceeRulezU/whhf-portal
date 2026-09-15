@@ -1,0 +1,31 @@
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: var(--radius-pill);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
+
+.avatar--gold {
+  color: var(--color-gold);
+  background-color: rgba(212, 166, 76, 0.18);
+}
+
+.avatar--success {
+  color: var(--color-success);
+  background-color: rgba(92, 169, 122, 0.18);
+}
+
+.avatar--silver {
+  color: var(--color-silver);
+  background-color: rgba(168, 173, 180, 0.18);
+}
+
+.avatar--error {
+  color: var(--color-error);
+  background-color: rgba(226, 87, 76, 0.18);
+}

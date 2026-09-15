@@ -1,10 +1,46 @@
 .shell {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
 }
 
 .topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  height: 72px;
+  padding-inline: var(--space-6);
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-bg-true-black);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.topbarBrand {
   display: none;
+}
+
+.topbarSpacer {
+  flex: 1;
+}
+
+.topbarUser {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.topbarEmail {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
 }
 
 .sidebar {
@@ -17,40 +53,82 @@
   border-right: 1px solid var(--color-border);
   background-color: var(--color-bg-true-black);
   position: sticky;
-  top: 0;
-  height: 100vh;
+  top: 72px;
+  height: calc(100vh - 72px);
   overflow-y: auto;
+  transition: width var(--motion-base);
+}
+
+.brandRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
 }
 
 .brandImage {
   flex-shrink: 0;
 }
 
-.brandText {
-  font-family: var(--font-family-display);
-  font-size: var(--font-size-h3);
-  color: var(--color-text-primary);
+.collapseToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  transition: background-color var(--motion-fast), color var(--motion-fast), transform var(--motion-fast);
+}
+
+.collapseToggle:hover {
+  background-color: var(--color-bg-surface-raised);
+  color: var(--color-gold);
 }
 
 .nav {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: var(--space-6);
   flex: 1;
 }
 
+.navGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.navGroupLabel {
+  padding: 0 var(--space-4);
+  margin-bottom: var(--space-1);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
 .navLink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-sm);
   color: var(--color-text-secondary);
   font-size: var(--font-size-sm);
+  white-space: nowrap;
   transition: background-color var(--motion-fast), color var(--motion-fast);
+}
+
+.navLinkIcon {
+  flex-shrink: 0;
 }
 
 .navLink:hover {
@@ -62,11 +140,6 @@
   background-color: var(--color-bg-surface-raised);
   color: var(--color-gold);
   font-weight: 600;
-}
-
-.sidebarFooter {
-  border-top: 1px solid var(--color-border);
-  padding-top: var(--space-5);
 }
 
 .scrim {
@@ -115,13 +188,29 @@
   transform: translateY(-7px) rotate(-45deg);
 }
 
-.topbarBrand {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-family: var(--font-family-display);
-  font-size: var(--font-size-body-lg);
-  color: var(--color-text-primary);
+/* ---- Collapsed desktop sidebar ---- */
+
+.shell--collapsed .sidebar {
+  width: 84px;
+}
+
+.shell--collapsed .brandRow {
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.shell--collapsed .navGroupLabel,
+.shell--collapsed .navLinkLabel {
+  display: none;
+}
+
+.shell--collapsed .navLink {
+  justify-content: center;
+  padding-inline: 0;
+}
+
+.shell--collapsed .collapseIcon {
+  transform: rotate(180deg);
 }
 
 @media (max-width: 900px) {
@@ -129,20 +218,39 @@
     display: block;
   }
 
-  .topbar {
+  .shell--collapsed .sidebar {
+    width: 280px;
+  }
+
+  .shell--collapsed .brandRow {
+    flex-direction: row;
+  }
+
+  .shell--collapsed .navGroupLabel,
+  .shell--collapsed .navLinkLabel {
+    display: block;
+  }
+
+  .shell--collapsed .navLink {
+    justify-content: flex-start;
+    padding-inline: var(--space-4);
+  }
+
+  .topbarBrand {
     display: flex;
     align-items: center;
-    gap: var(--space-4);
-    padding: var(--space-4);
-    border-bottom: 1px solid var(--color-border);
-    background-color: var(--color-bg-true-black);
-    position: sticky;
-    top: 0;
-    z-index: 20;
+  }
+
+  .topbarEmail {
+    display: none;
   }
 
   .menuToggle {
     display: flex;
+  }
+
+  .collapseToggle {
+    display: none;
   }
 
   .sidebar {

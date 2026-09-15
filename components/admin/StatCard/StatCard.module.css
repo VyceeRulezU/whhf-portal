@@ -1,0 +1,39 @@
+.card {
+  display: flex;
+  align-items: start;
+  gap: var(--space-4);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  color: var(--color-gold);
+  background-color: var(--color-bg-surface-raised);
+}
+
+.body {
+  min-width: 0;
+}
+
+.label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.value {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-h2);
+  color: var(--color-text-primary);
+  margin-top: var(--space-1);
+}
+
+.meta {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin-top: var(--space-1);
+}

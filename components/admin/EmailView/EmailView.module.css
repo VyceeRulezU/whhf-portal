@@ -1,13 +1,6 @@
-.statLabel {
-  font-size: var(--font-size-sm);
+.intro {
   color: var(--color-text-secondary);
-}
-
-.statValue {
-  font-family: var(--font-family-display);
-  font-size: var(--font-size-h2);
-  color: var(--color-gold);
-  margin-top: var(--space-2);
+  max-width: 70ch;
 }
 
 .list {
@@ -16,24 +9,32 @@
   gap: var(--space-4);
 }
 
-.messageCard {
+.itemCard {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
 }
 
-.messageHeader {
+.itemHeader {
   display: flex;
   justify-content: space-between;
   align-items: start;
   gap: var(--space-4);
 }
 
-.name {
+.subject {
   display: flex;
   align-items: center;
   gap: var(--space-2);
   font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.unreadDot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-gold);
 }
 
 .meta {
@@ -50,17 +51,12 @@
   color: var(--color-gold);
 }
 
-.subject {
-  font-weight: 600;
-  color: var(--color-text-primary);
-}
-
 .body {
   color: var(--color-text-secondary);
   white-space: pre-wrap;
 }
 
-.status {
+.statusBadge {
   font-size: var(--font-size-xs);
   font-weight: 600;
   text-transform: capitalize;
@@ -69,12 +65,12 @@
   background-color: var(--color-bg-surface-raised);
 }
 
-.status--unread {
+.statusBadge--unread {
   color: var(--color-gold);
 }
 
-.status--read,
-.status--replied {
+.statusBadge--read,
+.statusBadge--replied {
   color: var(--color-text-muted);
 }
 
@@ -85,7 +81,7 @@
 }
 
 @media (max-width: 480px) {
-  .messageHeader {
+  .itemHeader {
     flex-direction: column;
     align-items: start;
   }

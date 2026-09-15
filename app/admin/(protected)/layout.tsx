@@ -1,5 +1,8 @@
 import { redirect } from "next/navigation";
+import { eq } from "drizzle-orm";
 import { getSession } from "@/lib/auth/session";
+import { withDb } from "@/lib/db/client";
+import { adminUsers } from "@/lib/db/schema";
 import { AdminShell } from "@/components/admin/AdminShell";
 
 /**
@@ -15,5 +18,13 @@ export default async function ProtectedAdminLayout({ children }: { children: Rea
     redirect("/admin/login");
   }
 
-  return <AdminShell>{children}</AdminShell>;
+  const admin = await withDb((db) =>
+    db.query.adminUsers.findFirst({ where: eq(adminUsers.id, session.adminUserId) })
+  );
+
+  if (!admin) {
+    redirect("/admin/login");
+  }
+
+  return <AdminShell adminEmail={admin.email}>{children}</AdminShell>;
 }

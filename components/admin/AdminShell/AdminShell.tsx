@@ -5,27 +5,53 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { SignOutButton } from "@/components/admin/SignOutButton";
+import { DashboardIcon, DonationsIcon, EmailIcon, ChevronDoubleLeftIcon } from "@/components/admin/icons";
 import logo from "@/assets/brand/logo-transparent.png";
 import styles from "./AdminShell.module.css";
 import type { ReactNode } from "react";
 
-const ADMIN_NAV_LINKS = [
-  { href: "/admin", label: "Dashboard" },
-  { href: "/admin/donations", label: "Donations" },
-  { href: "/admin/messages", label: "Messages" },
-  { href: "/admin/inbox", label: "Inbox" }
+const NAV_GROUPS = [
+  {
+    label: "Overview",
+    links: [{ href: "/admin", label: "Dashboard", Icon: DashboardIcon }]
+  },
+  {
+    label: "Fundraising",
+    links: [{ href: "/admin/donations", label: "Donations", Icon: DonationsIcon }]
+  },
+  {
+    label: "Communications",
+    links: [{ href: "/admin/email", label: "Email", Icon: EmailIcon }]
+  }
 ];
 
+const COLLAPSE_STORAGE_KEY = "whhf-admin-sidebar-collapsed";
+
 /**
- * Admin chrome: a persistent left sidebar on desktop/tablet, collapsing to
- * a hamburger-triggered slide-in drawer below 900px — see
- * SiteHeader.tsx's mobile nav for the same open/close/scrim/Escape
- * pattern this mirrors. Client component so the drawer can hold open
- * state; the session guard itself stays in the server layout.
+ * Admin chrome: a persistent left sidebar on desktop/tablet (collapsible to
+ * an icon rail) that collapses to a hamburger-triggered slide-in drawer
+ * below 900px — see SiteHeader.tsx's mobile nav for the same open/close/
+ * scrim/Escape pattern the drawer mirrors. Client component so the drawer
+ * and collapse state can live here; the session guard stays in the server
+ * layout, which also looks up the signed-in admin's email for the top bar.
  */
-export function AdminShell({ children }: { children: ReactNode }) {
+export function AdminShell({ children, adminEmail }: { children: ReactNode; adminEmail: string }) {
   const pathname = usePathname();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  useEffect(() => {
+    const stored = window.localStorage.getItem(COLLAPSE_STORAGE_KEY);
+    if (stored === "true") setIsCollapsed(true);
+  }, []);
+
+  function toggleCollapsed() {
+    setIsCollapsed((collapsed) => {
+      const next = !collapsed;
+      window.localStorage.setItem(COLLAPSE_STORAGE_KEY, String(next));
+      return next;
+    });
+  }
 
   useEffect(() => {
     setIsDrawerOpen(false);
@@ -41,7 +67,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
   }, [isDrawerOpen]);
 
   return (
-    <div className={styles.shell}>
+    <div className={`${styles.shell} ${isCollapsed ? styles["shell--collapsed"] : ""}`}>
       <header className={styles.topbar}>
         <button
           type="button"
@@ -56,40 +82,65 @@ export function AdminShell({ children }: { children: ReactNode }) {
           <span className={`${styles.menuToggle__bar} ${isDrawerOpen ? styles["menuToggle__bar--bottomOpen"] : ""}`} />
         </button>
         <Link href="/admin" className={styles.topbarBrand}>
-          <Image src={logo} alt="" width={28} height={28} />
-          <span>WHHF Admin</span>
+          <Image src={logo} alt="William & Helen Heritage Foundation" width={32} height={32} />
         </Link>
-      </header>
-
-      {isDrawerOpen && (
-        <div className={styles.scrim} onClick={() => setIsDrawerOpen(false)} aria-hidden="true" />
-      )}
-
-      <aside id="admin-drawer" className={`${styles.sidebar} ${isDrawerOpen ? styles["sidebar--open"] : ""}`}>
-        <Link href="/admin" className={styles.brand}>
-          <Image src={logo} alt="" width={36} height={36} className={styles.brandImage} />
-          <span className={styles.brandText}>WHHF Admin</span>
-        </Link>
-        <nav className={styles.nav} aria-label="Admin">
-          {ADMIN_NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`${styles.navLink} ${pathname === link.href ? styles["navLink--active"] : ""}`}
-              aria-current={pathname === link.href ? "page" : undefined}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-        <div className={styles.sidebarFooter}>
+        <div className={styles.topbarSpacer} />
+        <div className={styles.topbarUser}>
+          <span className={styles.topbarEmail}>{adminEmail}</span>
           <SignOutButton />
         </div>
-      </aside>
+      </header>
 
-      <main className={`section ${styles.main}`}>
-        <div className="container">{children}</div>
-      </main>
+      <div className={styles.body}>
+        {isDrawerOpen && (
+          <div className={styles.scrim} onClick={() => setIsDrawerOpen(false)} aria-hidden="true" />
+        )}
+
+        <aside id="admin-drawer" className={`${styles.sidebar} ${isDrawerOpen ? styles["sidebar--open"] : ""}`}>
+          <div className={styles.brandRow}>
+            <Link href="/admin" className={styles.brand}>
+              <Image
+                src={logo}
+                alt="William & Helen Heritage Foundation"
+                width={44}
+                height={44}
+                className={styles.brandImage}
+              />
+            </Link>
+            <button
+              type="button"
+              className={styles.collapseToggle}
+              onClick={toggleCollapsed}
+              aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            >
+              <ChevronDoubleLeftIcon className={styles.collapseIcon} />
+            </button>
+          </div>
+          <nav className={styles.nav} aria-label="Admin">
+            {NAV_GROUPS.map((group) => (
+              <div key={group.label} className={styles.navGroup}>
+                <p className={styles.navGroupLabel}>{group.label}</p>
+                {group.links.map(({ href, label, Icon }) => (
+                  <Link
+                    key={href}
+                    href={href}
+                    title={label}
+                    className={`${styles.navLink} ${pathname === href ? styles["navLink--active"] : ""}`}
+                    aria-current={pathname === href ? "page" : undefined}
+                  >
+                    <Icon className={styles.navLinkIcon} />
+                    <span className={styles.navLinkLabel}>{label}</span>
+                  </Link>
+                ))}
+              </div>
+            ))}
+          </nav>
+        </aside>
+
+        <main className={`section ${styles.main}`}>
+          <div className="container">{children}</div>
+        </main>
+      </div>
     </div>
   );
 }

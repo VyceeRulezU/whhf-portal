@@ -1,16 +1,17 @@
-import Link from "next/link";
 import { eq, desc, count, sum } from "drizzle-orm";
 import { withDb } from "@/lib/db/client";
 import { donations as donationsTable, contactMessages, inboundEmails } from "@/lib/db/schema";
 import { formatCurrency } from "@/lib/format/currency";
 import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
+import { StatCard } from "@/components/admin/StatCard";
+import { Avatar } from "@/components/admin/Avatar";
+import { DashboardIcon, DonationsIcon, EmailIcon } from "@/components/admin/icons";
 import styles from "./dashboard.module.css";
 
 /**
  * Landing page for /admin — a single overview pulling the headline number
- * from each section (Donations, Messages, Inbox) so staff can see what
- * needs attention without visiting each page in turn.
+ * from each section (Donations, Email) so staff can see what needs
+ * attention without visiting each page in turn.
  */
 export default async function AdminDashboardPage() {
   const [
@@ -45,48 +46,25 @@ export default async function AdminDashboardPage() {
   const totalMessages = totalMessagesRows[0]?.count ?? 0;
   const unreadEmails = unreadEmailsRows[0]?.count ?? 0;
   const totalEmails = totalEmailsRows[0]?.count ?? 0;
+  const unreadTotal = unreadMessages + unreadEmails;
+  const total = totalMessages + totalEmails;
 
   return (
     <div className="stack">
       <h1>Dashboard</h1>
 
       <div className="grid-auto">
-        <Card>
-          <p className={styles.statLabel}>Total raised</p>
-          {totalsByCurrency.length === 0 ? (
-            <p className={styles.statValue}>—</p>
-          ) : (
-            totalsByCurrency.map((row) => (
-              <p key={row.currency} className={styles.statValue}>
-                {formatCurrency(Number(row.total ?? 0), row.currency)}
-              </p>
-            ))
-          )}
-        </Card>
-        <Card>
-          <p className={styles.statLabel}>Unread messages</p>
-          <p className={styles.statValue}>
-            {unreadMessages} <span className={styles.statMuted}>/ {totalMessages}</span>
-          </p>
-        </Card>
-        <Card>
-          <p className={styles.statLabel}>Unread inbox mail</p>
-          <p className={styles.statValue}>
-            {unreadEmails} <span className={styles.statMuted}>/ {totalEmails}</span>
-          </p>
-        </Card>
-      </div>
-
-      <div className={styles.quickLinks}>
-        <Link href="/admin/donations">
-          <Button variant="outline">View donations →</Button>
-        </Link>
-        <Link href="/admin/messages">
-          <Button variant="outline">View messages →</Button>
-        </Link>
-        <Link href="/admin/inbox">
-          <Button variant="outline">View inbox →</Button>
-        </Link>
+        <StatCard
+          icon={<DonationsIcon />}
+          label="Total raised"
+          value={
+            totalsByCurrency.length === 0
+              ? "—"
+              : totalsByCurrency.map((row) => formatCurrency(Number(row.total ?? 0), row.currency)).join(" · ")
+          }
+        />
+        <StatCard icon={<EmailIcon />} label="Unread email" value={unreadTotal} meta={`${total} total`} />
+        <StatCard icon={<DashboardIcon />} label="Recent donations" value={recentDonations.length} meta="Last 5" />
       </div>
 
       <Card>
@@ -95,8 +73,8 @@ export default async function AdminDashboardPage() {
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>Date</th>
                 <th>Donor</th>
+                <th>Date</th>
                 <th>Amount</th>
                 <th>Status</th>
               </tr>
@@ -111,8 +89,13 @@ export default async function AdminDashboardPage() {
               )}
               {recentDonations.map((donation) => (
                 <tr key={donation.id}>
+                  <td>
+                    <div className={styles.donorCell}>
+                      <Avatar name={donation.donor.name} />
+                      <span>{donation.donor.name}</span>
+                    </div>
+                  </td>
                   <td>{donation.createdAt.toLocaleDateString()}</td>
-                  <td>{donation.donor.name}</td>
                   <td>{formatCurrency(donation.amount, donation.currency)}</td>
                   <td className={styles[`status--${donation.status}`]}>{donation.status}</td>
                 </tr>
