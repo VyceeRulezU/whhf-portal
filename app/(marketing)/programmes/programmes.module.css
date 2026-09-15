@@ -37,6 +37,27 @@
   margin-bottom: var(--space-8);
 }
 
+.areasGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-6);
+}
+
+.areaCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.areaHeading {
+  font-size: var(--font-size-h3);
+  color: var(--color-gold);
+}
+
+.areaBody {
+  color: var(--color-text-secondary);
+}
+
 .stepsGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -89,7 +110,8 @@
 
 @media (max-width: 900px) {
   .flagshipCard,
-  .approachGrid {
+  .approachGrid,
+  .areasGrid {
     grid-template-columns: 1fr;
   }
 

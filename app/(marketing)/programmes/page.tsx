@@ -15,6 +15,29 @@ export const metadata: Metadata = {
     "Direct financial grants toward chemotherapy and treatment costs for indigent cancer patients, distributed in partnership with National Hospital, Abuja."
 };
 
+// WHHF's four confirmed programme areas, from the Foundation's own printed
+// materials — the flagship Indigent Cancer Patient Support programme above
+// is the current, concrete expression of Social and Community Development;
+// the other three guide where WHHF expands next.
+const PROGRAM_AREAS = [
+  {
+    heading: "Value Promotion",
+    body: "We believe that the lives of individuals and society can become better by imbibing certain moral and upright values. We plan promoting these values through diverse activities and strategies."
+  },
+  {
+    heading: "Social and Community Development",
+    body: "Through our Social and Community Development programmes, we plan touching the lives of widows, widowers, orphans, less privileged persons, and persons at risk or in distress, positively. We also believe in peaceful coexistence and development of communities, which will contribute to the improvement of the quality of life of the individuals in such communities."
+  },
+  {
+    heading: "Skills and Entrepreneurial Development",
+    body: "Our Skills and Entrepreneurial Development programme is aimed at empowering individuals to be economically stable, to be able to care for themselves and their families, and contribute meaningfully to the development of society."
+  },
+  {
+    heading: "Holistic Development",
+    body: "We believe that the best way to care for human beings is to be holistic, and therefore we plan implementing activities that care for the “total man.” Our holistic development programme addresses the health, educational, psycho-social, and spiritual needs of people."
+  }
+];
+
 const STEPS = [
   {
     number: "01",
@@ -80,6 +103,23 @@ export default function ProgrammesPage() {
       <section className="section">
         <div className="container">
           <div className={styles.stepsHeader}>
+            <p className="eyebrow-label">/ Programme Areas /</p>
+            <h2>Where WHHF focuses its work.</h2>
+          </div>
+          <div className={styles.areasGrid}>
+            {PROGRAM_AREAS.map((area) => (
+              <Card key={area.heading} className={styles.areaCard}>
+                <h3 className={styles.areaHeading}>{area.heading}</h3>
+                <p className={styles.areaBody}>{area.body}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <div className={styles.stepsHeader}>
             <p className="eyebrow-label">/ How It Works /</p>
             <h2>From reaching out to a life changed.</h2>
           </div>
@@ -120,7 +160,6 @@ export default function ProgrammesPage() {
                 impact over overhead, verified need over volume, and a hospital or community partnership grounded
                 in real accountability.
               </p>
-              {/* TODO: additional programmes pending confirmation — see PRD.md §10 item 6. Do not name specific future programmes here until confirmed. */}
             </div>
           </div>
         </div>

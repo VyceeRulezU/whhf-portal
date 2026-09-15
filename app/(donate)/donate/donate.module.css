@@ -1,0 +1,37 @@
+.bankCard {
+  margin-top: var(--space-6);
+}
+
+.bankHeading {
+  font-size: var(--font-size-h3);
+}
+
+.bankNote {
+  margin-top: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.bankList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: var(--space-5) 0 0;
+}
+
+.bankRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.bankLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.bankValue {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-weight: 600;
+}

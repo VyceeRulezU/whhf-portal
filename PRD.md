@@ -131,12 +131,18 @@ without re-entering all details).
 2. Full current board roster + short bios + headshots.
 3. Confirmed CAC registration number and SCUML status, for the compliance
    footer/disclosures (see `docs/compliance-nigeria-ngo.md`).
-4. Bank account details and preferred settlement currency/accounts for each
-   payment provider.
+4. ✅ Bank account details confirmed by WHHF and added to the Donate page
+   (Fidelity Bank, account name "William and Helen Heritage Foundation",
+   account 5600513265) — settlement currency/per-provider accounts still
+   open once online payment providers are live.
 5. Tax-receipt requirements — does WHHF issue any formal receipt donors can
    use for tax purposes, and does that require a specific document format?
-6. Which programmes beyond cancer/indigent patient support should launch
-   day one vs. be added later?
+6. WHHF's four confirmed programme areas (Value Promotion, Social and
+   Community Development, Skills and Entrepreneurial Development, Holistic
+   Development) are now on the Programmes page, from WHHF's own printed
+   materials — which still leaves open which concrete NEW programmes
+   beyond the cancer/indigent patient flagship should launch day one vs.
+   be added later.
 7. Any existing brand guidelines beyond the logo (approved photography,
    tone-of-voice examples) — currently working from the logo alone (see
    `design-system.md`).

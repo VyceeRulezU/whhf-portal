@@ -16,6 +16,21 @@
   object-fit: cover;
 }
 
+.purposeVisionGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-6);
+}
+
+.purposeVisionHeading {
+  margin-top: var(--space-2);
+}
+
+.purposeVisionBody {
+  margin-top: var(--space-3);
+  color: var(--color-text-secondary);
+}
+
 .valuesHeader {
   max-width: 60ch;
 }

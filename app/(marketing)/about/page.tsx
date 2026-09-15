@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Card } from "@/components/ui/Card";
 import { PageHero } from "@/components/marketing/PageHero";
 import { DonateCta } from "@/components/marketing/DonateCta";
+import { CoreValuesTimeline } from "@/components/marketing/CoreValuesTimeline";
 import { placeholderImages } from "@/lib/content/placeholderImages";
 import { sitePhotos } from "@/lib/content/sitePhotos";
 import { siteVideos } from "@/lib/content/siteVideos";
@@ -121,6 +122,31 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* Purpose/Vision statements, from WHHF's own printed materials. */}
+      <section className="section section--tight">
+        <div className="container">
+          <div className={styles.purposeVisionGrid}>
+            <Card>
+              <p className="eyebrow-label">/ Purpose /</p>
+              <h2 className={styles.purposeVisionHeading}>Why WHHF exists.</h2>
+              <p className={styles.purposeVisionBody}>
+                William and Helen Heritage Foundation exists to promote godly values, transform lives and society.
+              </p>
+            </Card>
+            <Card>
+              <p className="eyebrow-label">/ Vision /</p>
+              <h2 className={styles.purposeVisionHeading}>What we&rsquo;re working toward.</h2>
+              <p className={styles.purposeVisionBody}>
+                William and Helen Heritage Foundation envisions a society guided by godly values, where people&rsquo;s
+                lives are transformed to live optimally.
+              </p>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      <CoreValuesTimeline image={sitePhotos.aboutUsMain} />
 
       <section className="section">
         <div className="container stack">

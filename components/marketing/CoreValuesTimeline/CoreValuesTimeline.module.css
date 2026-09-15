@@ -1,0 +1,146 @@
+/* Same radius/elevation as this page's other full-bleed wide banners —
+   see .storyVideo below and DonateCta.module.css's .cta. */
+.panel {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+}
+
+.bgImage {
+  object-fit: cover;
+  object-position: center top;
+  filter: blur(10px);
+  transform: scale(1.1);
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.72);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  padding: var(--space-10) var(--space-6);
+}
+
+.header {
+  text-align: center;
+  max-width: 480px;
+  margin-inline: auto;
+  margin-bottom: var(--space-9);
+}
+
+.heading {
+  color: var(--color-text-primary);
+  margin-top: var(--space-2);
+}
+
+.giveHelp {
+  color: var(--color-gold);
+  text-transform: capitalize;
+}
+
+.timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: 900px;
+  margin-inline: auto;
+}
+
+.timelineLine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background-color: rgba(255, 255, 255, 0.25);
+  transform: translateX(-50%);
+}
+
+.row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  column-gap: var(--space-5);
+}
+
+.row--left .card {
+  grid-column: 1;
+  justify-self: end;
+}
+
+.row--right .card {
+  grid-column: 3;
+  justify-self: start;
+}
+
+.node {
+  grid-column: 2;
+  z-index: 1;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-gold);
+  border: 3px solid var(--color-bg-true-black);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 360px;
+  padding: var(--space-4) var(--space-5);
+  background-color: rgba(244, 243, 240, 0.96);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.cardTitle {
+  color: var(--color-text-on-gold);
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-h3);
+  text-transform: capitalize;
+}
+
+.cardLetter {
+  color: var(--color-gold);
+  font-weight: 700;
+}
+
+/* No dark-on-light secondary text token exists elsewhere (the design
+   system is dark-mode-first) — matches the muted gray already used for
+   secondary text on light surfaces in lib/email/templates.ts. */
+.cardBody {
+  color: #5c5c5c;
+  font-size: var(--font-size-sm);
+}
+
+@media (max-width: 720px) {
+  .timelineLine {
+    left: 7px;
+  }
+
+  .row {
+    grid-template-columns: 14px 1fr;
+    column-gap: var(--space-4);
+  }
+
+  .row--left .card,
+  .row--right .card {
+    grid-column: 2;
+    justify-self: stretch;
+    max-width: none;
+  }
+
+  .node {
+    grid-column: 1;
+  }
+}

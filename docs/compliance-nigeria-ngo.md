@@ -16,8 +16,10 @@ reporting) before publishing any compliance claim on the live site.
   Nigeria fall under SCUML's AML/CFT oversight for designated non-financial
   institutions; registration is generally required to legally operate bank
   accounts for such purposes.
-- Bank account details for settlement — held by the board owner, not yet
-  transcribed into project docs.
+- ✅ Bank account details for settlement — Fidelity Bank, account name
+  "William and Helen Heritage Foundation", account 5600513265, now on the
+  Donate page as a manual bank-transfer option alongside the payment
+  providers being set up.
 
 ## What the codebase must support, regardless of exact filing status
 
