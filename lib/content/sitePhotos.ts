@@ -28,5 +28,10 @@ export const sitePhotos = {
   // Gallery — additional programme/event photography.
   galleryOne: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/654712004_18100318330938352_452443779084317951_n.webp",
   galleryTwo: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/658187139_18313702102283882_396341819537141756_n.webp",
-  galleryThree: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/659814391_18339030712300134_1657967389436416368_n.webp"
+  galleryThree: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/659814391_18339030712300134_1657967389436416368_n.webp",
+  // Transactional email header — needs a stable absolute URL (email
+  // clients can't load the Next.js app's build-hashed logo asset), so
+  // this is a standalone copy uploaded straight to the bucket rather than
+  // reusing assets/brand/logo-transparent.png. See lib/email/templates.ts.
+  logoEmail: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/web-images/logo-email.png"
 } as const;

@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 import { withDb } from "@/lib/db/client";
 import { webhookEvents, donations } from "@/lib/db/schema";
 import { providers } from "@/lib/payments/router";
+import { sendDonationReceiptForReference } from "@/lib/email/sendDonationReceipt";
 
 /**
  * See .agent/skills/korapay-integration/skill.md before editing. Confirm
@@ -42,7 +43,9 @@ export async function POST(req: NextRequest) {
       .where(eq(donations.providerReference, event.reference))
   );
 
-  // TODO: send receipt email on success, outside the response path.
+  if (verified.status === "success") {
+    await sendDonationReceiptForReference(event.reference);
+  }
 
   return NextResponse.json({ received: true }, { status: 200 });
 }

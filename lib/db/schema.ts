@@ -157,3 +157,73 @@ export const inboundEmails = pgTable(
   },
   (table) => [index("InboundEmail_toAddress_idx").on(table.toAddress), index("InboundEmail_receivedAt_idx").on(table.receivedAt)]
 );
+
+// Email sent BY an admin — either a reply to a ContactMessage/InboundEmail
+// (inReplyToId points at whichever one, no FK since it's polymorphic) or a
+// fresh compose. See app/api/admin/email/send/route.ts — this table is the
+// durable "Outgoing" record; Resend's own dashboard isn't queryable from here.
+export const sentEmails = pgTable(
+  "SentEmail",
+  {
+    id: text("id").primaryKey().$defaultFn(genId),
+    toAddress: text("toAddress").notNull(),
+    fromAddress: text("fromAddress").notNull(),
+    subject: text("subject").notNull(),
+    body: text("body").notNull(),
+    inReplyToId: text("inReplyToId"),
+    // Comma-separated — display-only, never queried/filtered by address.
+    ccAddresses: text("ccAddresses"),
+    bccAddresses: text("bccAddresses"),
+    attachmentNames: text("attachmentNames"),
+    sentByAdminId: text("sentByAdminId")
+      .notNull()
+      .references(() => adminUsers.id),
+    createdAt: timestamp("createdAt", { precision: 3 }).notNull().defaultNow()
+  },
+  (table) => [index("SentEmail_createdAt_idx").on(table.createdAt)]
+);
+
+export const sentEmailsRelations = relations(sentEmails, ({ one }) => ({
+  sentBy: one(adminUsers, { fields: [sentEmails.sentByAdminId], references: [adminUsers.id] })
+}));
+
+// Public /newsletter signups — collected from the footer form (see
+// components/marketing/NewsletterForm). isActive flips to false on
+// unsubscribe (app/(marketing)/newsletter/unsubscribe/page.tsx) rather
+// than deleting the row, so re-subscribing the same address is a
+// straightforward re-activation, not a fresh insert with a fresh id.
+export const newsletterSubscribers = pgTable(
+  "NewsletterSubscriber",
+  {
+    id: text("id").primaryKey().$defaultFn(genId),
+    email: text("email").notNull().unique(),
+    isActive: boolean("isActive").notNull().default(true),
+    subscribedAt: timestamp("subscribedAt", { precision: 3 }).notNull().defaultNow(),
+    unsubscribedAt: timestamp("unsubscribedAt", { precision: 3 })
+  },
+  (table) => [index("NewsletterSubscriber_isActive_idx").on(table.isActive)]
+);
+
+// One row per admin-triggered newsletter campaign — the durable send
+// history the admin dashboard's Newsletter page reads back (see
+// app/api/admin/newsletter/send/route.ts). recipientCount is a snapshot
+// of how many subscribers actually got that run, since the subscriber
+// list itself keeps changing after the fact.
+export const sentNewsletters = pgTable(
+  "SentNewsletter",
+  {
+    id: text("id").primaryKey().$defaultFn(genId),
+    subject: text("subject").notNull(),
+    body: text("body").notNull(),
+    recipientCount: integer("recipientCount").notNull(),
+    sentByAdminId: text("sentByAdminId")
+      .notNull()
+      .references(() => adminUsers.id),
+    createdAt: timestamp("createdAt", { precision: 3 }).notNull().defaultNow()
+  },
+  (table) => [index("SentNewsletter_createdAt_idx").on(table.createdAt)]
+);
+
+export const sentNewslettersRelations = relations(sentNewsletters, ({ one }) => ({
+  sentBy: one(adminUsers, { fields: [sentNewsletters.sentByAdminId], references: [adminUsers.id] })
+}));

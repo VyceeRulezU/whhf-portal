@@ -1,28 +1,14 @@
+.toolbar {
+  justify-content: space-between;
+  align-items: end;
+}
+
 .intro {
   color: var(--color-text-secondary);
   max-width: 70ch;
 }
 
-.list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-
-.itemCard {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-.itemHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-  gap: var(--space-4);
-}
-
-.subject {
+.subjectCell {
   display: flex;
   align-items: center;
   gap: var(--space-2);
@@ -33,27 +19,9 @@
 .unreadDot {
   width: 8px;
   height: 8px;
+  flex-shrink: 0;
   border-radius: var(--radius-pill);
   background-color: var(--color-gold);
-}
-
-.meta {
-  margin-top: var(--space-1);
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-}
-
-.meta a {
-  color: var(--color-text-secondary);
-}
-
-.meta a:hover {
-  color: var(--color-gold);
-}
-
-.body {
-  color: var(--color-text-secondary);
-  white-space: pre-wrap;
 }
 
 .statusBadge {
@@ -74,15 +42,46 @@
   color: var(--color-text-muted);
 }
 
-.empty {
-  color: var(--color-text-muted);
-  text-align: center;
-  padding: var(--space-8);
+.actionsCell {
+  width: 1%;
+}
+
+.actionsRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  transition: background-color var(--motion-fast), color var(--motion-fast);
+}
+
+.iconButton:hover {
+  background-color: var(--color-bg-surface-raised);
+  color: var(--color-gold);
+}
+
+.iconButton:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.iconButtonDanger:hover {
+  background-color: rgba(226, 87, 76, 0.15);
+  color: var(--color-error);
 }
 
 @media (max-width: 480px) {
-  .itemHeader {
+  .toolbar {
     flex-direction: column;
-    align-items: start;
+    align-items: stretch;
   }
 }

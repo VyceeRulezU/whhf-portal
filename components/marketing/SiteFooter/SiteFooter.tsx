@@ -12,6 +12,7 @@ import { ALL_NAV_LINKS } from "@/components/marketing/SiteHeader/navLinks";
 // showing the logo's own black background plate as a visible square.
 import logo from "@/assets/brand/logo-transparent.png";
 import { placeholderImages } from "@/lib/content/placeholderImages";
+import { NewsletterForm } from "@/components/marketing/NewsletterForm";
 import styles from "./SiteFooter.module.css";
 
 const VALUES = ["Faith-Led", "Direct to Patients", "Transparent", "Community-Rooted"];
@@ -27,9 +28,10 @@ export function SiteFooter() {
             <Image src={logo} alt="William & Helen Heritage Foundation" width={220} height={220} className={styles.footer__logo} />
             <p className={styles.footer__tagline}>
               Continuing a legacy of giving, under the umbrella of the All
-              Christians Fellowship Mission (ACFM) — support for indigent
+              Christians Fellowship Mission (ACFM): support for indigent
               cancer patients in Abuja and beyond.
             </p>
+            <NewsletterForm />
           </div>
 
           <div className={styles.footer__column}>

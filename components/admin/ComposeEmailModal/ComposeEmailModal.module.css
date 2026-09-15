@@ -1,0 +1,151 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-5);
+  background-color: rgba(0, 0, 0, 0.65);
+  animation: fadeIn var(--motion-fast) ease-out;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  width: 100%;
+  max-width: 720px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: var(--space-6);
+  background-color: var(--color-bg-surface-raised);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+  animation: popIn var(--motion-fast) ease-out;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  transition: background-color var(--motion-fast), color var(--motion-fast);
+}
+
+.closeButton:hover {
+  background-color: var(--color-bg-surface);
+  color: var(--color-gold);
+}
+
+.form {
+  gap: var(--space-4);
+}
+
+.toField {
+  position: relative;
+}
+
+.ccBccToggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  transition: color var(--motion-fast);
+}
+
+.ccBccToggle:hover {
+  color: var(--color-gold);
+}
+
+.attachmentsSection {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: var(--space-3);
+}
+
+.fileInput {
+  display: none;
+}
+
+.attachmentList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.attachmentChip {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  max-width: 220px;
+}
+
+.attachmentChip span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.attachmentChip button {
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-body-lg);
+  line-height: 1;
+}
+
+.attachmentChip button:hover {
+  color: var(--color-error);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay,
+  .modal {
+    animation: none;
+  }
+}

@@ -1,0 +1,76 @@
+.form {
+  max-width: 640px;
+}
+
+.intro {
+  color: var(--color-text-secondary);
+  max-width: 70ch;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.itemCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.subscriberEmail {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.subject {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.meta {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.body {
+  color: var(--color-text-secondary);
+  white-space: pre-wrap;
+}
+
+.empty {
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: var(--space-8);
+}
+
+.actionsCell {
+  width: 1%;
+}
+
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  transition: background-color var(--motion-fast), color var(--motion-fast);
+}
+
+.iconButton:hover {
+  background-color: rgba(226, 87, 76, 0.15);
+  color: var(--color-error);
+}
+
+.iconButton:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
