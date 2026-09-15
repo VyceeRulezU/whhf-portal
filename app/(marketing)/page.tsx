@@ -558,7 +558,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      <DonateCta image={sitePhotos.howWeWork} imagePosition="center top" />
+      <DonateCta
+        images={[placeholderImages.homeHero, placeholderImages.donateCtaSecondary]}
+        imagePosition="center top"
+      />
     </>
   );
 }

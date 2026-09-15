@@ -13,6 +13,9 @@
 export const placeholderImages = {
   // Hosted on WHHF's own Cloudflare R2 bucket — set by the site owner directly.
   homeHero: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/2151565852.jpg",
+  // Homepage donate CTA banner — rotates with homeHero, see DonateCta's
+  // `images` prop in app/(marketing)/page.tsx.
+  donateCtaSecondary: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/2151565939.jpg",
   // Community education/charity event, Port Harcourt, Nigeria.
   whoWeAre: "https://images.unsplash.com/photo-1632215861513-130b66fe97f4?w=900&q=80&fm=jpg&fit=crop",
   // Family moment during recovery from cancer surgery — resilience, not suffering.
