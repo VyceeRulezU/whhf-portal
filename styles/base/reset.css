@@ -18,6 +18,36 @@ body {
   color: var(--color-text-primary);
 }
 
+/* A thin, gold-on-black scrollbar in place of the browser default, so it
+   reads as part of the design system rather than generic chrome. Firefox
+   via scrollbar-color/-width, everything else via the WebKit pseudo-
+   elements. The admin section overrides this to fully hidden instead
+   (see body.admin-scrollbar-hidden in layout.css) since that chrome-heavy
+   panel reads better without a visible scrollbar at all. */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-gold-muted) var(--color-bg-surface);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--color-bg-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-gold-muted);
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--color-bg-surface);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-gold);
+}
+
 img,
 picture,
 video,

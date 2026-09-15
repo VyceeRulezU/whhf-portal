@@ -54,6 +54,27 @@
   gap: var(--space-6);
 }
 
+/* Keeps content scrollable while hiding the scrollbar UI itself — used on
+   chrome-heavy panels (admin sidebar/main, drawers, modals) where a
+   visible scrollbar reads as clutter against the rest of the design. */
+.scrollbar-hidden {
+  scrollbar-width: none;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* Scoped to the admin section only (toggled by AdminShell) — the
+   document-level scrollbar there, not just an inner panel's. */
+body.admin-scrollbar-hidden {
+  scrollbar-width: none;
+}
+
+body.admin-scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
