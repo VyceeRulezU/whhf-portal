@@ -21,7 +21,7 @@
   transition: border-color var(--motion-fast), color var(--motion-fast);
 }
 
-.presetButton:hover {
+.presetButton:hover:not(.presetButton--active) {
   border-color: var(--color-gold);
   color: var(--color-gold);
 }
