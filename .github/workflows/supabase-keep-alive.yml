@@ -1,0 +1,20 @@
+name: Supabase Keep-Alive
+
+# Supabase's free tier pauses a project after 7 days of no database
+# activity. This pings a real DB query on the deployed app every couple of
+# days so the WHHF project never goes idle long enough to trigger that.
+# See app/api/cron/keep-alive/route.ts.
+
+on:
+  schedule:
+    - cron: "0 6 */2 * *" # every 2 days at 06:00 UTC
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping keep-alive endpoint
+        run: |
+          curl -sf -X GET "https://whheritagefoundation.org/api/cron/keep-alive" \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}"
