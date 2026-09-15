@@ -5,8 +5,10 @@ import { formatCurrency } from "@/lib/format/currency";
 import { Card } from "@/components/ui/Card";
 import { StatCard } from "@/components/admin/StatCard";
 import { Avatar } from "@/components/admin/Avatar";
+import { Table } from "@/components/admin/Table";
 import { DashboardIcon, DonationsIcon, EmailIcon } from "@/components/admin/icons";
 import styles from "./dashboard.module.css";
+import type { TableColumn } from "@/components/admin/Table";
 
 /**
  * Landing page for /admin — a single overview pulling the headline number
@@ -49,6 +51,24 @@ export default async function AdminDashboardPage() {
   const unreadTotal = unreadMessages + unreadEmails;
   const total = totalMessages + totalEmails;
 
+  const recentDonationColumns: TableColumn<(typeof recentDonations)[number]>[] = [
+    {
+      header: "Donor",
+      cell: (donation) => (
+        <div className={styles.donorCell}>
+          <Avatar name={donation.donor.name} />
+          <span>{donation.donor.name}</span>
+        </div>
+      )
+    },
+    { header: "Date", cell: (donation) => donation.createdAt.toLocaleDateString() },
+    { header: "Amount", cell: (donation) => formatCurrency(donation.amount, donation.currency) },
+    {
+      header: "Status",
+      cell: (donation) => <span className={styles[`status--${donation.status}`]}>{donation.status}</span>
+    }
+  ];
+
   return (
     <div className="stack">
       <h1>Dashboard</h1>
@@ -69,40 +89,12 @@ export default async function AdminDashboardPage() {
 
       <Card>
         <p className={styles.sectionHeading}>Recent donations</p>
-        <div className={styles.tableWrap}>
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th>Donor</th>
-                <th>Date</th>
-                <th>Amount</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recentDonations.length === 0 && (
-                <tr>
-                  <td colSpan={4} className={styles.empty}>
-                    No donations recorded yet.
-                  </td>
-                </tr>
-              )}
-              {recentDonations.map((donation) => (
-                <tr key={donation.id}>
-                  <td>
-                    <div className={styles.donorCell}>
-                      <Avatar name={donation.donor.name} />
-                      <span>{donation.donor.name}</span>
-                    </div>
-                  </td>
-                  <td>{donation.createdAt.toLocaleDateString()}</td>
-                  <td>{formatCurrency(donation.amount, donation.currency)}</td>
-                  <td className={styles[`status--${donation.status}`]}>{donation.status}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <Table
+          columns={recentDonationColumns}
+          rows={recentDonations}
+          getRowKey={(donation) => donation.id}
+          emptyMessage="No donations recorded yet."
+        />
       </Card>
     </div>
   );

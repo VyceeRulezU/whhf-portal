@@ -4,8 +4,10 @@ import { useMemo, useState } from "react";
 import { Card } from "@/components/ui/Card";
 import { Avatar } from "@/components/admin/Avatar";
 import { Tabs } from "@/components/admin/Tabs";
+import { Table } from "@/components/admin/Table";
 import { formatCurrency } from "@/lib/format/currency";
 import styles from "./DonationsTable.module.css";
+import type { TableColumn } from "@/components/admin/Table";
 
 type DonationStatus = "pending" | "processing" | "succeeded" | "failed" | "refunded";
 
@@ -45,6 +47,32 @@ export function DonationsTable({ donations }: { donations: DonationRow[] }) {
 
   const filtered = activeStatus === "all" ? donations : donations.filter((d) => d.status === activeStatus);
 
+  // Donor email is intentionally not shown in this list view — see
+  // security.md: admin exports of donor PII should be a deliberate,
+  // audited action (the CSV export), not exposed by default in every
+  // screen that touches donation data.
+  const columns: TableColumn<DonationRow>[] = [
+    {
+      header: "Donor",
+      cell: (donation) => (
+        <div className={styles.donorCell}>
+          <Avatar name={donation.donor.name} />
+          <span>{donation.donor.name}</span>
+        </div>
+      )
+    },
+    { header: "Cause", cell: (donation) => donation.cause.name },
+    { header: "Date", cell: (donation) => donation.createdAt.toLocaleDateString() },
+    { header: "Amount", cell: (donation) => formatCurrency(donation.amount, donation.currency) },
+    {
+      header: "Status",
+      cell: (donation) => (
+        <span className={`${styles.status} ${styles[`status--${donation.status}`]}`}>{donation.status}</span>
+      )
+    },
+    { header: "Provider", cell: (donation) => donation.provider }
+  ];
+
   return (
     <div className="stack">
       <Tabs
@@ -58,52 +86,7 @@ export function DonationsTable({ donations }: { donations: DonationRow[] }) {
       />
 
       <Card>
-        <div className={styles.tableWrap}>
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th>Donor</th>
-                <th>Cause</th>
-                <th>Date</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>Provider</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.length === 0 && (
-                <tr>
-                  <td colSpan={6} className={styles.empty}>
-                    No donations in this view.
-                  </td>
-                </tr>
-              )}
-              {filtered.map((donation) => (
-                <tr key={donation.id}>
-                  {/* Donor email intentionally not shown in this list view — see
-                      security.md: admin exports of donor PII should be a
-                      deliberate, audited action (the CSV export), not exposed
-                      by default in every screen that touches donation data. */}
-                  <td>
-                    <div className={styles.donorCell}>
-                      <Avatar name={donation.donor.name} />
-                      <span>{donation.donor.name}</span>
-                    </div>
-                  </td>
-                  <td>{donation.cause.name}</td>
-                  <td>{donation.createdAt.toLocaleDateString()}</td>
-                  <td>{formatCurrency(donation.amount, donation.currency)}</td>
-                  <td>
-                    <span className={`${styles.status} ${styles[`status--${donation.status}`]}`}>
-                      {donation.status}
-                    </span>
-                  </td>
-                  <td>{donation.provider}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <Table columns={columns} rows={filtered} getRowKey={(donation) => donation.id} emptyMessage="No donations in this view." />
       </Card>
     </div>
   );
