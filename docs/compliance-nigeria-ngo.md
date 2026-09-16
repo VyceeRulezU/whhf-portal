@@ -43,4 +43,4 @@ reporting) before publishing any compliance claim on the live site.
 - [ ] Obtain CAC registration certificate/number from WHHF board.
 - [ ] Confirm SCUML registration status and certificate number.
 - [ ] Confirm the donor-identification threshold with legal adviser.
-- [ ] Confirm tax-receipt obligations (see `PRD.md` section 10, item 5).
+- [ ] Confirm tax-receipt obligations (see `PRD.md` section 10, item 4).

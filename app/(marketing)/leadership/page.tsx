@@ -40,7 +40,7 @@ export default function LeadershipPage() {
       <section className="section">
         <div className="container">
           {/* TODO: confirm this is the current full roster, and add bios/headshots for the
-              rest — see PRD.md §10 item 2. Initials avatars are used deliberately in place
+              rest — see PRD.md §10 item 1. Initials avatars are used deliberately in place
               of stock photography for members without a supplied photo — do not substitute
               generic stock headshots for named individuals; wait for real photos. */}
           <div className="grid-auto">
