@@ -129,3 +129,43 @@ jobs:
           set -e
           kill "$SERVER_PID" 2>/dev/null || true
           exit $TEST_EXIT
+
+  deploy-staging:
+    # Auto-deploys to the staging Worker on every push to main, once the
+    # real checks above are green — production stays a deliberate manual
+    # `wrangler deploy` (no env flag). See docs/production-readiness.md
+    # Phase 4: staging shares production's Hyperdrive config/KV namespace
+    # and is isolated purely by DB_SCHEMA=staging (wrangler.jsonc env.staging).
+    needs: [ci, e2e]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_APP_ENV: "staging"
+      NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
+      # Real production values reused for staging — see wrangler.jsonc
+      # env.staging comment for why no new Cloudflare resources exist.
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      # Satisfies a Wrangler/OpenNext preflight check for a local Hyperdrive
+      # emulation string — never actually connected to during a remote
+      # deploy. See README.md ("On Windows...").
+      CLOUDFLARE_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE: ${{ secrets.DATABASE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm install
+
+      - name: Build for staging
+        run: npm run cf:build
+
+      - name: Deploy to the staging Worker
+        run: npx wrangler deploy --env staging
+
+      - name: Smoke-test staging
+        run: node scripts/smoke-test.js https://whhf-portal-staging.ironaliv.workers.dev

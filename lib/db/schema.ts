@@ -1,4 +1,15 @@
-import { pgTable, pgEnum, text, integer, boolean, timestamp, jsonb, uniqueIndex, index } from "drizzle-orm/pg-core";
+import {
+  pgTable as pgTableDefault,
+  pgEnum as pgEnumDefault,
+  pgSchema,
+  text,
+  integer,
+  boolean,
+  timestamp,
+  jsonb,
+  uniqueIndex,
+  index
+} from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 /**
@@ -10,9 +21,37 @@ import { relations } from "drizzle-orm";
  * this file and marked as already-applied against the live database (see
  * .agent/skills/db-migration-runner/skill.md). Any schema change from here
  * on goes through drizzle-kit generate + migrate, not hand-run SQL.
+ *
+ * Every table/enum is schema-qualified via DB_SCHEMA (defaults to
+ * "public") rather than the bare pgTable/pgEnum — this is what lets the
+ * staging Worker share the exact same Hyperdrive config + database as
+ * production while staying fully isolated, via a separate Postgres
+ * schema ("staging") holding its own copy of every table. Cloudflare
+ * Hyperdrive's connection string doesn't support the `?options=-c
+ * search_path=...` query param (confirmed: it rejects the connection
+ * with "invalid database credentials"), so schema selection happens
+ * here at the query level instead of in the connection string. See
+ * docs/production-readiness.md Phase 4.
  */
 
 const genId = () => crypto.randomUUID();
+
+// Drizzle disallows pgSchema("public") outright (it wants the bare
+// pgTable/pgEnum for that case) — so only build a PgSchema wrapper for a
+// genuinely non-default schema, and fall through to the normal
+// unqualified functions otherwise. Keeps production's generated SQL
+// byte-identical to before this file supported multiple schemas.
+const schemaName = process.env.DB_SCHEMA || "public";
+const dbSchema = schemaName === "public" ? null : pgSchema(schemaName);
+// The two branches' generic TName differs (a literal schema name vs.
+// undefined for the default pgTable/pgEnum), which TypeScript won't
+// unify into one callable signature — safe to assert, since both
+// accept identical call shapes at runtime regardless of TName.
+// .bind(dbSchema) matters — dbSchema.table/.enum are class methods that
+// read `this.schemaName` internally; extracting them as plain function
+// references (without binding) loses that `this` and throws at call time.
+const pgTable = (dbSchema ? dbSchema.table.bind(dbSchema) : pgTableDefault) as typeof pgTableDefault;
+const pgEnum = (dbSchema ? dbSchema.enum.bind(dbSchema) : pgEnumDefault) as typeof pgEnumDefault;
 
 export const donationStatusEnum = pgEnum("DonationStatus", [
   "pending",

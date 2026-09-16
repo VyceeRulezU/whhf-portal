@@ -87,11 +87,42 @@ what's actually shipped — same rule as `roadmap.md`.
 
 ## Phase 4 — Staging environment
 
-- [ ] A second Cloudflare Worker + environment so a deploy lands
-      somewhere safe before production — needs a decision on a separate
-      Supabase project/DB vs. a shared DB with a separate schema
-- [ ] `ci.yml` (or a new workflow) auto-deploys to staging on merge;
-      production stays a deliberate manual step until Phase 4 is solid
+- [x] A second Cloudflare Worker (`whhf-portal-staging`) so a deploy lands
+      somewhere safe before production. Decided against a second Supabase
+      project — free-tier accounts are single-project, and a second one
+      would mean a second set of credentials/backups to manage. Instead:
+      one physical database, isolated by Postgres **schema**
+      (`public` = production, `staging` = staging), via `DB_SCHEMA` in
+      `wrangler.jsonc`'s `env.staging.vars` and a `pgSchema()`-based
+      refactor of every table in `lib/db/schema.ts`. Staging reuses
+      production's exact Hyperdrive config and KV namespace — no new
+      billable Cloudflare resources were created. (Cloudflare Hyperdrive's
+      connection string doesn't support `?options=-c search_path=...` —
+      confirmed by a real rejected connection — which is why isolation
+      happens in application code instead of the connection string.)
+      Verified end-to-end against the real deployment: build + `wrangler
+      deploy --env staging`, `scripts/smoke-test.js` all green, and a real
+      login (`POST /api/admin/login`) against the seeded staging admin
+      account returning a valid session cookie that then loads
+      `/admin` and `/admin/donations` (200s), reading only the `staging`
+      schema.
+- [x] `ci.yml` auto-deploys to staging (`deploy-staging` job, gated on
+      `ci`+`e2e` passing and only on push to `main`); production stays a
+      deliberate manual `wrangler deploy` (no env flag) — see README.md.
+      **Needs one manual step to finish activating**: this job reads
+      `secrets.CLOUDFLARE_API_TOKEN`, `secrets.CLOUDFLARE_ACCOUNT_ID`, and
+      `secrets.NEXT_PUBLIC_SENTRY_DSN` from the GitHub repo's Actions
+      secrets — adding secrets is blocked for Claude by an auto-mode
+      safety guardrail, so these three need to be added by hand (values
+      are the same ones already in `.env.local`):
+      ```
+      gh secret set CLOUDFLARE_API_TOKEN --body "<value from .env.local>"
+      gh secret set CLOUDFLARE_ACCOUNT_ID --body "<value from .env.local>"
+      gh secret set NEXT_PUBLIC_SENTRY_DSN --body "<value from .env.local>"
+      ```
+      Until those are set, the `deploy-staging` job will run on the next
+      push to `main` and fail at the `wrangler deploy` step (harmless —
+      it doesn't touch production).
 
 ## Phase 5 — Security hardening
 

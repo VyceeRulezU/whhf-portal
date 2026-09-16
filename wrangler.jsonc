@@ -42,5 +42,32 @@
   // `wrangler tail`, with no external service required — part of the
   // production-readiness plan (catching errors without manually checking
   // the live site). See PRD.md.
-  "observability": { "enabled": true }
+  "observability": { "enabled": true },
+  // Staging deploys land on a separate Worker (`wrangler deploy --env
+  // staging`) so a change can be verified somewhere safe before
+  // production. Deliberately reuses production's Hyperdrive config and
+  // KV namespace rather than provisioning new ones — DB_SCHEMA below is
+  // what actually isolates it: every table in lib/db/schema.ts is
+  // schema-qualified via that var, so staging reads/writes its own
+  // "staging" Postgres schema (same database, same Hyperdrive config,
+  // zero data overlap with production's "public" schema). Cloudflare
+  // Hyperdrive's connection string doesn't support the `?options=-c
+  // search_path=...` query param some Postgres tools accept (confirmed:
+  // it rejects the connection as invalid credentials), which is why
+  // schema selection happens in application code instead. See
+  // docs/production-readiness.md Phase 4.
+  //
+  // hyperdrive/vars/kv_namespaces/services are NOT inherited from the
+  // top-level config in Wrangler's environment system — every one of
+  // them must be redeclared per environment, even to reuse the same
+  // resource.
+  "env": {
+    "staging": {
+      "name": "whhf-portal-staging",
+      "vars": { "DB_SCHEMA": "staging", "NEXT_PUBLIC_APP_ENV": "staging" },
+      "hyperdrive": [{ "binding": "HYPERDRIVE", "id": "1f29bf84d84a48cf90a28479568f7152" }],
+      "kv_namespaces": [{ "binding": "RATE_LIMIT_KV", "id": "1d2060ae865a4a5d8971533ab53a46a5" }],
+      "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "whhf-portal-staging" }]
+    }
+  }
 }
