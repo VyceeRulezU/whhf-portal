@@ -113,11 +113,9 @@ export default function AboutPage() {
               time.
             </p>
             {/*
-              TODO: content pending confirmation from the WHHF board — see
-              PRD.md §10. In particular: how (or whether) to reflect Rev.
-              William Okoye's passing in July 2026 on this page. Do not add or
-              remove memorial content without sign-off — see
-              docs/content-style-guide.md.
+              Content on this page is pending further confirmation from
+              the WHHF board. Do not add or remove memorial content
+              without sign-off — see docs/content-style-guide.md.
             */}
           </div>
         </div>

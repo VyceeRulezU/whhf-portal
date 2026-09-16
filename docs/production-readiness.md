@@ -156,12 +156,24 @@ what's actually shipped — same rule as `roadmap.md`.
 
 ## Phase 6 — Docs & public-repo polish
 
-- [ ] Trim `docs/security-status.md` from public view before wider
-      review — it's currently a literal checklist of unpatched weaknesses
-      on a system that will handle real donor payments; replace with a
-      higher-level "what's implemented" doc and track the specific gap
-      list somewhere not publicly indexed
-- [ ] Review `PRD.md` for anything that reads as internal board/family
-      deliberation rather than product spec, and trim before treating this
-      repo as a public professional-review sample
+- [x] Trimmed `docs/security-status.md` — it was a literal checklist of
+      unpatched weaknesses on a system that will handle real donor
+      payments. Rewrote it as a high-level "what's implemented" summary
+      safe for public/professional review, and moved the detailed,
+      specific gap tracker to `docs/security-status.internal.md`
+      (gitignored — never committed, local-only). While rewriting it,
+      found and corrected two claims that had gone stale: rate limiting
+      is now KV-backed (not in-memory-only, that changed in Phase 0), and
+      admin role separation is now enforced (Phase 5) — the old doc still
+      listed both as open gaps.
+- [x] Reviewed `PRD.md` for anything that reads as internal board/family
+      deliberation rather than product spec. Found one item that named a
+      recent, sensitive family matter directly — flagged it rather than
+      trimming it unilaterally, since that's the family's call, not an
+      engineering one. Confirmed: remove it from public view. Removed the
+      specific disclosure from `PRD.md`, `AGENTS.md`,
+      `docs/content-style-guide.md`, and a code comment in
+      `app/(marketing)/about/page.tsx`, keeping the underlying engineering
+      safeguard ("don't touch memorial content without sign-off") intact
+      in generic form everywhere it appeared.
 - [x] README refreshed to match what's actually shipped

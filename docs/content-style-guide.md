@@ -33,10 +33,9 @@ apologizing, no blaming the donor. "Enter a valid email address" not
 
 ## Sensitive content
 
-Any content referencing Rev. (Mrs) Helen Okoye's passing, or (pending board
-decision) Rev. William Okoye's passing, should be reviewed by the family/
-board before publishing — this is not a copywriting decision to make
-unilaterally. See `PRD.md` §10.
+Any content referencing a founder's or leader's passing should be
+reviewed by the family/board before publishing — this is not a
+copywriting decision to make unilaterally.
 
 ## Numbers & currency
 

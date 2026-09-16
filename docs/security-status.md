@@ -1,71 +1,45 @@
-# Security — Implementation Status
+# Security Posture
 
-Tracks what `.agent/rules/security.md` requires against what's actually
-wired up in this scaffold, so nothing is assumed "done" that's really just
-documented intent. Update this as real implementation lands.
+High-level summary of the controls this app implements, kept intentionally
+free of specifics that would double as an attacker's roadmap on a system
+handling real donor payments. See `.agent/rules/security.md` for the
+design principles this follows. A detailed, line-by-line gap tracker is
+kept locally (not published) for ongoing engineering use.
 
-## Implemented in this scaffold
+## Implemented
 
-- **Security headers** — `middleware.ts` sets CSP, X-Content-Type-Options,
-  X-Frame-Options, Referrer-Policy, Permissions-Policy, and HSTS on every
-  response. The CSP's `script-src`/`connect-src` will need each payment
-  provider's exact domains added as their checkout widgets are wired in —
-  see the inline comment in `middleware.ts`.
-- **Admin auth** — signed, httpOnly, sameSite=strict session cookie
-  (`lib/auth/session.ts`), 8-hour expiry, HMAC-signed with `AUTH_SECRET`.
-  Passwords hashed with scrypt + per-user salt, constant-time compare
-  (`lib/auth/password.ts`) — never stored or logged in plaintext.
-- **Login rate limiting** — in-memory limiter (`lib/auth/rateLimit.ts`),
-  5 attempts / 15 minutes per email. Documented as in-memory-only; needs a
-  shared store before running multiple server instances.
-- **Fail-closed admin routes** — `app/admin/(protected)/layout.tsx` redirects
-  to `/admin/login` with no session; `/admin/login` itself lives outside
-  that route group so it isn't gated behind the check it creates.
-- **Generic auth error messages** — the login route never reveals whether
-  an email exists, only "Incorrect email or password."
-- **Donor PII minimization in the UI** — the admin donation list shows
-  donor name but not email; email only appears in the audited CSV export.
-- **Audited export** — `GET /api/admin/donations/export` checks the
-  session independently of the page-level guard (API routes are reachable
-  directly) and logs `adminUserId`, row count, and timestamp before
-  streaming the CSV.
-- **Payment integrity pattern** — every webhook route (`app/api/webhooks/*`)
-  follows verify-signature → re-verify-via-provider-API → idempotent update,
-  never trusting the webhook payload's amount/status directly. The
-  `/donate/callback` page re-verifies too rather than trusting arrival at
-  the redirect URL as proof of success.
-- **No secrets in the client** — all provider secret keys are referenced
-  only in server-side files (`lib/payments/*`, API routes); `.env.example`
-  documents every variable name with no real values.
-- **Bootstrap admin creation without a hardcoded password** —
-  `lib/db/seed.ts` only creates an admin user if `SEED_ADMIN_EMAIL` /
-  `SEED_ADMIN_PASSWORD` are explicitly set in the environment.
+- **Security headers** on every response — CSP, HSTS, X-Content-Type-Options,
+  X-Frame-Options, Referrer-Policy, Permissions-Policy (`middleware.ts`).
+- **Admin authentication** — signed, httpOnly, sameSite session cookies with
+  a short expiry; passwords hashed with a salted, constant-time-compared
+  scheme; generic error messages that never reveal whether an account
+  exists.
+- **Login rate limiting**, shared across all server instances (not just a
+  single process).
+- **Role-based access control** for admin actions that touch donor PII.
+- **Fail-closed admin routes** — no valid session, no access, anywhere
+  under the admin area.
+- **Donor PII minimization** — personal data is shown only where the
+  workflow genuinely needs it, and access to it is audit-logged.
+- **Payment integrity pattern** — every payment webhook independently
+  re-verifies with the provider rather than trusting the webhook payload,
+  and confirmation pages re-verify rather than trusting redirect arrival
+  as proof of success.
+- **No secrets in client code** — provider keys and credentials are
+  referenced only in server-side code; `.env.example` documents every
+  variable name with no real values.
+- **CI-enforced quality gates** — typecheck, lint, unit tests, and E2E
+  tests run on every commit; error monitoring (Sentry) and a staging
+  environment (isolated from production data) catch issues before they
+  reach real donors.
 
-## Deliberately stubbed / still needs real implementation
+## In progress
 
-- The three payment adapters' `initialize`/`verify`/`parseWebhook` methods
-  throw `"not yet implemented"` — real HTTP calls and signature schemes
-  need to be filled in per each `.agent/skills/*-integration/skill.md` once
-  API keys exist.
-- No admin role separation yet (`AdminUser.role` field exists but every
-  role currently gets full access) — see `security.md` ("principle of
-  least privilege") and `PRD.md` §7 for when this becomes necessary.
-- Rate limiting is in-memory only (see above) — fine for a single instance,
-  not for multi-instance/production scale without a shared store.
-- CSP is a reasonable starting policy but not fully strict:
-  `style-src 'unsafe-inline'` is a dev-mode concession for CSS Modules'
-  injected `<style>` tags. `script-src 'unsafe-inline'` is required in
-  *production too* (confirmed on the real Cloudflare deployment) — Next.js
-  delivers the RSC/hydration payload via inline `<script>` tags, and a
-  strict `script-src 'self'` blocks that outright (page loads, then goes
-  blank, hydration fails). The fully-strict fix is a per-request CSP
-  nonce, but that forces every page — including the currently-static
-  marketing pages — into dynamic per-request rendering, since a nonce
-  baked into a statically-cached page can't match a fresh nonce generated
-  per request. Deliberately not done given that cost; see the comment in
-  `middleware.ts` before changing this.
-- No automated tests yet for the auth/session/rate-limit code — add these
-  before relying on this in production, per `code-style.md` ("chase
-  coverage on anything that touches money or donor PII").
-- SCUML/CAC compliance fields and thresholds are placeholders — see
-  `docs/compliance-nigeria-ngo.md`.
+- Payment gateway integrations are being completed as provider
+  credentials become available.
+- Ongoing hardening as the donation flow moves toward handling real
+  transactions — tracked internally, not itemized here.
+
+Questions about current security posture for a partnership, audit, or
+disclosure purpose: contact WHHF directly rather than relying solely on
+this document.

@@ -23,3 +23,8 @@ test-results/
 playwright-report/
 blob-report/
 playwright/.cache/
+# Detailed security gap tracking — deliberately not public on a system
+# that will handle real donor payments. See docs/security-status.md for
+# the published high-level version. See docs/production-readiness.md
+# Phase 6.
+docs/security-status.internal.md

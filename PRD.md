@@ -12,11 +12,6 @@ documented public activity centers on supporting indigent cancer patients
 (e.g. a ₦1.5M distribution to five patients at National Hospital, Abuja,
 tied to Mrs. Okoye's memorial anniversary). WHHF currently has no website.
 
-⚠️ Rev. William Okoye, co-founder and ACFM General Overseer, passed away in
-July 2026. How this is reflected in site content (a memoriam page, About
-page framing, leadership listing) is pending a decision from the family/
-board — see section 10.
-
 ## 2. Goals
 
 1. Give WHHF a credible, dignified public presence that tells its founding
@@ -52,7 +47,7 @@ board — see section 10.
 - **Home** — mission statement, founding story teaser, live/rolling impact
   stat, primary donate CTA, featured programme, path to "Our Story."
 - **Our Story** — Rev. (Mrs) Helen Okoye's legacy, how/why WHHF was formed,
-  timeline. ⚠️ pending decision on including Rev. William Okoye's passing.
+  timeline.
 - **Programmes** — cancer/indigent patient support as the flagship cause;
   space for additional programmes as WHHF confirms them.
 - **Impact** — cumulative totals, notable distributions (e.g. the 2023
@@ -126,24 +121,22 @@ without re-entering all details).
 
 ## 10. Open questions for WHHF board / family (blocking full sign-off)
 
-1. How should Rev. William Okoye's passing (July 2026) be reflected on the
-   site — memoriam page, updated "Our Story," or kept minimal for now?
-2. Full current board roster + short bios + headshots.
-3. Confirmed CAC registration number and SCUML status, for the compliance
+1. Full current board roster + short bios + headshots.
+2. Confirmed CAC registration number and SCUML status, for the compliance
    footer/disclosures (see `docs/compliance-nigeria-ngo.md`).
-4. ✅ Bank account details confirmed by WHHF and added to the Donate page
+3. ✅ Bank account details confirmed by WHHF and added to the Donate page
    (Fidelity Bank, account name "William and Helen Heritage Foundation",
    account 5600513265) — settlement currency/per-provider accounts still
    open once online payment providers are live.
-5. Tax-receipt requirements — does WHHF issue any formal receipt donors can
+4. Tax-receipt requirements — does WHHF issue any formal receipt donors can
    use for tax purposes, and does that require a specific document format?
-6. WHHF's four confirmed programme areas (Value Promotion, Social and
+5. WHHF's four confirmed programme areas (Value Promotion, Social and
    Community Development, Skills and Entrepreneurial Development, Holistic
    Development) are now on the Programmes page, from WHHF's own printed
    materials — which still leaves open which concrete NEW programmes
    beyond the cancer/indigent patient flagship should launch day one vs.
    be added later.
-7. Any existing brand guidelines beyond the logo (approved photography,
+6. Any existing brand guidelines beyond the logo (approved photography,
    tone-of-voice examples) — currently working from the logo alone (see
    `design-system.md`).
 

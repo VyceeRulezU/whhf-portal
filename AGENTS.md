@@ -73,10 +73,9 @@ silently introducing a new dependency.
 
 ## Open items the human owner is tracking
 
-- Rev. William Okoye (co-founder, ACFM General Overseer) passed away in July
-  2026. Whether/how this is reflected in site content (memoriam page, About
-  page framing) is a content decision, not an engineering one — do not add or
-  remove memorial content on your own judgment; flag it for the content owner.
+- Content referencing a founder's or leader's passing is a family/board
+  content decision, not an engineering one — do not add or remove
+  memorial content on your own judgment; flag it for the content owner.
 - CAC registration, SCUML status, and bank details exist but haven't been
   transcribed into this repo yet — see `docs/compliance-nigeria-ngo.md` for
   what's still needed.
