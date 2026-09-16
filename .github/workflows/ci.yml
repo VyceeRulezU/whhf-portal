@@ -36,7 +36,13 @@ jobs:
           node-version: 20
           cache: npm
 
-      - run: npm ci
+      # `npm ci` fails here with EBADPLATFORM on @esbuild/aix-ppc64 — a
+      # known npm/esbuild rough edge where a lockfile generated on one
+      # platform (this one: Windows) can record optional-dependency
+      # os/cpu metadata that trips npm ci's stricter validation on a
+      # different platform (Linux, here), even though the actually-needed
+      # linux-x64 binary resolves fine. `npm install` doesn't hit this.
+      - run: npm install
 
       - name: Typecheck
         run: npm run typecheck
@@ -91,7 +97,9 @@ jobs:
           node-version: 20
           cache: npm
 
-      - run: npm ci
+      # See the `ci` job's comment above — `npm ci` fails on this
+      # Windows-generated lockfile under Linux with EBADPLATFORM.
+      - run: npm install
 
       - name: Apply baseline schema to the ephemeral database
         run: |
