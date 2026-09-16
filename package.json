@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "tokens:build": "node tokens/generate-css-variables.js",
-    "db:seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} lib/db/seed.ts",
+    "db:seed": "tsx lib/db/seed.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "cf:build": "opennextjs-cloudflare build",
@@ -39,7 +39,7 @@
     "drizzle-kit": "^0.31.10",
     "eslint": "^8.57.0",
     "eslint-config-next": "^15.5.24",
-    "ts-node": "^10.9.0",
+    "tsx": "^4.23.13",
     "typescript": "^5.5.0",
     "vitest": "^4.1.11",
     "wrangler": "^4.131.1"
