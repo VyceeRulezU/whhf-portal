@@ -154,9 +154,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Wrangler requires Node 22+ (the ci/e2e jobs above run fine on 20 —
+      # only this job invokes wrangler directly).
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - run: npm install
