@@ -14,6 +14,8 @@ not a prototype — see [`.agent/rules/security.md`](.agent/rules/security.md).
   security rules, plus task-specific skills.
 - **Product spec**: [`PRD.md`](PRD.md)
 - **Build status / what's left**: [`docs/roadmap.md`](docs/roadmap.md)
+- **Production-readiness plan** (CI, tests, monitoring, staging —
+  everything short of the payment gateways): [`docs/production-readiness.md`](docs/production-readiness.md)
 - **Security implementation status**: [`docs/security-status.md`](docs/security-status.md)
 - **Contributing**: [`CONTRIBUTING.md`](CONTRIBUTING.md)
 
@@ -26,11 +28,19 @@ rather than this file, so nothing drifts out of sync.
 
 1. **Public-facing site** — mission, founding story, programmes
    (cancer/indigent patient support is the founding cause area), impact
-   reporting, board/leadership, and contact.
+   reporting, board/leadership, blog, gallery, and contact. A newsletter
+   signup in the footer feeds the admin-side newsletter platform below.
 2. **Donation portal** — donors give (one-off, recurring planned) via card,
    bank transfer, and mobile money, in NGN and international currencies
    (USD/GBP at minimum). WHHF staff can see and export what's come in for
-   their own reporting and regulatory obligations.
+   their own reporting and regulatory obligations. A bank-transfer option
+   is live now; card/mobile money providers are still being wired in (see
+   "Payments" below).
+3. **Admin dashboard** — a CRM-style shell (collapsible sidebar, header
+   notification drawer) covering donations, and a unified email platform:
+   real inbound email + contact-form messages in one Inbox, with reply,
+   forward, and compose (Cc/Bcc, attachments), plus a newsletter composer
+   that sends one personalized, unsubscribe-able copy per subscriber.
 
 See [`PRD.md`](PRD.md) for the full product requirements and
 [`docs/`](docs) for compliance, content-style, and roadmap references.
@@ -44,9 +54,9 @@ See [`PRD.md`](PRD.md) for the full product requirements and
 | Design tokens | JSON source (`tokens/`) → generated `tokens.css` custom properties |
 | Database | PostgreSQL via Drizzle ORM, `pg` driver, Cloudflare Hyperdrive binding in production |
 | Auth | Minimal signed-cookie session for the admin dashboard only — donors never need an account |
-| Payments | Paystack, Flutterwave, Korapay, behind one shared `PaymentProvider` interface |
-| Storage | Cloudflare R2 (S3-compatible) — site images, backups, general files |
-| Email | Not yet selected (transactional email for receipts) |
+| Payments | Paystack, Flutterwave, Korapay, behind one shared `PaymentProvider` interface (adapters still stubbed — see `docs/security-status.md`) |
+| Storage | Cloudflare R2 (S3-compatible) — site images, general files |
+| Email | Resend — branded HTML templates for donation receipts, admin replies/compose, and newsletters; a separate Cloudflare Worker routes real inbound email in |
 | Hosting | Cloudflare Workers, via `@opennextjs/cloudflare` — see "Deploying to Cloudflare Workers" below |
 
 Full rationale for each choice lives in
@@ -112,6 +122,15 @@ Never commit `.env` or `.env.local` — both are gitignored.
 | `npm run cf:build` | Build the Cloudflare Workers bundle (`.open-next/`) — see "Deploying to Cloudflare Workers" |
 | `npm run cf:preview` | Build, then run the Worker locally under `wrangler` |
 | `npm run cf:deploy` | Build, then deploy to Cloudflare Workers |
+| `npm run smoke-test` | Hit key production routes right after a deploy and fail loudly if anything's broken — run this after every `wrangler deploy` |
+
+## CI
+
+`.github/workflows/ci.yml` runs `typecheck`, `lint`, and a real `build` on
+every push/PR to `main` — with dummy env vars, since nothing in the build
+touches a live database or sends real email (all static content comes
+from `lib/content/*.ts`). See [`docs/production-readiness.md`](docs/production-readiness.md)
+for the rest of the hardening plan (tests, error monitoring, staging).
 
 ## Deploying to Cloudflare Workers
 
@@ -141,6 +160,18 @@ in-memory Map doesn't meaningfully cap attempts across Workers'
 distributed isolates — each isolate has its own memory. Falls back to an
 in-memory Map for local `next dev`, where no KV binding is available.
 
+**On Windows**, `wrangler deploy` / `npm run cf:deploy` can fail with
+`UserError: ... you should use a local Postgres connection string to
+emulate Hyperdrive functionality`, even for a real remote deploy that
+never touches a local database. Work around it by setting
+`CLOUDFLARE_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE` to the same
+value as `DATABASE_URL` for that one command — it satisfies a preflight
+check in `opennextjs-cloudflare`'s deploy path and isn't actually used.
+
+**Always run `npm run smoke-test` immediately after every deploy** — it
+hits the key public routes and fails loudly if something's actually
+broken, instead of a user finding out first.
+
 Known gaps before this is production-ready on Workers, already flagged
 inline where they matter:
 
@@ -148,6 +179,10 @@ inline where they matter:
   delivers its hydration payload via inline `<script>` tags) — see the
   comment in `middleware.ts` for why a per-request nonce isn't a drop-in
   fix here (it would force every page into dynamic rendering).
+
+See [`docs/production-readiness.md`](docs/production-readiness.md) for
+the full list of remaining production-hardening work (tests, error
+monitoring, staging environment, data-safety/migrations).
 
 ## Project structure
 
@@ -159,32 +194,47 @@ CONTRIBUTING.md           → PR checklist, branch/commit conventions
   rules/                  → architecture, code-style, design-system, security
   skills/                 → task-specific how-tos (API routes, components,
                              migrations, payment provider integrations)
+.github/workflows/        → CI (typecheck/lint/build) + the Supabase keep-alive cron
+scripts/                  → smoke-test.js — run after every deploy
 app/
   (marketing)/            → public pages: home, about, programmes, impact,
-                             leadership, contact — shared header/footer layout
+                             leadership, blog, gallery, faith, contact —
+                             shared header/footer layout
   (donate)/                → donation flow: amount → details → payment → confirmation
   admin/
     login/                → outside the auth guard, by design
-    (protected)/          → everything behind the admin session check
+    (protected)/          → dashboard, donations, email, newsletter —
+                             everything behind the admin session check
   api/
+    admin/                → session-gated: email send/delete, newsletter send,
+                             inbox/messages mark-read/delete, CSV export
     donations/            → create/verify donation records
+    newsletter/           → public subscribe endpoint
     webhooks/{provider}/  → signature-verify → server-side re-verify → idempotent update
+    webhooks/inbound-email/ → receives forwarded mail from workers/email-router/
+    health/                → public uptime-check endpoint
+  error.tsx, global-error.tsx → branded fallback UI instead of Next's default crash screen
 components/
   ui/                     → generic building blocks (Button, Card, Badge, Input)
-  marketing/              → page-specific/shared marketing sections (SiteHeader, PageHero, …)
+  marketing/              → page-specific/shared marketing sections (SiteHeader,
+                             PageHero, NewsletterForm, CoreValuesTimeline, …)
   donate/                 → donation-flow-specific components
-  admin/                  → dashboard-specific components (SignOutButton, …)
+  admin/                  → dashboard components (AdminShell, EmailView,
+                             NewsletterView, NotificationDrawer, ComposeEmailModal,
+                             the shared column-driven Table, …)
 lib/
   payments/               → one adapter file per provider + the shared interface + router
   auth/                   → session, password hashing, login rate limiting
   db/                     → Drizzle schema + withDb() connection helper
+  email/                  → Resend client + branded HTML templates
   validation/             → zod schemas shared by forms + API routes
-  format/                 → display-time formatting (currency, etc.)
+  format/                 → display-time formatting (currency, dates)
   content/                → non-CMS content constants (placeholder image URLs, etc.)
 styles/base/              → reset, typography, layout primitives — imported once, globally
 tokens/                   → design tokens: JSON source + generated tokens.css
 assets/brand/             → logo + favicon source files
-docs/                     → compliance, content style guide, roadmap, security status
+docs/                     → compliance, content style guide, roadmap,
+                             production-readiness plan, security status
 public/                   → static files served as-is
 ```
 
@@ -226,11 +276,13 @@ Current adapter implementation status is tracked in
 
 ## Email
 
-Two separate paths, both surfaced in the admin dashboard:
+All outgoing email shares one branded HTML template
+(`lib/email/templates.ts`) sent via Resend (`lib/email/resend.ts`).
+Three inbound/outbound paths, all surfaced in the admin dashboard:
 
 - **Contact form** (`/contact` → `POST /api/contact`) — saves to
-  `ContactMessage` and best-effort emails `CONTACT_INBOX_EMAIL` via Resend
-  (`lib/email/resend.ts`). Visible under Admin → Email → Contact Form tab.
+  `ContactMessage` and best-effort emails `CONTACT_INBOX_EMAIL`. Visible
+  under Admin → Email → Contact Form tab.
 - **Real inbound email** to any `@whheritagefoundation.org` address (not
   just the contact form) — a separate Cloudflare Worker
   (`workers/email-router/`) receives it via Cloudflare Email Routing and
@@ -239,16 +291,31 @@ Two separate paths, both surfaced in the admin dashboard:
   Cloudflare dashboard configuration (Email Routing enabled + a routing
   rule) that isn't part of this codebase — see
   [`workers/email-router/README.md`](workers/email-router/README.md).
+- **Admin reply/compose/forward** (`POST /api/admin/email/send`) — Cc/Bcc,
+  attachments, and a durable `SentEmail` record. Every Inbox/Contact Form
+  row offers View/Reply/Forward/Mark as read/Delete actions.
+
+**Newsletter**: a footer signup form (`POST /api/newsletter/subscribe`)
+feeds an admin composer (`/admin/newsletter`) that sends one personalized
+copy per active subscriber via Resend's batch endpoint (not a shared bcc
+list), so each copy's one-click unsubscribe link
+(`/newsletter/unsubscribe`) actually works.
 
 ## Testing
 
-No automated test suite exists yet. Per
+No automated test suite exists yet — tracked as Phase 1 of
+[`docs/production-readiness.md`](docs/production-readiness.md). Per
 [`.agent/rules/code-style.md`](.agent/rules/code-style.md), when tests are
 added: unit-test `lib/payments/*` adapters against recorded fixture
 responses (never live provider calls), and unit-test every `zod` schema in
 `lib/validation/` with at least one valid and one invalid case. Chase
 coverage on anything that touches money or donor PII; marketing pages don't
 need it.
+
+In the meantime, `.github/workflows/ci.yml` (typecheck + lint + build) and
+`npm run smoke-test` (post-deploy route check) are the only automated
+safety nets — everything else has been verified by hand with throwaway
+Playwright scripts during development.
 
 ## Contributing
 

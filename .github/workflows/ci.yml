@@ -1,0 +1,48 @@
+name: CI
+
+# Safety net for every push/PR — typecheck, lint, and a real production
+# build, so a broken commit is caught here instead of only being noticed
+# after a manual `wrangler deploy` (see PRD.md's production-readiness plan).
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    env:
+      # Dummy values — nothing here connects to anything real. Just enough
+      # so a module-scope process.env read doesn't crash the build; the
+      # app never queries a live DB or sends real email during `next build`
+      # (all static content comes from lib/content/*.ts, not the database).
+      DATABASE_URL: "postgresql://user:pass@localhost:5432/whhf"
+      AUTH_SECRET: "ci-build-dummy-secret"
+      RESEND_API_KEY: "re_dummy"
+      RESEND_FROM_ADDRESS: "no-reply@example.com"
+      CONTACT_INBOX_EMAIL: "contact@example.com"
+      INBOUND_EMAIL_WEBHOOK_SECRET: "ci-dummy-secret"
+      R2_ACCOUNT_ID: "dummy"
+      R2_ACCESS_KEY_ID: "dummy"
+      R2_SECRET_ACCESS_KEY: "dummy"
+      R2_BUCKET_NAME: "dummy"
+      R2_PUBLIC_URL: "https://example.com"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build

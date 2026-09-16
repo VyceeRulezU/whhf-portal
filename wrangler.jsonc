@@ -28,5 +28,10 @@
   "hyperdrive": [{ "binding": "HYPERDRIVE", "id": "1f29bf84d84a48cf90a28479568f7152" }],
   // Admin login rate-limiting needs to be shared across every Worker
   // isolate, not per-instance memory — see lib/auth/rateLimit.ts.
-  "kv_namespaces": [{ "binding": "RATE_LIMIT_KV", "id": "1d2060ae865a4a5d8971533ab53a46a5" }]
+  "kv_namespaces": [{ "binding": "RATE_LIMIT_KV", "id": "1d2060ae865a4a5d8971533ab53a46a5" }],
+  // Real request/exception logs in the Cloudflare dashboard and via
+  // `wrangler tail`, with no external service required — part of the
+  // production-readiness plan (catching errors without manually checking
+  // the live site). See PRD.md.
+  "observability": { "enabled": true }
 }

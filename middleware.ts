@@ -6,7 +6,7 @@ import type { NextRequest } from "next/server";
  * Runs on every request. Do not weaken CSP to work around a dev-only
  * problem; fix the underlying script/style source instead.
  */
-export function middleware(req: NextRequest) {
+export function middleware(_req: NextRequest) {
   const res = NextResponse.next();
   const isDev = process.env.NODE_ENV !== "production";
 

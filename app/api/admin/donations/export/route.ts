@@ -11,7 +11,7 @@ import { donations } from "@/lib/db/schema";
  * since API routes are independently reachable) and writes an audit log
  * line before streaming the CSV.
  */
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
   const session = await getSession();
   if (!session) {
     return NextResponse.json({ error: { code: "unauthorized" } }, { status: 401 });

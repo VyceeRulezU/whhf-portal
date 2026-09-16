@@ -14,7 +14,8 @@
     "db:migrate": "drizzle-kit migrate",
     "cf:build": "opennextjs-cloudflare build",
     "cf:preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "cf:deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy"
+    "cf:deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "smoke-test": "node scripts/smoke-test.js"
   },
   "dependencies": {
     "aws4fetch": "^1.0.20",
