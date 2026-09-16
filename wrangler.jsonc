@@ -2,6 +2,15 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "whhf-portal",
   "main": ".open-next/worker.js",
+  // Cloudflare Workers Builds (the GitHub-connected auto-deploy-on-push
+  // integration, separate from .github/workflows/ci.yml and from manual
+  // `wrangler deploy`) needs this to know how to produce .open-next/ —
+  // without it, it falls back to a generic default (plain `npm run
+  // build`), which only runs `next build` and never generates the
+  // OpenNext bundle this Worker's `main` points at. See README.md
+  // ("Deploying to Cloudflare Workers") for the same gotcha on the
+  // Pages-era dashboard setting this replaces.
+  "build": { "command": "npm run cf:build" },
   "compatibility_date": "2026-09-13",
   // nodejs_compat is required — the app uses Node's crypto module (admin
   // session signing/password hashing, see lib/auth/) which only works with
