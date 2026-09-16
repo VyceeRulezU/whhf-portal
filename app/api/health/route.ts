@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { sql } from "drizzle-orm";
+import * as Sentry from "@sentry/nextjs";
 import { withDb } from "@/lib/db/client";
 
 /**
@@ -18,6 +19,7 @@ export async function GET() {
     return NextResponse.json({ data: { status: "ok", database: "ok", checkedAt } });
   } catch (err) {
     console.error("[api/health] database check failed", err);
+    Sentry.captureException(err);
     return NextResponse.json({ data: { status: "error", database: "error", checkedAt } }, { status: 503 });
   }
 }

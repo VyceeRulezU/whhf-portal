@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import * as Sentry from "@sentry/nextjs";
 import { createContactMessageSchema } from "@/lib/validation/contact";
 import { withDb } from "@/lib/db/client";
 import { contactMessages } from "@/lib/db/schema";
@@ -42,12 +43,14 @@ export async function POST(req: NextRequest) {
         `
       }).catch((err) => {
         console.error("[api/contact] failed to send notification email", err);
+        Sentry.captureException(err);
       });
     }
 
     return NextResponse.json({ data: { id: contactMessage.id } }, { status: 201 });
   } catch (err) {
     console.error("[api/contact] unexpected error", err);
+    Sentry.captureException(err);
     return NextResponse.json(
       { error: { code: "internal_error", message: "Something went wrong." } },
       { status: 500 }

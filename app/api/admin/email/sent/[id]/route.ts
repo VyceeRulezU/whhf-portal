@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
+import * as Sentry from "@sentry/nextjs";
 import { getSession } from "@/lib/auth/session";
 import { withDb } from "@/lib/db/client";
 import { sentEmails } from "@/lib/db/schema";
@@ -20,6 +21,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     return NextResponse.json({ data: { deleted: true } });
   } catch (err) {
     console.error("[api/admin/email/sent] unexpected error", err);
+    Sentry.captureException(err);
     return NextResponse.json(
       { error: { code: "internal_error", message: "Something went wrong." } },
       { status: 500 }

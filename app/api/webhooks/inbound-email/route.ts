@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { timingSafeEqual } from "crypto";
+import * as Sentry from "@sentry/nextjs";
 import { inboundEmailSchema } from "@/lib/validation/inboundEmail";
 import { withDb } from "@/lib/db/client";
 import { inboundEmails } from "@/lib/db/schema";
@@ -51,6 +52,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ data: { id: email.id } }, { status: 201 });
   } catch (err) {
     console.error("[webhooks/inbound-email] unexpected error", err);
+    Sentry.captureException(err);
     return NextResponse.json(
       { error: { code: "internal_error", message: "Something went wrong." } },
       { status: 500 }

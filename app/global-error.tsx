@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import * as Sentry from "@sentry/nextjs";
 
 /**
  * Only fires if the root layout itself throws — everything else is
@@ -12,6 +13,7 @@ import { useEffect } from "react";
 export default function GlobalError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
     console.error("[app/global-error]", error);
+    Sentry.captureException(error);
   }, [error]);
 
   return (

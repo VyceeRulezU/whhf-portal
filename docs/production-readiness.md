@@ -42,11 +42,31 @@ what's actually shipped — same rule as `roadmap.md`.
 
 ## Phase 2 — Error monitoring
 
-- [ ] Real-time exception tracking (Sentry or equivalent) wired into
-      `app/error.tsx`, `app/global-error.tsx`, and server-side error
-      handlers — needs an account + DSN from WHHF/the project owner
-- [ ] Decide whether Cloudflare Workers Logs (Phase 0) alone is
-      sufficient before adding another vendor
+- [x] Real-time exception tracking via `@sentry/nextjs`, wired into
+      `app/error.tsx`, `app/global-error.tsx`, and every API route's
+      catch block (`Sentry.captureException(err)` alongside the existing
+      `console.error`).
+      **Deliberately NOT using Sentry's automatic `onRequestError` /
+      `Sentry.captureRequestError` hook** — that specific integration has
+      open GitHub issues causing `AsyncLocalStorage` errors on Cloudflare
+      Workers via `@opennextjs/cloudflare` (getsentry/sentry-javascript#18842).
+      Verified safe on this exact stack via a real deploy: added a
+      temporary `/api/debug-sentry-test` route that called
+      `Sentry.captureException` + `Sentry.flush()`, hit it in production,
+      confirmed the site stayed healthy (`npm run smoke-test` still all
+      green) rather than hitting the documented "Server failed to
+      respond" failure mode, then deleted the route.
+      `NEXT_PUBLIC_SENTRY_DSN` is set both as a build-time var (in
+      `.env.local`, since `NEXT_PUBLIC_*` vars are inlined into the
+      client bundle at build time) and as a Cloudflare Worker runtime
+      secret (for the server/edge config files).
+      Client bundle size grew from ~102 KB to ~185 KB shared JS as a
+      result (Sentry's SDK, including session replay) — acceptable
+      tradeoff for now; revisit (e.g. drop `replayIntegration`) if it
+      becomes a real problem.
+- [x] Also have Cloudflare Workers Logs (Phase 0) — kept both rather
+      than choosing one, since Workers Logs covers infrastructure-level
+      issues Sentry's `nodejs_compat`-emulated runtime might miss.
 
 ## Phase 3 — Data safety
 

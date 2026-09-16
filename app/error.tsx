@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import * as Sentry from "@sentry/nextjs";
 import { Button } from "@/components/ui/Button";
 import logo from "@/assets/brand/logo-transparent.png";
 import styles from "./error.module.css";
@@ -11,12 +12,12 @@ import styles from "./error.module.css";
  * Catches any rendering/data error thrown by a page under this segment
  * (everything except the root layout itself — see global-error.tsx for
  * that) and shows a branded fallback instead of Next's default crash
- * screen. Logged to the console for now; wire into Sentry once Phase 2
- * (error monitoring) lands — see the production-readiness plan.
+ * screen.
  */
 export default function Error({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
     console.error("[app/error]", error);
+    Sentry.captureException(error);
   }, [error]);
 
   return (

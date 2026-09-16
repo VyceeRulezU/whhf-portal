@@ -19,6 +19,7 @@
     "smoke-test": "node scripts/smoke-test.js"
   },
   "dependencies": {
+    "@sentry/nextjs": "^10.75.0",
     "aws4fetch": "^1.0.20",
     "drizzle-orm": "^0.45.2",
     "framer-motion": "^13.2.0",

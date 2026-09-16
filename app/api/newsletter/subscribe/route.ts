@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import * as Sentry from "@sentry/nextjs";
 import { subscribeNewsletterSchema } from "@/lib/validation/newsletter";
 import { withDb } from "@/lib/db/client";
 import { newsletterSubscribers } from "@/lib/db/schema";
@@ -36,6 +37,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ data: { subscribed: true } }, { status: 201 });
   } catch (err) {
     console.error("[api/newsletter/subscribe] unexpected error", err);
+    Sentry.captureException(err);
     return NextResponse.json(
       { error: { code: "internal_error", message: "Something went wrong." } },
       { status: 500 }

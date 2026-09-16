@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
+import * as Sentry from "@sentry/nextjs";
 import { createDonationSchema } from "@/lib/validation/donation";
 import { withDb } from "@/lib/db/client";
 import { causes, donors, donations } from "@/lib/db/schema";
@@ -95,6 +96,7 @@ export async function POST(req: NextRequest) {
     );
   } catch (err) {
     console.error("[api/donations] unexpected error", err);
+    Sentry.captureException(err);
     return NextResponse.json(
       { error: { code: "internal_error", message: "Something went wrong." } },
       { status: 500 }

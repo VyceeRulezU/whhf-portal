@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sql } from "drizzle-orm";
+import * as Sentry from "@sentry/nextjs";
 import { withDb } from "@/lib/db/client";
 
 /**
@@ -24,6 +25,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ data: { ok: true, pingedAt: new Date().toISOString() } });
   } catch (err) {
     console.error("[api/cron/keep-alive] failed", err);
+    Sentry.captureException(err);
     return NextResponse.json({ error: { code: "internal_error" } }, { status: 500 });
   }
 }
