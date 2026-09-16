@@ -48,13 +48,16 @@ what's actually shipped — same rule as `roadmap.md`.
 
 ## Phase 3 — Data safety
 
-- [ ] Formalize schema changes through `drizzle-kit` going forward — see
-      `.agent/skills/db-migration-runner/skill.md`; every schema change so
-      far (including this session's `SentEmail`, `NewsletterSubscriber`,
-      `SentNewsletter` tables) was hand-run raw SQL directly against the
-      live database, with no recorded migration history or rollback path
-- [ ] Document a backup / point-in-time-recovery plan for the Supabase
-      database — depends on confirming the current Supabase plan tier
+- [x] Formalize schema changes through `drizzle-kit` going forward —
+      generated a baseline migration (`drizzle/migrations/0000_aberrant_toad.sql`)
+      from the current schema and marked it as already-applied against the
+      live database (bookkeeping only — no DDL executed, no data touched).
+      Every schema change from here on goes through `drizzle-kit generate`
+      + `migrate`, not hand-run SQL. See
+      `.agent/skills/db-migration-runner/skill.md`.
+- [ ] Backup / recovery plan — confirmed on Supabase's **free tier**, which
+      has no point-in-time recovery. Needs a scheduled `pg_dump` → R2
+      workflow (mirroring `supabase-keep-alive.yml`'s pattern).
 
 ## Phase 4 — Staging environment
 

@@ -4,12 +4,12 @@ import { relations } from "drizzle-orm";
 /**
  * Drizzle schema — replaces prisma/schema.prisma (see lib/db/client.ts for
  * why: Prisma's engine-less client can't run on Cloudflare Workers, see
- * README.md "Deploying to Cloudflare Workers"). Table/column/enum names
- * match EXACTLY what Prisma's migration already created in the real
- * database (prisma/migrations/20260914170027_init_schema/migration.sql)
- * — no new migration needed, this schema just describes the existing
- * tables. Any FUTURE schema change should go through drizzle-kit
- * (drizzle.config.ts) instead of prisma/ from here on.
+ * README.md "Deploying to Cloudflare Workers"). Originally written to
+ * match tables Prisma's migration had already created; that's now
+ * formalized as drizzle/migrations/0000_aberrant_toad.sql, generated from
+ * this file and marked as already-applied against the live database (see
+ * .agent/skills/db-migration-runner/skill.md). Any schema change from here
+ * on goes through drizzle-kit generate + migrate, not hand-run SQL.
  */
 
 const genId = () => crypto.randomUUID();

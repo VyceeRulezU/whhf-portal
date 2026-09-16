@@ -11,19 +11,23 @@ that already has real donation data in it post-launch.
 Read `.agent/rules/architecture.md` for the current data model context and
 `.agent/rules/security.md` for what donor data may/may not be stored.
 
-## Before the first migration ever
+## Baseline (done — for context only)
 
-`lib/db/schema.ts` was hand-written to match tables that already exist in
-production (originally created by a since-removed Prisma migration — see
-`drizzle.config.ts`). No baseline migration has been recorded, so
-`drizzle-kit generate` has nothing to diff against and will emit a full
-`CREATE TABLE ...` for every table, even though they already exist —
-running `db:migrate` with that file would collide with the live schema.
-Before running `db:migrate` for the very first real schema change,
-establish a baseline: generate the migration, then mark it as already
-applied (insert its record into drizzle's migrations-tracking table
-directly) instead of letting the migrator execute the `CREATE TABLE`
-statements against a database that already has those tables.
+`lib/db/schema.ts` was originally hand-written to match tables already
+created in production (by a since-removed Prisma migration). As of
+`drizzle/migrations/0000_aberrant_toad.sql`, that's been resolved: the
+baseline migration was generated from the schema as it stood, then marked
+as already applied directly in `drizzle.__drizzle_migrations` (hash +
+journal timestamp, computed the same way `drizzle-orm`'s migrator does)
+rather than executed — since the tables it describes already existed. Any
+schema change between then and now that wasn't captured this way would
+show up as an unexpected diff the next time `drizzle-kit generate` runs;
+if that happens, treat it the same way (generate, verify, mark-applied
+rather than execute) rather than letting the migrator try to recreate
+existing objects.
+
+**From here on, every schema change goes through the normal workflow
+below** — no more hand-run raw SQL against the live database.
 
 ## Workflow
 
