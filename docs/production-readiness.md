@@ -25,18 +25,20 @@ what's actually shipped — same rule as `roadmap.md`.
 
 ## Phase 1 — Tests
 
-- [ ] Unit tests: `lib/auth/session.ts`, `lib/auth/rateLimit.ts`,
-      `lib/auth/password.ts` (flagged as a known gap in
-      `docs/security-status.md`)
-- [ ] Unit tests: donation amount/currency handling
-      (`lib/format/currency.ts`, the smallest-unit conversion in
-      `components/donate/DonationForm.tsx` and `POST /api/donations`)
-- [ ] Unit tests: every `zod` schema in `lib/validation/` (at least one
-      valid + one invalid case each — see `CONTRIBUTING.md`)
-- [ ] A small, permanent Playwright suite: admin login → dashboard,
-      donate flow → thank-you page, contact form submit — replacing the
-      throwaway verification scripts written ad hoc during development
-- [ ] Wire the above into `ci.yml`
+- [x] Unit tests (Vitest, `npm test`): `lib/auth/session.ts`,
+      `lib/auth/rateLimit.ts`, `lib/auth/password.ts`, `lib/format/currency.ts`,
+      and every `zod` schema in `lib/validation/` (at least one valid + one
+      invalid case each) — 45 tests across 10 files
+- [x] A permanent Playwright suite (`e2e/`, `@playwright/test`, not the
+      raw `playwright` package): admin login (success + wrong password),
+      contact form submit — replacing the throwaway verification scripts
+      written ad hoc during development. See `e2e/README.md`.
+- [ ] Donate flow → thank-you page — blocked on a real payment provider
+      being wired in (adapters are still stubbed); documented in `e2e/README.md`
+- [x] Wired into `.github/workflows/ci.yml`: unit tests in the `ci` job,
+      E2E in a separate `e2e` job against an ephemeral `postgres:17`
+      service container (baseline migration applied, throwaway admin
+      seeded) — never touches the real Supabase database
 
 ## Phase 2 — Error monitoring
 
@@ -55,9 +57,13 @@ what's actually shipped — same rule as `roadmap.md`.
       Every schema change from here on goes through `drizzle-kit generate`
       + `migrate`, not hand-run SQL. See
       `.agent/skills/db-migration-runner/skill.md`.
-- [ ] Backup / recovery plan — confirmed on Supabase's **free tier**, which
-      has no point-in-time recovery. Needs a scheduled `pg_dump` → R2
-      workflow (mirroring `supabase-keep-alive.yml`'s pattern).
+- [x] Backup / recovery plan — confirmed on Supabase's **free tier**,
+      which has no point-in-time recovery. `.github/workflows/db-backup.yml`
+      runs a daily `pg_dump` → R2 upload (`scripts/db-backup.js`),
+      verified end-to-end against the live database (a real ~325KB dump
+      landed in `db-backups/` in R2). Restoring from one hasn't been
+      rehearsed yet — worth a dry run before relying on it in a real
+      incident.
 
 ## Phase 4 — Staging environment
 

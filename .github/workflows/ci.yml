@@ -44,5 +44,80 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Unit tests
+        run: npm test
+
       - name: Build
         run: npm run build
+
+  e2e:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: whhf_e2e
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      # An ephemeral, disposable database — created fresh for this job and
+      # destroyed after. Never the real Supabase database. See e2e/README.md.
+      DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/whhf_e2e"
+      AUTH_SECRET: "e2e-test-secret"
+      RESEND_API_KEY: "re_dummy"
+      RESEND_FROM_ADDRESS: "no-reply@example.com"
+      CONTACT_INBOX_EMAIL: "contact@example.com"
+      INBOUND_EMAIL_WEBHOOK_SECRET: "e2e-dummy-secret"
+      R2_ACCOUNT_ID: "dummy"
+      R2_ACCESS_KEY_ID: "dummy"
+      R2_SECRET_ACCESS_KEY: "dummy"
+      R2_BUCKET_NAME: "dummy"
+      R2_PUBLIC_URL: "https://example.com"
+      SEED_ADMIN_EMAIL: "e2e-admin@example.com"
+      SEED_ADMIN_PASSWORD: "e2e-test-password-123"
+      E2E_ADMIN_EMAIL: "e2e-admin@example.com"
+      E2E_ADMIN_PASSWORD: "e2e-test-password-123"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Apply baseline schema to the ephemeral database
+        run: |
+          sudo apt-get update && sudo apt-get install -y postgresql-client
+          psql "$DATABASE_URL" -f drizzle/migrations/0000_aberrant_toad.sql
+
+      - name: Seed a throwaway admin account
+        run: npm run db:seed
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Build
+        run: npm run build
+
+      - name: Start app, wait for it, run E2E tests
+        run: |
+          npm run start &
+          SERVER_PID=$!
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:3000 > /dev/null && break
+            sleep 2
+          done
+          set +e
+          npx playwright test
+          TEST_EXIT=$?
+          set -e
+          kill "$SERVER_PID" 2>/dev/null || true
+          exit $TEST_EXIT

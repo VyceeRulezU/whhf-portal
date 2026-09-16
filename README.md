@@ -115,6 +115,7 @@ Never commit `.env` or `.env.local` — both are gitignored.
 | `npm run start` | Run the production build |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run lint` | ESLint |
+| `npm test` | Vitest unit tests (`lib/auth/*`, `lib/format/currency.ts`, `lib/validation/*`) |
 | `npm run tokens:build` | Regenerate `tokens/tokens.css` from the JSON token source — run after any token edit |
 | `npm run db:generate` | Generate a Drizzle migration after a `lib/db/schema.ts` change |
 | `npm run db:migrate` | Apply pending Drizzle migrations |
@@ -303,19 +304,22 @@ list), so each copy's one-click unsubscribe link
 
 ## Testing
 
-No automated test suite exists yet — tracked as Phase 1 of
-[`docs/production-readiness.md`](docs/production-readiness.md). Per
-[`.agent/rules/code-style.md`](.agent/rules/code-style.md), when tests are
-added: unit-test `lib/payments/*` adapters against recorded fixture
-responses (never live provider calls), and unit-test every `zod` schema in
-`lib/validation/` with at least one valid and one invalid case. Chase
-coverage on anything that touches money or donor PII; marketing pages don't
-need it.
+- **Unit tests** (Vitest): `npm test`. Covers `lib/auth/*` (session
+  signing/tampering/expiry, password hashing, login rate limiting),
+  `lib/format/currency.ts`, and every `zod` schema in `lib/validation/`
+  (at least one valid + one invalid case each, per
+  [`.agent/rules/code-style.md`](.agent/rules/code-style.md)).
+- **End-to-end tests** (`@playwright/test`, not the raw `playwright`
+  package): `npx playwright test` — see [`e2e/README.md`](e2e/README.md)
+  for how to run these locally (needs a seeded admin account) and what CI
+  does differently (an ephemeral database, never the real one).
+- `lib/payments/*` adapters aren't unit-tested yet — still stubbed, see
+  `docs/security-status.md`. Test against recorded fixture responses when
+  they're implemented, never live provider calls.
 
-In the meantime, `.github/workflows/ci.yml` (typecheck + lint + build) and
-`npm run smoke-test` (post-deploy route check) are the only automated
-safety nets — everything else has been verified by hand with throwaway
-Playwright scripts during development.
+Both suites run in `.github/workflows/ci.yml` on every push/PR, alongside
+typecheck/lint/build. `npm run smoke-test` is the separate post-deploy
+route check — run it after every `wrangler deploy`.
 
 ## Contributing
 

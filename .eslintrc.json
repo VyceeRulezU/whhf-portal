@@ -3,7 +3,8 @@
   "ignorePatterns": [
     "workers/**",
     "next-env.d.ts",
-    "tokens/generate-css-variables.js"
+    "tokens/generate-css-variables.js",
+    "scripts/**"
   ],
   "rules": {
     "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }]
