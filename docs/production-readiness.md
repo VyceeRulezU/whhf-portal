@@ -120,17 +120,39 @@ what's actually shipped — same rule as `roadmap.md`.
       gh secret set CLOUDFLARE_ACCOUNT_ID --body "<value from .env.local>"
       gh secret set NEXT_PUBLIC_SENTRY_DSN --body "<value from .env.local>"
       ```
-      Until those are set, the `deploy-staging` job will run on the next
-      push to `main` and fail at the `wrangler deploy` step (harmless —
-      it doesn't touch production).
+      **Done** — secrets added, `deploy-staging` job verified passing
+      end-to-end in a real GitHub Actions run (build → deploy → smoke-test
+      all green).
 
 ## Phase 5 — Security hardening
 
-- [ ] Admin role separation enforcement — `AdminUser.role` exists in the
-      schema but nothing currently checks it (see `docs/security-status.md`)
-- [ ] Revisit CSP `unsafe-inline` for `script-src`/`style-src` — see the
-      tradeoff already documented in `middleware.ts` (a per-request nonce
-      would force every page into dynamic rendering)
+- [x] Admin role separation enforcement — `AdminUser.role` existed in the
+      schema but nothing checked it. Scoped narrowly to what
+      `.agent/rules/security.md` actually calls out ("a content editor role
+      should not be able to export donor PII or refund a transaction");
+      there's no refund feature yet, so the only real boundary today is
+      donor PII. Added `isFullAdmin(session)` in `lib/auth/session.ts` and
+      applied it to the one route that exposes donor email:
+      `GET /api/admin/donations/export` now returns 403 for a non-"admin"
+      role (previously any valid session could hit it). The CSV-export
+      link on `/admin/donations` is also hidden for a non-admin session
+      as a UX signal — the enforcement itself lives server-side, a hidden
+      link isn't a security boundary on its own. No UI exists yet to
+      create a "content_editor" account (only `lib/db/seed.ts` bootstraps
+      one "admin" account) — this guard is ready for whenever one is
+      added, not exercised by anything today. Covered by a unit test in
+      `lib/auth/session.test.ts`.
+- [x] Revisit CSP `unsafe-inline` for `script-src`/`style-src` — reviewed,
+      decided to keep as-is. Re-verified the reasoning already documented
+      in `middleware.ts` still holds: the codebase has zero actual
+      `dangerouslySetInnerHTML` usage (confirmed via a repo-wide grep —
+      the only hit was a comment explicitly noting it deliberately avoids
+      that API), so the residual XSS risk `unsafe-inline` accepts stays
+      narrow. The strict alternative (per-request nonce) would force every
+      page — including the currently-static marketing pages — into dynamic
+      rendering, a real performance/architecture cost. Not worth paying
+      for a codebase with no inline-HTML injection points to begin with;
+      revisit if that ever changes.
 
 ## Phase 6 — Docs & public-repo polish
 

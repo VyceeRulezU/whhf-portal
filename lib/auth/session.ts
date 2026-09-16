@@ -72,3 +72,12 @@ export async function getSession(): Promise<SessionPayload | null> {
     return null;
   }
 }
+
+/**
+ * "admin" is the only role allowed to touch donor PII or (when it exists)
+ * refund a transaction — see security.md ("principle of least privilege").
+ * "content_editor" is everything else: session-gated, but not this.
+ */
+export function isFullAdmin(session: { role: string } | null): boolean {
+  return session?.role === "admin";
+}

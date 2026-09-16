@@ -19,7 +19,7 @@ vi.mock("next/headers", () => ({
 
 process.env.AUTH_SECRET = "test-only-secret-do-not-use-in-real-env";
 
-const { createSession, destroySession, getSession } = await import("./session");
+const { createSession, destroySession, getSession, isFullAdmin } = await import("./session");
 
 const SESSION_COOKIE = "whhf_admin_session";
 
@@ -69,5 +69,13 @@ describe("session", () => {
     vi.setSystemTime(Date.now() + 9 * 60 * 60 * 1000); // 9 hours later
 
     expect(await getSession()).toBeNull();
+  });
+});
+
+describe("isFullAdmin", () => {
+  it("is true only for an admin-role session", () => {
+    expect(isFullAdmin({ role: "admin" })).toBe(true);
+    expect(isFullAdmin({ role: "content_editor" })).toBe(false);
+    expect(isFullAdmin(null)).toBe(false);
   });
 });

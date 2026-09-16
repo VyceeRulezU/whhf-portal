@@ -6,13 +6,19 @@ import { Button } from "@/components/ui/Button";
 import { StatCard } from "@/components/admin/StatCard";
 import { DonationsTable } from "@/components/admin/DonationsTable";
 import { DonationsIcon, DashboardIcon, EmailIcon } from "@/components/admin/icons";
+import { getSession, isFullAdmin } from "@/lib/auth/session";
 import styles from "./donations.module.css";
 
 /**
  * Reachable only through app/admin/(protected)/layout.tsx's session guard.
  * Minimal v1 per PRD.md §7: aggregate totals + filterable list + CSV export.
+ * The export link is hidden for a "content_editor" session as a UX signal —
+ * the actual enforcement is server-side in the export route itself, since
+ * hiding a link is not a security boundary on its own.
  */
 export default async function AdminDonationsPage() {
+  const session = await getSession();
+
   const [donations, totalsByCurrency, succeededDonorRows] = await Promise.all([
     withDb((db) =>
       db.query.donations.findMany({
@@ -43,9 +49,11 @@ export default async function AdminDonationsPage() {
     <div className="stack">
       <div className={`cluster ${styles.headerRow}`}>
         <h1>Donations</h1>
-        <a href="/api/admin/donations/export">
-          <Button variant="outline">Export CSV</Button>
-        </a>
+        {isFullAdmin(session) && (
+          <a href="/api/admin/donations/export">
+            <Button variant="outline">Export CSV</Button>
+          </a>
+        )}
       </div>
 
       <div className="grid-auto">
