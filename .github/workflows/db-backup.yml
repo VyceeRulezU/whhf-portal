@@ -31,6 +31,10 @@ jobs:
           curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/pgdg.gpg
           sudo apt-get update
           sudo apt-get install -y postgresql-client-17
+          # The versioned package doesn't take over the unversioned
+          # `pg_dump` on PATH (that stays the older preinstalled one) —
+          # prepend its actual bin dir so this job's later steps use v17.
+          echo "/usr/lib/postgresql/17/bin" >> "$GITHUB_PATH"
 
       - name: Dump database and upload to R2
         env:
