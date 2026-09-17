@@ -11,11 +11,9 @@ export const metadata: Metadata = {
 };
 
 // Page content (hero text, board roster) is now family-editable — see
-// /admin/content/leadership and lib/content/registry.ts. This is
-// deliberately a dynamic page (not statically generated) so an edit is
-// live on the next request, no redeploy — see docs/production-readiness.md
-// CMS section for why.
-export const dynamic = "force-dynamic";
+// /admin/content/leadership and lib/content/registry.ts. Dynamic
+// rendering (so an edit is live on the next request, no redeploy) is set
+// once at app/(marketing)/layout.tsx, not per page.
 
 interface BoardMember {
   name: string;

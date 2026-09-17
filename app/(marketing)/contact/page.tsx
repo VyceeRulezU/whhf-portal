@@ -12,9 +12,8 @@ export const metadata: Metadata = {
 
 // See /admin/content/contact and lib/content/registry.ts — "contact.rows"
 // is also read by components/marketing/SiteFooter directly, so the two
-// never drift out of sync. Dynamic (not static) so an edit is live on the
-// next request — see docs/production-readiness.md CMS section.
-export const dynamic = "force-dynamic";
+// never drift out of sync. Dynamic rendering is set once at
+// app/(marketing)/layout.tsx, not per page.
 
 interface ContactRow {
   label: string;
