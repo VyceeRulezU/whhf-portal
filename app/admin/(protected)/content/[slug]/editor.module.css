@@ -1,0 +1,10 @@
+.back {
+  display: inline-block;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-3);
+}
+
+.back:hover {
+  color: var(--color-gold);
+}

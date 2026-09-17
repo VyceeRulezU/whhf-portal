@@ -134,3 +134,13 @@ export function SignOutIcon({ className }: IconProps) {
     </svg>
   );
 }
+
+export function PagesIcon({ className }: IconProps) {
+  return (
+    <svg className={className} width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <path d="M5 2.5h6l3 3v10a1 1 0 01-1 1H5a1 1 0 01-1-1v-12a1 1 0 011-1z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+      <path d="M11 2.5V6h3" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+      <path d="M6 9.5h6M6 12.5h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}

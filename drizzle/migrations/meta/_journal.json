@@ -8,6 +8,13 @@
       "when": 1789561158510,
       "tag": "0000_aberrant_toad",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1789655775963,
+      "tag": "0001_add_site_content_fields",
+      "breakpoints": true
     }
   ]
 }

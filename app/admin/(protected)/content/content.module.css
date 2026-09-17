@@ -1,0 +1,26 @@
+.intro {
+  color: var(--color-text-secondary);
+}
+
+.cardLink {
+  display: block;
+}
+
+.pageCard {
+  transition: border-color var(--motion-fast);
+}
+
+.cardLink:hover .pageCard {
+  border-color: var(--color-gold);
+}
+
+.pageLabel {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-h3);
+}
+
+.pageMeta {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  margin-top: var(--space-1);
+}

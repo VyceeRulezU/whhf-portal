@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { SignOutButton } from "@/components/admin/SignOutButton";
-import { DashboardIcon, DonationsIcon, EmailIcon, NewsletterIcon, ChevronDoubleLeftIcon } from "@/components/admin/icons";
+import { DashboardIcon, DonationsIcon, EmailIcon, NewsletterIcon, PagesIcon, ChevronDoubleLeftIcon } from "@/components/admin/icons";
 import { NotificationDrawer } from "@/components/admin/NotificationDrawer";
 import logo from "@/assets/brand/logo-transparent.png";
 import styles from "./AdminShell.module.css";
@@ -27,6 +27,10 @@ const NAV_GROUPS = [
       { href: "/admin/email", label: "Email", Icon: EmailIcon },
       { href: "/admin/newsletter", label: "Newsletter", Icon: NewsletterIcon }
     ]
+  },
+  {
+    label: "Site",
+    links: [{ href: "/admin/content", label: "Content", Icon: PagesIcon }]
   }
 ];
 
@@ -123,18 +127,21 @@ export function AdminShell({ children, adminEmail, notifications, unreadCount }:
           {NAV_GROUPS.map((group) => (
             <div key={group.label} className={styles.navGroup}>
               <p className={styles.navGroupLabel}>{group.label}</p>
-              {group.links.map(({ href, label, Icon }) => (
+              {group.links.map(({ href, label, Icon }) => {
+                const isActive = pathname === href || (href !== "/admin" && pathname.startsWith(`${href}/`));
+                return (
                 <Link
                   key={href}
                   href={href}
                   title={label}
-                  className={`${styles.navLink} ${pathname === href ? styles["navLink--active"] : ""}`}
-                  aria-current={pathname === href ? "page" : undefined}
+                  className={`${styles.navLink} ${isActive ? styles["navLink--active"] : ""}`}
+                  aria-current={isActive ? "page" : undefined}
                 >
                   <Icon className={styles.navLinkIcon} />
                   <span className={styles.navLinkLabel}>{label}</span>
                 </Link>
-              ))}
+                );
+              })}
             </div>
           ))}
         </nav>

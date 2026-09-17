@@ -266,3 +266,32 @@ export const sentNewsletters = pgTable(
 export const sentNewslettersRelations = relations(sentNewsletters, ({ one }) => ({
   sentBy: one(adminUsers, { fields: [sentNewsletters.sentByAdminId], references: [adminUsers.id] })
 }));
+
+// Family-editable page content — one row per registry field (see
+// lib/content/registry.ts for the manifest of what fields exist, their
+// types, and their defaults). fieldKey is a dotted path like
+// "leadership.hero.title" or "leadership.board" (a whole list lives in one
+// row as a JSON array, not one row per item — simplest correct semantics
+// for add/remove/reorder). value's shape depends on fieldType: { value:
+// string } for "text"/"image", { items: Record<string,string>[] } for
+// "list". A row only exists once a field has been seeded/edited — a
+// missing row falls back to the registry's default, so nothing breaks
+// before the seed script runs. See docs/production-readiness.md's CMS
+// section for why this is one generic table rather than one per content
+// type.
+export const siteContentFields = pgTable(
+  "SiteContentField",
+  {
+    id: text("id").primaryKey().$defaultFn(genId),
+    fieldKey: text("fieldKey").notNull().unique(),
+    fieldType: text("fieldType").notNull(), // "text" | "image" | "list"
+    value: jsonb("value").notNull(),
+    updatedAt: timestamp("updatedAt", { precision: 3 }).notNull().defaultNow(),
+    updatedByAdminId: text("updatedByAdminId").references(() => adminUsers.id)
+  },
+  (table) => [index("SiteContentField_fieldKey_idx").on(table.fieldKey)]
+);
+
+export const siteContentFieldsRelations = relations(siteContentFields, ({ one }) => ({
+  updatedBy: one(adminUsers, { fields: [siteContentFields.updatedByAdminId], references: [adminUsers.id] })
+}));
