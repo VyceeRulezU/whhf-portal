@@ -136,10 +136,6 @@
   z-index: 20;
 }
 
-.topbarBrand {
-  display: none;
-}
-
 .topbarSpacer {
   flex: 1;
 }
@@ -232,11 +228,6 @@
   .shell--collapsed .navLink {
     justify-content: flex-start;
     padding-inline: var(--space-4);
-  }
-
-  .topbarBrand {
-    display: flex;
-    align-items: center;
   }
 
   .topbarEmail {

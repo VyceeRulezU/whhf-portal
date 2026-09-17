@@ -1,0 +1,52 @@
+.wrapper {
+  display: contents;
+}
+
+.dots {
+  display: none;
+}
+
+/* Below this width grid-auto's auto-fit already collapses to one column,
+   so this is where a horizontal swipe track reads better than a long
+   vertical stack of cards. */
+@media (max-width: 480px) {
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+  }
+
+  .item {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+  }
+
+  .dots {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    align-self: flex-start;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-pill);
+    background-color: var(--color-border-strong);
+    transition: background-color var(--motion-fast), transform var(--motion-fast);
+  }
+
+  .dot--active {
+    background-color: var(--color-gold);
+    transform: scale(1.25);
+  }
+}

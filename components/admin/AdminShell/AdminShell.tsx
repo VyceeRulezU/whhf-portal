@@ -157,9 +157,6 @@ export function AdminShell({ children, adminEmail, notifications, unreadCount }:
             <span className={`${styles.menuToggle__bar} ${isDrawerOpen ? styles["menuToggle__bar--midOpen"] : ""}`} />
             <span className={`${styles.menuToggle__bar} ${isDrawerOpen ? styles["menuToggle__bar--bottomOpen"] : ""}`} />
           </button>
-          <Link href="/admin" className={styles.topbarBrand}>
-            <Image src={logo} alt="William & Helen Heritage Foundation" width={32} height={32} />
-          </Link>
           <div className={styles.topbarSpacer} />
           <NotificationDrawer notifications={notifications} unreadCount={unreadCount} />
           <span className={styles.topbarEmail}>{adminEmail}</span>

@@ -5,6 +5,7 @@ import { formatCurrency } from "@/lib/format/currency";
 import { formatDate } from "@/lib/format/date";
 import { Card } from "@/components/ui/Card";
 import { StatCard } from "@/components/admin/StatCard";
+import { CardCarousel } from "@/components/admin/CardCarousel";
 import { Avatar } from "@/components/admin/Avatar";
 import { Table } from "@/components/admin/Table";
 import { DashboardIcon, DonationsIcon, EmailIcon } from "@/components/admin/icons";
@@ -74,7 +75,7 @@ export default async function AdminDashboardPage() {
     <div className="stack">
       <h1>Dashboard</h1>
 
-      <div className="grid-auto">
+      <CardCarousel>
         <StatCard
           icon={<DonationsIcon />}
           label="Total raised"
@@ -86,7 +87,7 @@ export default async function AdminDashboardPage() {
         />
         <StatCard icon={<EmailIcon />} label="Unread email" value={unreadTotal} meta={`${total} total`} />
         <StatCard icon={<DashboardIcon />} label="Recent donations" value={recentDonations.length} meta="Last 5" />
-      </div>
+      </CardCarousel>
 
       <Card>
         <p className={styles.sectionHeading}>Recent donations</p>

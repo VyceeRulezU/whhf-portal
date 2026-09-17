@@ -2,6 +2,7 @@ import { eq, desc, count } from "drizzle-orm";
 import { withDb } from "@/lib/db/client";
 import { contactMessages, inboundEmails, sentEmails } from "@/lib/db/schema";
 import { StatCard } from "@/components/admin/StatCard";
+import { CardCarousel } from "@/components/admin/CardCarousel";
 import { EmailView } from "@/components/admin/EmailView";
 import { EmailIcon } from "@/components/admin/icons";
 
@@ -28,7 +29,7 @@ export default async function AdminEmailPage() {
     <div className="stack">
       <h1>Email</h1>
 
-      <div className="grid-auto">
+      <CardCarousel>
         <StatCard
           icon={<EmailIcon />}
           label="Unread"
@@ -43,7 +44,7 @@ export default async function AdminEmailPage() {
           meta={`${unreadMessageCount} unread`}
         />
         <StatCard icon={<EmailIcon />} label="Outgoing" value={sent.length} meta="Sent from this panel" />
-      </div>
+      </CardCarousel>
 
       <EmailView
         emails={emails}

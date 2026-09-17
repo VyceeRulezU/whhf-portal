@@ -4,6 +4,7 @@ import { donations as donationsTable } from "@/lib/db/schema";
 import { formatCurrency } from "@/lib/format/currency";
 import { Button } from "@/components/ui/Button";
 import { StatCard } from "@/components/admin/StatCard";
+import { CardCarousel } from "@/components/admin/CardCarousel";
 import { DonationsTable } from "@/components/admin/DonationsTable";
 import { DonationsIcon, DashboardIcon, EmailIcon } from "@/components/admin/icons";
 import { getSession, isFullAdmin } from "@/lib/auth/session";
@@ -56,7 +57,7 @@ export default async function AdminDonationsPage() {
         )}
       </div>
 
-      <div className="grid-auto">
+      <CardCarousel>
         <StatCard
           icon={<DonationsIcon />}
           label="Total raised"
@@ -68,7 +69,7 @@ export default async function AdminDonationsPage() {
         />
         <StatCard icon={<DashboardIcon />} label="Succeeded donations" value={totalSucceededCount} />
         <StatCard icon={<EmailIcon />} label="Unique donors" value={uniqueDonorCount} />
-      </div>
+      </CardCarousel>
 
       <DonationsTable donations={donations} />
     </div>

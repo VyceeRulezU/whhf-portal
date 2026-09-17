@@ -2,6 +2,7 @@ import { eq, desc, count } from "drizzle-orm";
 import { withDb } from "@/lib/db/client";
 import { newsletterSubscribers, sentNewsletters } from "@/lib/db/schema";
 import { StatCard } from "@/components/admin/StatCard";
+import { CardCarousel } from "@/components/admin/CardCarousel";
 import { NewsletterView } from "@/components/admin/NewsletterView";
 import { EmailIcon } from "@/components/admin/icons";
 
@@ -28,10 +29,10 @@ export default async function AdminNewsletterPage() {
     <div className="stack">
       <h1>Newsletter</h1>
 
-      <div className="grid-auto">
+      <CardCarousel>
         <StatCard icon={<EmailIcon />} label="Active Subscribers" value={activeSubscriberCount} />
         <StatCard icon={<EmailIcon />} label="Campaigns Sent" value={history.length} />
-      </div>
+      </CardCarousel>
 
       <NewsletterView subscribers={subscribers} activeSubscriberCount={activeSubscriberCount} history={history} />
     </div>
