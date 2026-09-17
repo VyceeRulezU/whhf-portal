@@ -5,8 +5,7 @@ import { Badge } from "@/components/ui/Badge";
 import { PageHero } from "@/components/marketing/PageHero";
 import { FaqSection } from "@/components/marketing/FaqSection";
 import { DonateCta } from "@/components/marketing/DonateCta";
-import { placeholderImages } from "@/lib/content/placeholderImages";
-import { sitePhotos } from "@/lib/content/sitePhotos";
+import { getPageContent } from "@/lib/content/getPageContent";
 import styles from "./programmes.module.css";
 
 export const metadata: Metadata = {
@@ -15,59 +14,34 @@ export const metadata: Metadata = {
     "Direct financial grants toward chemotherapy and treatment costs for indigent cancer patients, distributed in partnership with National Hospital, Abuja."
 };
 
-// WHHF's four confirmed programme areas, from the Foundation's own printed
-// materials — the flagship Indigent Cancer Patient Support programme above
-// is the current, concrete expression of Social and Community Development;
-// the other three guide where WHHF expands next.
-const PROGRAM_AREAS = [
-  {
-    heading: "Value Promotion",
-    body: "We believe that the lives of individuals and society can become better by imbibing certain moral and upright values. We plan promoting these values through diverse activities and strategies."
-  },
-  {
-    heading: "Social and Community Development",
-    body: "Through our Social and Community Development programmes, we plan touching the lives of widows, widowers, orphans, less privileged persons, and persons at risk or in distress, positively. We also believe in peaceful coexistence and development of communities, which will contribute to the improvement of the quality of life of the individuals in such communities."
-  },
-  {
-    heading: "Skills and Entrepreneurial Development",
-    body: "Our Skills and Entrepreneurial Development programme is aimed at empowering individuals to be economically stable, to be able to care for themselves and their families, and contribute meaningfully to the development of society."
-  },
-  {
-    heading: "Holistic Development",
-    body: "We believe that the best way to care for human beings is to be holistic, and therefore we plan implementing activities that care for the “total man.” Our holistic development programme addresses the health, educational, psycho-social, and spiritual needs of people."
-  }
-];
+interface ProgramArea {
+  heading: string;
+  body: string;
+}
 
-const STEPS = [
-  {
-    number: "01",
-    heading: "Reach & Referral",
-    body: "Patients and families reach us directly, or through our network within the All Christians Fellowship Mission community."
-  },
-  {
-    number: "02",
-    heading: "Board Verification",
-    body: "Every case is reviewed by the board before any funds move, confirming the medical need first."
-  },
-  {
-    number: "03",
-    heading: "Direct Grant",
-    body: "Approved grants are paid straight toward treatment costs, not through intermediaries."
-  },
-  {
-    number: "04",
-    heading: "Follow-Up",
-    body: "WHHF stays in touch through recovery, rather than treating a grant as the end of the relationship."
-  }
-];
+interface Step {
+  number: string;
+  heading: string;
+  body: string;
+}
 
-export default function ProgrammesPage() {
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+export default async function ProgrammesPage() {
+  const content = await getPageContent("programmes");
+  const areas = content["programmes.areas"] as ProgramArea[];
+  const steps = content["programmes.steps"] as Step[];
+  const faqItems = content["programmes.faq.items"] as FaqItem[];
+
   return (
     <>
       <PageHero
-        eyebrow="Programmes"
-        title="Where your gift goes."
-        lede="WHHF's programme work starts with direct, practical support for indigent cancer patients, with more programmes to follow as they're confirmed."
+        eyebrow={content["programmes.hero.eyebrow"] as string}
+        title={content["programmes.hero.title"] as string}
+        lede={content["programmes.hero.lede"] as string}
       />
 
       <section className="section">
@@ -75,7 +49,7 @@ export default function ProgrammesPage() {
           <Card className={styles.flagshipCard}>
             <div className={styles.flagshipImageWrap}>
               <Image
-                src={placeholderImages.programmeFlagship}
+                src={content["programmes.flagship.image"] as string}
                 alt="Placeholder: cancer patient support programme photography pending"
                 fill
                 sizes="(max-width: 900px) 100vw, 480px"
@@ -83,18 +57,10 @@ export default function ProgrammesPage() {
               />
             </div>
             <div className={styles.flagshipBody}>
-              <Badge featured>Flagship Programme</Badge>
-              <h2 className={styles.flagshipHeading}>Indigent Cancer Patient Support</h2>
-              <p className={styles.flagshipText}>
-                Direct financial grants toward chemotherapy and treatment costs for patients who cannot afford care,
-                distributed in partnership with National Hospital, Abuja. Every case is reviewed individually before
-                any funds move, so support reaches the patients who need it most, without unnecessary delay.
-              </p>
-              <p className={styles.flagshipText}>
-                This remains WHHF&rsquo;s founding programme, and the clearest expression of the promise the
-                Foundation was built to keep: give directly, give practically, and give to the people who need it
-                most.
-              </p>
+              <Badge featured>{content["programmes.flagship.badge"] as string}</Badge>
+              <h2 className={styles.flagshipHeading}>{content["programmes.flagship.heading"] as string}</h2>
+              <p className={styles.flagshipText}>{content["programmes.flagship.body1"] as string}</p>
+              <p className={styles.flagshipText}>{content["programmes.flagship.body2"] as string}</p>
             </div>
           </Card>
         </div>
@@ -104,10 +70,10 @@ export default function ProgrammesPage() {
         <div className="container">
           <div className={styles.stepsHeader}>
             <p className="eyebrow-label">/ Programme Areas /</p>
-            <h2>Where WHHF focuses its work.</h2>
+            <h2>{content["programmes.areas.heading"] as string}</h2>
           </div>
           <div className={styles.areasGrid}>
-            {PROGRAM_AREAS.map((area) => (
+            {areas.map((area) => (
               <Card key={area.heading} className={styles.areaCard}>
                 <h3 className={styles.areaHeading}>{area.heading}</h3>
                 <p className={styles.areaBody}>{area.body}</p>
@@ -121,10 +87,10 @@ export default function ProgrammesPage() {
         <div className="container">
           <div className={styles.stepsHeader}>
             <p className="eyebrow-label">/ How It Works /</p>
-            <h2>From reaching out to a life changed.</h2>
+            <h2>{content["programmes.steps.heading"] as string}</h2>
           </div>
           <div className={styles.stepsGrid}>
-            {STEPS.map((step) => (
+            {steps.map((step) => (
               <Card key={step.number} className={styles.stepCard}>
                 <span className={styles.stepNumber}>{step.number}</span>
                 <h3 className={styles.stepHeading}>{step.heading}</h3>
@@ -140,7 +106,7 @@ export default function ProgrammesPage() {
           <div className={styles.approachGrid}>
             <div className={styles.approachImageWrap}>
               <Image
-                src={sitePhotos.howWeWork}
+                src={content["programmes.approach.image"] as string}
                 alt=""
                 fill
                 sizes="(max-width: 900px) 100vw, 520px"
@@ -149,61 +115,27 @@ export default function ProgrammesPage() {
             </div>
             <div className="stack">
               <p className="eyebrow-label">/ Looking Ahead /</p>
-              <h2>Depth first, then scale.</h2>
-              <p className={styles.approachText}>
-                WHHF chose to start narrow on purpose: one programme, one hospital partnership, reviewed case by
-                case, rather than spread support thin across many causes before learning what real, effective help
-                looks like.
-              </p>
-              <p className={styles.approachText}>
-                As that foundation proves out, the same criteria will guide any programme WHHF adds next: direct
-                impact over overhead, verified need over volume, and a hospital or community partnership grounded
-                in real accountability.
-              </p>
+              <h2>{content["programmes.approach.heading"] as string}</h2>
+              <p className={styles.approachText}>{content["programmes.approach.body1"] as string}</p>
+              <p className={styles.approachText}>{content["programmes.approach.body2"] as string}</p>
             </div>
           </div>
         </div>
       </section>
 
       <FaqSection
-        heading="Programme questions, answered."
-        intro="How grants are approved, who qualifies, and how WHHF decides where support goes."
+        heading={content["programmes.faq.heading"] as string}
+        intro={content["programmes.faq.intro"] as string}
         sideHeading={
           <>
             Verified need. <em>Direct support.</em>
           </>
         }
-        sideBody="Every question here traces back to the same principle: grants go straight to treatment costs, only after a case is genuinely reviewed."
-        items={[
-          {
-            question: "How does a patient qualify for support?",
-            answer:
-              "Cases are reviewed by the WHHF board, alongside the medical professionals already treating the patient, to confirm genuine need before any funds move."
-          },
-          {
-            question: "Where does the money actually go?",
-            answer:
-              "Directly toward chemotherapy and treatment costs at National Hospital, Abuja, for the flagship programme, not toward overhead or intermediaries."
-          },
-          {
-            question: "How fast can a grant be paid?",
-            answer:
-              "As soon as a case is reviewed and confirmed. The review step exists to protect donors and patients alike, not to slow things down unnecessarily."
-          },
-          {
-            question: "Will WHHF add more programmes?",
-            answer:
-              "Yes, over time, following the same standard: verified need, a real partner institution, and direct impact. Announcements will be published here once confirmed."
-          },
-          {
-            question: "Can a hospital or organization refer a patient?",
-            answer:
-              "Yes, reach out through our Contact page to start that conversation."
-          }
-        ]}
+        sideBody={content["programmes.faq.sideBody"] as string}
+        items={faqItems}
       />
 
-      <DonateCta image={placeholderImages.impactHero} />
+      <DonateCta image={content["programmes.donateCta.image"] as string} />
     </>
   );
 }

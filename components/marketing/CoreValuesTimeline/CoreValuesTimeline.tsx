@@ -2,59 +2,33 @@ import Image from "next/image";
 import styles from "./CoreValuesTimeline.module.css";
 
 // WHHF's eight core values, from the Foundation's own printed materials —
-// the highlighted letters spell out "GIVE HELP". The one-line description
-// under each is editorial copy (not a sourced fact from that document).
+// the highlighted letters spell out "GIVE HELP". letter/rest are a fixed
+// acrostic and stay code-defined; only each `sentence` is family-editable
+// (see lib/content/registry.ts's "about.coreValues.*" keys and
+// /admin/content/about) — deliberately NOT a generic addable/reorderable
+// list field, since deleting or reordering one of these would break the
+// acrostic.
 const CORE_VALUES = [
-  {
-    letter: "G",
-    rest: "odliness",
-    sentence: "We anchor every decision in reverence for God and the character He calls us to reflect."
-  },
-  {
-    letter: "I",
-    rest: "ntegrity",
-    sentence: "We do what we say, matching our public commitments to how every gift is actually used."
-  },
-  {
-    letter: "V",
-    rest: "eracity",
-    sentence: "We speak and report plainly and truthfully, even when it would be easier not to."
-  },
-  {
-    letter: "E",
-    rest: "xcellence",
-    sentence: "We hold our work to a high standard, because the people we serve deserve nothing less."
-  },
-  {
-    letter: "H",
-    rest: "umility",
-    sentence: "We serve quietly, without needing recognition for the good that gets done."
-  },
-  {
-    letter: "E",
-    rest: "arnestness",
-    sentence: "We show up wholehearted and consistent, not just when it's convenient."
-  },
-  {
-    letter: "L",
-    rest: "ove",
-    sentence: "We treat every person we serve with genuine compassion, not obligation."
-  },
-  {
-    letter: "P",
-    rest: "eace",
-    sentence: "We pursue reconciliation and calm in how we work with patients, partners, and each other."
-  }
+  { letter: "G", rest: "odliness" },
+  { letter: "I", rest: "ntegrity" },
+  { letter: "V", rest: "eracity" },
+  { letter: "E", rest: "xcellence" },
+  { letter: "H", rest: "umility" },
+  { letter: "E", rest: "arnestness" },
+  { letter: "L", rest: "ove" },
+  { letter: "P", rest: "eace" }
 ];
 
 interface CoreValuesTimelineProps {
   image: string;
+  /** One sentence per CORE_VALUES entry above, same fixed order. */
+  sentences: string[];
 }
 
 /** Full-bleed photo panel (blurred + dark overlay, same radius/elevation
     as the site's other wide banners — see DonateCta) with WHHF's eight
     core values laid out as an alternating vertical timeline. */
-export function CoreValuesTimeline({ image }: CoreValuesTimelineProps) {
+export function CoreValuesTimeline({ image, sentences }: CoreValuesTimelineProps) {
   return (
     <section className="section">
       <div className="container container--wide">
@@ -82,7 +56,7 @@ export function CoreValuesTimeline({ image }: CoreValuesTimelineProps) {
                       <span className={styles.cardLetter}>{value.letter}</span>
                       {value.rest}
                     </p>
-                    <p className={styles.cardBody}>{value.sentence}</p>
+                    <p className={styles.cardBody}>{sentences[index]}</p>
                   </div>
                   <span className={styles.node} aria-hidden="true" />
                 </div>

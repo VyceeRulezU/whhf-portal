@@ -4,9 +4,9 @@ import { Card } from "@/components/ui/Card";
 import { PageHero } from "@/components/marketing/PageHero";
 import { DonateCta } from "@/components/marketing/DonateCta";
 import { CoreValuesTimeline } from "@/components/marketing/CoreValuesTimeline";
-import { placeholderImages } from "@/lib/content/placeholderImages";
 import { sitePhotos } from "@/lib/content/sitePhotos";
 import { siteVideos } from "@/lib/content/siteVideos";
+import { getPageContent } from "@/lib/content/getPageContent";
 import styles from "./about.module.css";
 
 export const metadata: Metadata = {
@@ -15,69 +15,67 @@ export const metadata: Metadata = {
     "The William & Helen Heritage Foundation was established in memory of Rev. (Mrs) Helen Titilayo Okoye, continuing the generosity she was known for."
 };
 
-const VALUES = [
-  {
-    title: "Faith-Led",
-    body: "Every act of generosity is grounded in the same conviction WHHF was founded on, cheerful, practical faith in action.",
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path d="M12 21c-2.2 0-4-1.8-4-4 0-2.5 4-8 4-8s4 5.5 4 8c0 2.2-1.8 4-4 4z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-        <path d="M12 4v3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      </svg>
-    )
-  },
-  {
-    title: "Direct to Patients",
-    body: "Grants go straight toward chemotherapy and treatment costs, not overhead, not intermediaries.",
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path
-          d="M12 20s-7-4.5-9.5-9C1 8 2 4.5 5.5 4.5c2 0 3.5 1.2 4 2.3.5-1.1 2-2.3 4-2.3 3.5 0 4.5 3.5 3 6.5C19 15.5 12 20 12 20z"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinejoin="round"
-          strokeLinecap="round"
-        />
-      </svg>
-    )
-  },
-  {
-    title: "Transparent",
-    body: "Every donation is tracked and reported, so you can see exactly how your generosity is put to work.",
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-        <circle cx="12" cy="12" r="2.5" stroke="currentColor" strokeWidth="1.5" />
-      </svg>
-    )
-  },
-  {
-    title: "Community-Rooted",
-    body: "Carried forward within the All Christians Fellowship Mission community Helen served for years.",
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <circle cx="8" cy="8" r="2.5" stroke="currentColor" strokeWidth="1.5" />
-        <circle cx="16" cy="8" r="2.5" stroke="currentColor" strokeWidth="1.5" />
-        <path
-          d="M3 19c0-3 2.5-5 5-5s5 2 5 5M11 19c0-2.5 2-4.5 5-4.5s5 2 5 4.5"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-      </svg>
-    )
-  }
+// Icons are decorative and stay code-defined, zipped against the
+// family-editable "about.values" list by index — see /admin/content/about
+// and lib/content/registry.ts. An item added beyond these 4 renders
+// without a custom icon rather than breaking.
+const VALUE_ICONS = [
+  <svg key="0" width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <path d="M12 21c-2.2 0-4-1.8-4-4 0-2.5 4-8 4-8s4 5.5 4 8c0 2.2-1.8 4-4 4z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+    <path d="M12 4v3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+  </svg>,
+  <svg key="1" width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <path
+      d="M12 20s-7-4.5-9.5-9C1 8 2 4.5 5.5 4.5c2 0 3.5 1.2 4 2.3.5-1.1 2-2.3 4-2.3 3.5 0 4.5 3.5 3 6.5C19 15.5 12 20 12 20z"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinejoin="round"
+      strokeLinecap="round"
+    />
+  </svg>,
+  <svg key="2" width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+    <circle cx="12" cy="12" r="2.5" stroke="currentColor" strokeWidth="1.5" />
+  </svg>,
+  <svg key="3" width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <circle cx="8" cy="8" r="2.5" stroke="currentColor" strokeWidth="1.5" />
+    <circle cx="16" cy="8" r="2.5" stroke="currentColor" strokeWidth="1.5" />
+    <path
+      d="M3 19c0-3 2.5-5 5-5s5 2 5 5M11 19c0-2.5 2-4.5 5-4.5s5 2 5 4.5"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
+  </svg>
 ];
 
-export default function AboutPage() {
+interface ValueCard {
+  title: string;
+  body: string;
+}
+
+export default async function AboutPage() {
+  const content = await getPageContent("about");
+  const values = content["about.values"] as ValueCard[];
+  const coreValueSentences = [
+    content["about.coreValues.godliness"],
+    content["about.coreValues.integrity"],
+    content["about.coreValues.veracity"],
+    content["about.coreValues.excellence"],
+    content["about.coreValues.humility"],
+    content["about.coreValues.earnestness"],
+    content["about.coreValues.love"],
+    content["about.coreValues.peace"]
+  ] as string[];
+
   return (
     <>
-      <PageHero eyebrow="Our Story" title="A legacy of giving, continued." />
+      <PageHero eyebrow={content["about.hero.eyebrow"] as string} title={content["about.hero.title"] as string} />
       <section className="section">
         <div className={`container ${styles.grid}`}>
           <div className={styles.imageWrap}>
             <Image
-              src={placeholderImages.aboutStory}
+              src={content["about.intro.image"] as string}
               alt="Placeholder: WHHF programme photography pending"
               fill
               sizes="(max-width: 900px) 100vw, 520px"
@@ -85,33 +83,9 @@ export default function AboutPage() {
             />
           </div>
           <div className="stack">
-            <p>
-              The William &amp; Helen Heritage Foundation was established in
-              memory of Rev. (Mrs) Helen Titilayo Okoye, who passed away in
-              2019. WHHF was created to continue the generosity she was known
-              for during her lifetime.
-            </p>
-            <p>
-              WHHF operates under the umbrella of the All Christians
-              Fellowship Mission, the same community Rev. (Mrs) Helen
-              Titilayo Okoye served for years alongside Rev. Dr. William
-              Okoye. Rather than spread support across many causes, the
-              Foundation chose to start narrow and deliberate: direct
-              financial grants toward chemotherapy and treatment costs for
-              indigent cancer patients, distributed in partnership with
-              National Hospital, Abuja. Every case is reviewed by the board
-              before any funds move, so support reaches the patients who
-              need it most, without unnecessary delay.
-            </p>
-            <p>
-              That approach has already translated into real support,
-              including a distribution of over ₦1.5M to five indigent
-              cancer patients, made on the 4th memorial anniversary of Rev.
-              (Mrs) Helen Okoye. It is a small, tangible expression of a
-              much larger conviction: that generosity, offered cheerfully
-              and without compulsion, is worth continuing, one life at a
-              time.
-            </p>
+            <p>{content["about.intro.paragraph1"] as string}</p>
+            <p>{content["about.intro.paragraph2"] as string}</p>
+            <p>{content["about.intro.paragraph3"] as string}</p>
             {/*
               Content on this page is pending further confirmation from
               the WHHF board. Do not add or remove memorial content
@@ -127,40 +101,37 @@ export default function AboutPage() {
           <div className={styles.purposeVisionGrid}>
             <Card>
               <p className="eyebrow-label">/ Purpose /</p>
-              <h2 className={styles.purposeVisionHeading}>Why WHHF exists.</h2>
-              <p className={styles.purposeVisionBody}>
-                William and Helen Heritage Foundation exists to promote godly values, transform lives and society.
-              </p>
+              <h2 className={styles.purposeVisionHeading}>{content["about.purpose.heading"] as string}</h2>
+              <p className={styles.purposeVisionBody}>{content["about.purpose.body"] as string}</p>
             </Card>
             <Card>
               <p className="eyebrow-label">/ Vision /</p>
-              <h2 className={styles.purposeVisionHeading}>What we&rsquo;re working toward.</h2>
-              <p className={styles.purposeVisionBody}>
-                William and Helen Heritage Foundation envisions a society guided by godly values, where people&rsquo;s
-                lives are transformed to live optimally.
-              </p>
+              <h2 className={styles.purposeVisionHeading}>{content["about.vision.heading"] as string}</h2>
+              <p className={styles.purposeVisionBody}>{content["about.vision.body"] as string}</p>
             </Card>
           </div>
         </div>
       </section>
 
-      <CoreValuesTimeline image={sitePhotos.aboutUsMain} />
+      <CoreValuesTimeline image={content["about.coreValues.image"] as string} sentences={coreValueSentences} />
 
       <section className="section">
         <div className="container stack">
           <div className={styles.valuesHeader}>
             <p className="eyebrow-label">/ What We Stand For /</p>
-            <h2>The values behind every gift.</h2>
+            <h2>{content["about.values.heading"] as string}</h2>
           </div>
           <div className={styles.valuesImageWrap}>
-            <Image src={sitePhotos.aboutValues} alt="" fill sizes="100vw" className={styles.valuesImage} />
+            <Image src={content["about.values.image"] as string} alt="" fill sizes="100vw" className={styles.valuesImage} />
           </div>
           <div className={styles.valuesGrid}>
-            {VALUES.map((value) => (
+            {values.map((value, index) => (
               <Card key={value.title} className={styles.valueCard}>
-                <span className={styles.valueIcon} aria-hidden="true">
-                  {value.icon}
-                </span>
+                {VALUE_ICONS[index] && (
+                  <span className={styles.valueIcon} aria-hidden="true">
+                    {VALUE_ICONS[index]}
+                  </span>
+                )}
                 <h3 className={styles.valueTitle}>{value.title}</h3>
                 <p className={styles.valueBody}>{value.body}</p>
               </Card>
