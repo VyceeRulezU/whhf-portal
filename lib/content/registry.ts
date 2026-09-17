@@ -50,7 +50,86 @@ export interface PageManifest {
  * Grows page by page as each is migrated (see docs/production-readiness.md
  * CMS rollout phases) — starts empty/skeleton, not all pages at once.
  */
-export const contentRegistry: PageManifest[] = [];
+export const contentRegistry: PageManifest[] = [
+  {
+    slug: "leadership",
+    label: "Leadership",
+    sections: [
+      { type: "text", key: "leadership.hero.eyebrow", label: "Hero eyebrow", default: "Leadership" },
+      { type: "text", key: "leadership.hero.title", label: "Hero title", default: "The people behind WHHF." },
+      {
+        type: "text",
+        key: "leadership.hero.lede",
+        label: "Hero subtitle",
+        default: "Publicly reported board membership, pending confirmation of the current full roster and bios.",
+        multiline: true
+      },
+      {
+        type: "list",
+        key: "leadership.board",
+        label: "Board members",
+        itemFields: [
+          { type: "text", key: "name", label: "Name", default: "" },
+          { type: "text", key: "role", label: "Role", default: "" },
+          { type: "image", key: "photo", label: "Photo (optional — shows initials if left blank)", default: "" }
+        ],
+        default: [
+          { name: "Engr. Titus Omolewa", role: "Vice Chairman", photo: "" },
+          { name: "Joy Okoye", role: "Programmes Manager", photo: "" },
+          { name: "Victor Okoye", role: "Board Member", photo: "" },
+          { name: "Emma Okoye", role: "Board Member", photo: "" },
+          {
+            name: "Pauline Okoye",
+            role: "Board Member",
+            photo: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/web-images/paulineO.jpeg"
+          },
+          {
+            name: "Sarah Okoye",
+            role: "Board Member",
+            photo: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/web-images/SarahO.jpeg"
+          },
+          { name: "Barr. Patrick Abah", role: "Legal Adviser", photo: "" }
+        ]
+      }
+    ]
+  },
+  {
+    slug: "contact",
+    label: "Contact",
+    sections: [
+      { type: "text", key: "contact.hero.eyebrow", label: "Hero eyebrow", default: "Contact" },
+      { type: "text", key: "contact.hero.title", label: "Hero title", default: "Get in touch." },
+      {
+        type: "text",
+        key: "contact.hero.lede",
+        label: "Hero subtitle",
+        default: "Reach out about partnerships, volunteering, or general enquiries.",
+        multiline: true
+      },
+      {
+        // Also read directly by components/marketing/SiteFooter (via
+        // getFieldValue, not this page's manifest) so the footer's contact
+        // info can never drift out of sync with this page's — see
+        // docs/production-readiness.md's CMS section.
+        type: "list",
+        key: "contact.rows",
+        label: "Contact details",
+        itemFields: [
+          { type: "text", key: "label", label: "Label", default: "" },
+          { type: "text", key: "value", label: "Value", default: "" }
+        ],
+        default: [
+          {
+            label: "Office address",
+            value: "3FVM+H9M, Along Nile Street, Maitama, Abuja 904101, Federal Capital Territory"
+          },
+          { label: "Phone", value: "0806 432 0084" },
+          { label: "Email", value: "contact@whheritagefoundation.org" }
+        ]
+      }
+    ]
+  }
+];
 
 export function getPageManifest(slug: string): PageManifest | undefined {
   return contentRegistry.find((page) => page.slug === slug);

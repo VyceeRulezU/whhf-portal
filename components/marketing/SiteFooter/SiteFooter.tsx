@@ -13,11 +13,34 @@ import { ALL_NAV_LINKS } from "@/components/marketing/SiteHeader/navLinks";
 import logo from "@/assets/brand/logo-transparent.png";
 import { placeholderImages } from "@/lib/content/placeholderImages";
 import { NewsletterForm } from "@/components/marketing/NewsletterForm";
+import { getFieldValue } from "@/lib/content/getPageContent";
 import styles from "./SiteFooter.module.css";
 
 const VALUES = ["Faith-Led", "Direct to Patients", "Transparent", "Community-Rooted"];
 
-export function SiteFooter() {
+interface ContactRow {
+  label: string;
+  value: string;
+}
+
+const DEFAULT_CONTACT_ROWS: ContactRow[] = [
+  { label: "Office address", value: "3FVM+H9M, Along Nile Street, Maitama, Abuja 904101, Federal Capital Territory" },
+  { label: "Phone", value: "0806 432 0084" },
+  { label: "Email", value: "contact@whheritagefoundation.org" }
+];
+
+// href scheme is derived from the value's shape rather than a fixed field
+// type, since a family-editable label/value list has no separate "kind"
+// column — an email always contains "@", a phone number doesn't.
+function contactHref(value: string): string | null {
+  if (value.includes("@")) return `mailto:${value}`;
+  if (/^[0-9+()\s-]{7,}$/.test(value)) return `tel:${value.replace(/[()\s-]/g, "")}`;
+  return null;
+}
+
+export async function SiteFooter() {
+  const rows = await getFieldValue<ContactRow[]>("contact.rows", DEFAULT_CONTACT_ROWS);
+
   return (
     <footer className={styles.footer}>
       <div className={styles.footer__panel}>
@@ -48,13 +71,10 @@ export function SiteFooter() {
           <div className={styles.footer__column}>
             <p className={styles.footer__heading}>Contact</p>
             <ul className={styles.footer__list}>
-              <li>
-                <a href="mailto:contact@whheritagefoundation.org">contact@whheritagefoundation.org</a>
-              </li>
-              <li>
-                <a href="tel:+2348064320084">0806 432 0084</a>
-              </li>
-              <li>3FVM+H9M, Along Nile Street, Maitama, Abuja 904101, FCT</li>
+              {rows.map((row) => {
+                const href = contactHref(row.value);
+                return <li key={row.label}>{href ? <a href={href}>{row.value}</a> : row.value}</li>;
+              })}
             </ul>
             <Link href="/donate" className={styles.footer__donateLink}>
               Donate Now →
