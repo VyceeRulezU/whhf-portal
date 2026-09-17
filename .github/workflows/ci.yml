@@ -101,10 +101,12 @@ jobs:
       # Windows-generated lockfile under Linux with EBADPLATFORM.
       - run: npm install
 
-      - name: Apply baseline schema to the ephemeral database
-        run: |
-          sudo apt-get update && sudo apt-get install -y postgresql-client
-          psql "$DATABASE_URL" -f drizzle/migrations/0000_aberrant_toad.sql
+      # Runs every migration in drizzle/migrations/ in order against the
+      # fresh ephemeral DB, not just the baseline — was hardcoded to a
+      # single filename before, which silently stopped covering new
+      # migrations (like the one that added SiteContentField).
+      - name: Apply migrations to the ephemeral database
+        run: npx drizzle-kit migrate
 
       - name: Seed a throwaway admin account
         run: npm run db:seed
