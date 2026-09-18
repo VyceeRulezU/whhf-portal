@@ -696,6 +696,66 @@ export const contentRegistry: PageManifest[] = [
         key: "impact.stories.heading",
         label: "\"Where your support goes\" heading",
         default: "Where your support goes."
+      },
+      {
+        // Each story also has its own /impact/[slug] detail page (see
+        // app/(marketing)/impact/[slug]/page.tsx) — "slug" must be unique
+        // and URL-safe (lowercase letters, numbers, hyphens only) since it
+        // becomes that story's URL. "body" holds every paragraph as one
+        // block of text — separate paragraphs with a blank line between
+        // them; the page splits on blank lines when rendering.
+        type: "list",
+        key: "impact.stories.items",
+        label: "Impact stories (each has its own detail page)",
+        itemFields: [
+          { type: "text", key: "slug", label: "URL slug (e.g. \"treatment-and-recovery\")", default: "" },
+          { type: "text", key: "title", label: "Title", default: "" },
+          { type: "text", key: "excerpt", label: "Excerpt (shown on the list card)", multiline: true, default: "" },
+          { type: "image", key: "image", label: "Photo", default: "" },
+          {
+            type: "text",
+            key: "body",
+            label: "Full story (separate paragraphs with a blank line)",
+            multiline: true,
+            default: ""
+          }
+        ],
+        default: [
+          {
+            slug: "treatment-and-recovery",
+            title: "Treatment & Recovery",
+            excerpt:
+              "Direct financial grants toward chemotherapy and treatment costs, distributed in partnership with National Hospital, Abuja.",
+            image: "https://images.unsplash.com/photo-1578496781307-30c2b531c05a?w=900&q=80&fm=jpg&fit=crop",
+            body:
+              "Every case WHHF supports is reviewed individually before any funds move, so support reaches the patients who need it most, without unnecessary delay.\n\nGrants are paid directly toward treatment costs, chemotherapy, diagnostics, and the surrounding care a cancer diagnosis requires, in partnership with National Hospital, Abuja, where the Foundation's distributions have taken place.\n\nRecovery is rarely a single moment; it's a series of appointments, treatments, and check-ins over months. WHHF's role is to make sure a shortage of funds is never the reason that process stalls.\n\nThis remains WHHF's flagship programme, and the one most directly tied to the Foundation's founding purpose: support for indigent cancer patients who cannot afford treatment on their own."
+          },
+          {
+            slug: "faith-and-community",
+            title: "Faith & Community",
+            excerpt:
+              "Rooted in the All Christians Fellowship Mission, our work carries forward a legacy of compassion within the community Helen served.",
+            image: "https://images.unsplash.com/photo-1632215861513-130b66fe97f4?w=900&q=80&fm=jpg&fit=crop",
+            body:
+              "WHHF operates under the umbrella of the All Christians Fellowship Mission, the same community Rev. (Mrs) Helen Titilayo Okoye and Rev. Dr. William Okoye served for years.\n\nThat grounding shapes how the Foundation treats every person it supports: with the same dignity and care any of us would want for our own family, not as a case number to process.\n\nFaith, here, is not separate from the practical work of paying for treatment. It's the reason the work is done this way at all. Compassion put into action, not left as words alone.\n\nAs WHHF grows, this community remains its foundation: the people, the values, and the relationships that made the Foundation's work possible in the first place."
+          },
+          {
+            slug: "community-outreach",
+            title: "Community Outreach",
+            excerpt: "From hospital visits to community engagements, WHHF stays connected to the people it serves.",
+            image: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/649531155_17984201615874766_6774910805288153881_n.webp",
+            body:
+              "Support doesn't end at a grant payment. Staying connected to patients and their families, through hospital visits and community engagements, is part of how WHHF makes sure support actually lands where it's needed.\n\nLasting support starts with genuinely knowing the families behind every case, not just the paperwork. That's part of why every case is reviewed individually rather than processed as a generic application.\n\nCommunity outreach also means staying visible and reachable within the wider network WHHF operates in, so families who need support know where to turn, and so the Foundation keeps learning what real help looks like on the ground.\n\nIt's slower, more relational work than writing a single check, and it's exactly the kind of work WHHF was built to do."
+          },
+          {
+            slug: "transparency-and-accountability",
+            title: "Transparency & Accountability",
+            excerpt: "Every donation is tracked and reported, so donors can see exactly how their generosity is put to work.",
+            image: "https://images.unsplash.com/photo-1543689604-6fe8dbcd1f59?w=1200&q=80&fm=jpg&fit=crop",
+            body:
+              "Every donation to WHHF is tracked from the moment it's received to the moment it's applied toward a patient's treatment, with no hidden fees and no unexplained gaps.\n\nEvery case supported is reviewed by the board before funds move, creating a built-in layer of oversight rather than relying on trust alone.\n\nAs WHHF's admin systems mature, the goal is for donors to see increasingly detailed, real reporting on where their gifts went, not just a thank-you message, but a clear account of impact.\n\nTransparency isn't an added feature here; it's a condition of doing this work responsibly, especially when the funds involved are meant for people in genuinely urgent need."
+          }
+        ]
       }
     ]
   },
@@ -1074,6 +1134,119 @@ export const contentRegistry: PageManifest[] = [
         key: "home.donateCta.image2",
         label: "Bottom donate banner — photo 2",
         default: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/2151565939.jpg"
+      }
+    ]
+  },
+  {
+    slug: "blog",
+    label: "Blog",
+    sections: [
+      { type: "text", key: "blog.hero.eyebrow", label: "Hero eyebrow", default: "Blog" },
+      { type: "text", key: "blog.hero.title", label: "Hero title", default: "Stories, updates, and reflections." },
+      {
+        type: "text",
+        key: "blog.hero.lede",
+        label: "Hero subtitle",
+        multiline: true,
+        default: "News from WHHF's programmes, the community behind them, and the faith that carries the work forward."
+      },
+      {
+        // Each post also has its own /blog/[slug] detail page. "slug" must
+        // be unique and URL-safe (lowercase letters, numbers, hyphens
+        // only). "date" should stay in YYYY-MM-DD format so it sorts and
+        // formats correctly. "body" holds every paragraph as one block of
+        // text — separate paragraphs with a blank line between them.
+        type: "list",
+        key: "blog.posts",
+        label: "Blog posts (each has its own detail page)",
+        itemFields: [
+          { type: "text", key: "slug", label: "URL slug (e.g. \"why-we-give\")", default: "" },
+          { type: "text", key: "title", label: "Title", default: "" },
+          { type: "text", key: "excerpt", label: "Excerpt (shown on the list card)", multiline: true, default: "" },
+          { type: "text", key: "category", label: "Category", default: "" },
+          { type: "text", key: "date", label: "Date (YYYY-MM-DD)", default: "" },
+          { type: "text", key: "readTime", label: "Read time (e.g. \"4 min read\")", default: "" },
+          { type: "image", key: "image", label: "Photo", default: "" },
+          {
+            type: "text",
+            key: "body",
+            label: "Full post (separate paragraphs with a blank line)",
+            multiline: true,
+            default: ""
+          }
+        ],
+        default: [
+          {
+            slug: "why-we-give",
+            title: "Why We Give: The Story Behind WHHF",
+            excerpt:
+              "Every organization has a reason it exists. For WHHF, that reason is a promise made in memory of a woman known for her generosity.",
+            category: "Our Story",
+            date: "2026-08-04",
+            readTime: "4 min read",
+            image: "https://images.unsplash.com/photo-1561212856-44e9bae482aa?w=1200&q=80&fm=jpg&fit=crop",
+            body:
+              "The William & Helen Heritage Foundation was established in memory of Rev. (Mrs) Helen Titilayo Okoye, who passed away in 2019. Under the umbrella of the All Christians Fellowship Mission, WHHF was created to carry forward a simple but demanding calling: give directly, give practically, and give to the people who need it most.\n\nThat calling started with support for indigent cancer patients, men and women whose treatment costs stood between them and survival. It is a narrow starting point by design. Rather than spread support thin across many causes, WHHF chose to go deep on one, learning what real, effective help looks like before growing further.\n\nGiving, for WHHF, is not an abstract idea. It is a grant that pays for a round of chemotherapy. It is a family that no longer has to choose between treatment and rent. It is a promise kept, one patient at a time.\n\nThis is the story every programme, every donation, and every partnership traces back to: a single act of remembered generosity, still finding new ways to reach people today."
+          },
+          {
+            slug: "cost-of-cancer-treatment-in-nigeria",
+            title: "Understanding the Cost of Cancer Treatment in Nigeria",
+            excerpt:
+              "For many Nigerian families, a cancer diagnosis brings a second crisis close behind the medical one: the cost of treatment itself.",
+            category: "Awareness",
+            date: "2026-07-18",
+            readTime: "5 min read",
+            image: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/2151940449.jpg",
+            body:
+              "Chemotherapy, radiotherapy, diagnostic imaging, and the surrounding care a cancer diagnosis requires are expensive by any standard, and for households without health insurance that covers oncology care, the burden falls directly on the family.\n\nIt is common for treatment to stall or stop entirely once a family's savings run out, not because the treatment stopped working, but because it became unaffordable. This is the specific gap WHHF's flagship programme exists to close: direct grants paid toward chemotherapy and treatment costs, so a shortage of funds is never the reason a patient's care is interrupted.\n\nEvery case supported through this programme is reviewed individually before any funds move, confirming genuine medical need first. It is slower than writing a single large check to a general fund, but it means support reaches the patients who need it, without unnecessary delay or waste.\n\nAwareness is the first step toward closing this gap at scale. The more people understand what cancer treatment actually costs in Nigeria, the easier it becomes to build the kind of sustained, community-backed support that patients need."
+          },
+          {
+            slug: "five-ways-your-donation-changes-a-life",
+            title: "5 Ways Your Donation Changes a Life",
+            excerpt: "A donation to WHHF rarely stops at one person. Here's what a single gift sets in motion.",
+            category: "Impact",
+            date: "2026-06-29",
+            readTime: "3 min read",
+            image: "https://images.unsplash.com/photo-1543689604-6fe8dbcd1f59?w=1200&q=80&fm=jpg&fit=crop",
+            body:
+              "1. It pays for treatment that would otherwise be delayed. Every grant is applied directly toward chemotherapy or treatment costs, the exact expense standing between a patient and continued care.\n\n2. It relieves pressure on the whole family. Medical bills rarely affect one person alone; a grant that covers treatment costs frees up household income for rent, food, and other children's needs.\n\n3. It builds trust in the surrounding community. Every case WHHF supports is reviewed by the board before funds move, so families and hospital partners alike know the support is genuine and accountable.\n\n4. It strengthens a growing partnership with National Hospital, Abuja, where WHHF's distributions have taken place, support that compounds as the relationship continues.\n\n5. It keeps a promise alive. Every gift, however large or small, carries forward the same generosity WHHF was founded on, one life at a time."
+          },
+          {
+            slug: "faith-in-action",
+            title: "Faith in Action: Living Out Generosity",
+            excerpt: "For WHHF, faith isn't a backdrop to the work. It's the reason the work looks the way it does.",
+            category: "Faith",
+            date: "2026-06-05",
+            readTime: "4 min read",
+            image: "https://images.unsplash.com/photo-1632215861513-130b66fe97f4?w=900&q=80&fm=jpg&fit=crop",
+            body:
+              "“Each of you should give what you have decided in your heart to give, not reluctantly or under compulsion, for God loves a cheerful giver.” (2 Corinthians 9:7)\n\nThis verse sits at the center of WHHF's approach to giving, not as decoration, but as a working principle. Generosity, in this understanding, is not owed reluctantly or performed for recognition. It is offered cheerfully, because it reflects a character already at work in the giver.\n\nThat conviction runs through the All Christians Fellowship Mission community WHHF operates within, and it shapes how the Foundation treats every patient it supports: not as a case number, but as a person worth the same dignity and care any of us would want for our own family.\n\nFaith, expressed this way, is not separate from practical action. It is what makes the action possible in the first place. Every grant paid toward a patient's treatment is, in a very direct sense, that faith put to work."
+          },
+          {
+            slug: "inside-the-national-hospital-partnership",
+            title: "Inside Our Partnership with National Hospital, Abuja",
+            excerpt:
+              "Distributions don't happen in isolation. They depend on a working relationship with the hospital treating each patient.",
+            category: "Programmes",
+            date: "2026-05-14",
+            readTime: "4 min read",
+            image: "https://images.unsplash.com/photo-1578496781307-30c2b531c05a?w=900&q=80&fm=jpg&fit=crop",
+            body:
+              "WHHF's flagship programme, direct grants toward chemotherapy and treatment costs for indigent cancer patients, is carried out in partnership with National Hospital, Abuja, where the Foundation's distributions have taken place.\n\nA hospital partnership matters because it grounds every grant in real clinical need. Rather than WHHF independently assessing who qualifies for support, cases are identified and confirmed alongside the medical professionals already treating each patient, keeping the process both faster and more accountable.\n\nIt also means support arrives where it's needed without unnecessary friction: funds go directly toward the treatment costs a patient already has in front of them, not through a separate reimbursement process that could slow care down.\n\nAs WHHF grows, this kind of grounded, hospital-linked partnership is the model the Foundation intends to build on: depth and accountability first, scale second."
+          },
+          {
+            slug: "meet-the-people-carrying-the-legacy-forward",
+            title: "Meet the People Carrying the Legacy Forward",
+            excerpt:
+              "Behind every grant WHHF pays out is a small board of people committed to keeping Helen's generosity alive.",
+            category: "Leadership",
+            date: "2026-04-22",
+            readTime: "3 min read",
+            image: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/649531155_17984201615874766_6774910805288153881_n.webp",
+            body:
+              "WHHF's board reviews every case before funds move, a deliberate choice to keep the Foundation small enough that no grant happens without real oversight.\n\nThat board sits within the wider All Christians Fellowship Mission community, the same community Rev. (Mrs) Helen Titilayo Okoye and Rev. Dr. William Okoye served for years. Continuing WHHF's work is, for many of them, personal.\n\nSee the full leadership page for who currently serves on the board, and what each person brings to the work of keeping this promise going.\n\nAs the Foundation grows, so will this team, but the underlying commitment stays the same: verify the need, move the funds directly, and never let overhead get between a donor's gift and a patient's care."
+          }
+        ]
       }
     ]
   }

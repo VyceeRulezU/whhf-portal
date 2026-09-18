@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { PageHero } from "@/components/marketing/PageHero";
 import { Badge } from "@/components/ui/Badge";
-import { blogPosts } from "@/lib/content/blogPosts";
+import { getPageContent } from "@/lib/content/getPageContent";
 import styles from "./blog.module.css";
 
 export const metadata: Metadata = {
@@ -11,13 +11,26 @@ export const metadata: Metadata = {
   description: "Stories, updates, and reflections from the William & Helen Heritage Foundation."
 };
 
-export default function BlogPage() {
+interface BlogPostSummary {
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: string;
+  date: string;
+  readTime: string;
+  image: string;
+}
+
+export default async function BlogPage() {
+  const content = await getPageContent("blog");
+  const blogPosts = content["blog.posts"] as BlogPostSummary[];
+
   return (
     <>
       <PageHero
-        eyebrow="Blog"
-        title="Stories, updates, and reflections."
-        lede="News from WHHF's programmes, the community behind them, and the faith that carries the work forward."
+        eyebrow={content["blog.hero.eyebrow"] as string}
+        title={content["blog.hero.title"] as string}
+        lede={content["blog.hero.lede"] as string}
       />
       <section className="section">
         <div className="container">

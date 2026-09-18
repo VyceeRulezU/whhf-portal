@@ -1,11 +1,23 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArticleLayout } from "@/components/marketing/ArticleLayout";
-import { blogPosts, getBlogPost } from "@/lib/content/blogPosts";
+import { getPageContent, splitParagraphs } from "@/lib/content/getPageContent";
 
-export function generateStaticParams() {
-  return blogPosts.map((post) => ({ slug: post.slug }));
+interface BlogPost {
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: string;
+  date: string;
+  readTime: string;
+  image: string;
+  body: string;
 }
+
+// No generateStaticParams — this route is dynamic (see
+// app/(marketing)/layout.tsx), resolved per request against the current
+// family-editable post list, so a newly added post works immediately with
+// no rebuild.
 
 export async function generateMetadata({
   params
@@ -13,14 +25,18 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = getBlogPost(slug);
+  const content = await getPageContent("blog");
+  const posts = content["blog.posts"] as BlogPost[];
+  const post = posts.find((p) => p.slug === slug);
   if (!post) return {};
   return { title: post.title, description: post.excerpt };
 }
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = getBlogPost(slug);
+  const content = await getPageContent("blog");
+  const posts = content["blog.posts"] as BlogPost[];
+  const post = posts.find((p) => p.slug === slug);
 
   if (!post) {
     notFound();
@@ -38,7 +54,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       })} · ${post.readTime}`}
       image={post.image}
     >
-      {post.body.map((paragraph, index) => (
+      {splitParagraphs(post.body).map((paragraph, index) => (
         <p key={index}>{paragraph}</p>
       ))}
     </ArticleLayout>

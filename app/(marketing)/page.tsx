@@ -7,7 +7,6 @@ import { PartnerCarousel } from "@/components/marketing/PartnerCarousel";
 import { ImpactCarousel } from "@/components/marketing/ImpactCarousel";
 import { FaqSection } from "@/components/marketing/FaqSection";
 import { DonateCta } from "@/components/marketing/DonateCta";
-import { blogPosts } from "@/lib/content/blogPosts";
 import { getPageContent } from "@/lib/content/getPageContent";
 import styles from "./page.module.css";
 
@@ -15,6 +14,14 @@ interface ImpactItem {
   image: string;
   title: string;
   body: string;
+}
+
+interface BlogPostSummary {
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: string;
+  image: string;
 }
 
 interface ExploreItem {
@@ -43,6 +50,9 @@ export default async function HomePage() {
   const impactItems = c["home.impact.items"] as ImpactItem[];
   const exploreItems = c["home.explore.items"] as ExploreItem[];
   const faqItems = c["home.faq.items"] as FaqItem[];
+
+  const blogContent = await getPageContent("blog");
+  const blogPosts = blogContent["blog.posts"] as BlogPostSummary[];
 
   return (
     <>

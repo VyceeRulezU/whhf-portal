@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { PageHero } from "@/components/marketing/PageHero";
-import { impactStories } from "@/lib/content/impactStories";
 import { getPageContent } from "@/lib/content/getPageContent";
 import styles from "./impact.module.css";
 
@@ -13,8 +12,16 @@ export const metadata: Metadata = {
     "₦1.5M+ distributed to indigent cancer patients at National Hospital, Abuja. See what your generosity has made possible."
 };
 
+interface ImpactStorySummary {
+  slug: string;
+  title: string;
+  excerpt: string;
+  image: string;
+}
+
 export default async function ImpactPage() {
   const content = await getPageContent("impact");
+  const impactStories = content["impact.stories.items"] as ImpactStorySummary[];
 
   return (
     <>

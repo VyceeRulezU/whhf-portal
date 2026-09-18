@@ -1,15 +1,25 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/content/siteConfig";
-import { blogPosts } from "@/lib/content/blogPosts";
-import { impactStories } from "@/lib/content/impactStories";
+import { getPageContent } from "@/lib/content/getPageContent";
 
 /**
  * Public marketing + donate routes only — no admin, API, or the
  * transactional /donate/thank-you and /donate/callback pages (nothing for
  * a search index there). See app/robots.ts for the matching disallow rules.
+ *
+ * Blog posts and impact stories are family-editable (see
+ * lib/content/registry.ts), so this reads their current slugs from the
+ * database on every request rather than a static list — dynamic for the
+ * same reason app/(marketing)/layout.tsx is.
  */
-export default function sitemap(): MetadataRoute.Sitemap {
+export const dynamic = "force-dynamic";
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
+  const blogContent = await getPageContent("blog");
+  const impactContent = await getPageContent("impact");
+  const blogPosts = blogContent["blog.posts"] as { slug: string }[];
+  const impactStories = impactContent["impact.stories.items"] as { slug: string }[];
 
   const routes: Array<{ path: string; changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"]; priority: number }> = [
     { path: "/", changeFrequency: "weekly", priority: 1 },

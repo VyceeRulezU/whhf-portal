@@ -44,3 +44,16 @@ export async function getFieldValue<T>(key: string, fallback: T): Promise<T> {
   const value = row.value as { value?: string; items?: unknown[] };
   return (value.items ?? value.value ?? fallback) as T;
 }
+
+/**
+ * Splits a "body" field (an article's full text, stored as one string with
+ * paragraphs separated by a blank line — see lib/content/registry.ts's
+ * "blog.posts"/"impact.stories.items") back into individual paragraphs for
+ * rendering. Tolerates extra blank lines or trailing whitespace.
+ */
+export function splitParagraphs(body: string): string[] {
+  return body
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+}
