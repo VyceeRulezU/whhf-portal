@@ -177,3 +177,58 @@ what's actually shipped — same rule as `roadmap.md`.
       safeguard ("don't touch memorial content without sign-off") intact
       in generic form everywhere it appeared.
 - [x] README refreshed to match what's actually shipped
+
+## Phase 7 — Family content editor (CMS)
+
+Separate initiative, added after the original 6 phases above were
+complete: the family wanted to edit page text and images themselves,
+without a developer, with changes live immediately on save.
+
+- [x] **Core infrastructure**: one generic `SiteContentField` table
+      (`fieldKey` → JSON value) driven by a declarative manifest
+      (`lib/content/registry.ts`), rather than a table per content type —
+      this is dozens of pages/fields authored by non-technical users,
+      never queried/joined by anything else, exactly the shape a
+      key-value store fits. `TextField`/`ImageField`/`ListField` admin
+      components (`components/admin/content/`), each with explicit
+      per-field Save + confirmation (not autosave). New `/admin/content`
+      section. Images upload to R2 via a new endpoint reusing the
+      previously-unused `lib/storage/r2.ts`.
+- [x] **Every in-scope marketing page wired up**: Leadership, Contact,
+      About, Programmes, Donate, Gallery, Faith, Impact (list + detail),
+      Home, and Blog (list + detail) — text, images, and repeating lists
+      (board members, FAQ items, gallery photos, blog posts, impact
+      stories) are all family-editable. Deliberately excluded: Privacy/
+      Terms (legal review pending), site navigation (a broken href would
+      break the whole site), and `PartnerCarousel` (still fictional
+      placeholder logos, nothing real to edit yet).
+- [x] **Dynamic rendering, not static+ISR**: Next.js on-demand
+      revalidation isn't safely usable on this app's Cloudflare Workers
+      deployment (`open-next.config.ts` has no incremental/tag cache
+      configured, and real open `opennextjs-cloudflare` issues — #466,
+      #1263, #662 — confirm this is an active gap, not just missing
+      config). Every page under `app/(marketing)` and `app/(donate)` is
+      now `export const dynamic = "force-dynamic"` (set once at each
+      route group's `layout.tsx`, not per page, since `SiteFooter` alone
+      forces this for every page that renders it) — reads fresh from
+      Postgres via the existing Hyperdrive-pooled `withDb()` on every
+      request instead. **If you're looking at this file because someone
+      "optimized" these pages back to static: don't, without re-solving
+      the ISR problem above first — that's what broke the site the first
+      time.**
+      `app/sitemap.ts` follows the same pattern (reads blog/impact slugs
+      from the database, not a static list, so new posts appear in the
+      sitemap without a deploy).
+- [x] Verified end-to-end against the real staging Worker at every phase,
+      not just localhost: live-edited text and list fields through the
+      actual staging admin and confirmed the change was live within
+      seconds; uploaded a real image and confirmed the object landed in
+      R2 (not just that a plausible URL came back); added and removed a
+      brand-new blog post through the real API and confirmed it resolved
+      at its own detail URL immediately, with no rebuild.
+- [ ] Production verification — repeat the staging live-edit test once
+      on production itself (text field, image upload), on a low-stakes
+      field. Confirm production's `SiteContentField` table (currently
+      empty — every field is resolving through its manifest default,
+      which is why the site still renders correctly with zero rows) is
+      the expected steady state going forward, not an oversight.
