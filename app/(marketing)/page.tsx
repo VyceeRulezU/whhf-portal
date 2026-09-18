@@ -7,26 +7,51 @@ import { PartnerCarousel } from "@/components/marketing/PartnerCarousel";
 import { ImpactCarousel } from "@/components/marketing/ImpactCarousel";
 import { FaqSection } from "@/components/marketing/FaqSection";
 import { DonateCta } from "@/components/marketing/DonateCta";
-import { placeholderImages } from "@/lib/content/placeholderImages";
-import { sitePhotos } from "@/lib/content/sitePhotos";
 import { blogPosts } from "@/lib/content/blogPosts";
+import { getPageContent } from "@/lib/content/getPageContent";
 import styles from "./page.module.css";
 
-export default function HomePage() {
+interface ImpactItem {
+  image: string;
+  title: string;
+  body: string;
+}
+
+interface ExploreItem {
+  image: string;
+  title: string;
+  line: string;
+}
+
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+// Fixed order/hrefs — see the registry's "links are not editable" note on
+// home.impact.items and home.explore.items.
+const IMPACT_HREFS = [
+  "/impact/treatment-and-recovery",
+  "/impact/faith-and-community",
+  "/impact/community-outreach",
+  "/impact/transparency-and-accountability"
+];
+const EXPLORE_HREFS = ["/about", "/programmes", "/impact"];
+
+export default async function HomePage() {
+  const c = await getPageContent("home");
+  const impactItems = c["home.impact.items"] as ImpactItem[];
+  const exploreItems = c["home.explore.items"] as ExploreItem[];
+  const faqItems = c["home.faq.items"] as FaqItem[];
+
   return (
     <>
       <section className={`${styles.hero} section`}>
         <div className="container container--wide">
           <div className={styles.hero__top}>
-            <h1 className={styles.hero__heading}>
-              Continuing a legacy of giving, one life at a time.
-            </h1>
+            <h1 className={styles.hero__heading}>{c["home.hero.heading"] as string}</h1>
             <div className={styles.hero__intro}>
-              <p className={styles.hero__lede}>
-                The William &amp; Helen Heritage Foundation supports indigent
-                cancer patients in Abuja and beyond, carrying forward the
-                generosity of Rev. (Mrs) Helen Titilayo Okoye.
-              </p>
+              <p className={styles.hero__lede}>{c["home.hero.lede"] as string}</p>
               <div className="cluster">
                 <Link href="/donate">
                   <Button variant="primary" showIconChip>
@@ -43,7 +68,7 @@ export default function HomePage() {
           <div className={styles.hero__media}>
             <div className={styles.hero__imageWrap}>
               <Image
-                src={placeholderImages.homeHero}
+                src={c["home.hero.image"] as string}
                 alt=""
                 fill
                 priority
@@ -52,9 +77,9 @@ export default function HomePage() {
               />
             </div>
             <Card overlay className={styles.hero__stat}>
-              <p className={styles.hero__statLabel}>In loving memory of</p>
-              <p className={styles.hero__statValue}>Rev. Dr. William & Rev. (Mrs.) Helen Okoye</p>
-              <p className={styles.hero__statCaption}>Whose generosity continues through WHHF</p>
+              <p className={styles.hero__statLabel}>{c["home.hero.statLabel"] as string}</p>
+              <p className={styles.hero__statValue}>{c["home.hero.statValue"] as string}</p>
+              <p className={styles.hero__statCaption}>{c["home.hero.statCaption"] as string}</p>
             </Card>
           </div>
         </div>
@@ -65,13 +90,13 @@ export default function HomePage() {
       <section className="section">
         <div className="container">
           <div className={styles.aboutUs__header}>
-            <p className="eyebrow-label">/ Who We Are /</p>
-            <h2>Driven by compassion, guided by faith.</h2>
+            <p className="eyebrow-label">/ {c["home.aboutUs.eyebrow"] as string} /</p>
+            <h2>{c["home.aboutUs.heading"] as string}</h2>
           </div>
           <div className={styles.aboutUs__grid}>
             <div className={styles.aboutUs__imageWrap}>
               <Image
-                src={sitePhotos.aboutUsMain}
+                src={c["home.aboutUs.image"] as string}
                 alt=""
                 fill
                 sizes="(max-width: 900px) 100vw, 560px"
@@ -81,15 +106,13 @@ export default function HomePage() {
             <div className={styles.aboutUs__content}>
               <div className={styles.aboutUs__statRow}>
                 <Card className={styles.aboutUs__statCard}>
-                  <p className={styles.aboutUs__statValue}>5+</p>
-                  <p className={styles.aboutUs__statLabel}>Patients Supported</p>
-                  <p className={styles.aboutUs__statCaption}>
-                    Direct grants toward chemotherapy and treatment costs.
-                  </p>
+                  <p className={styles.aboutUs__statValue}>{c["home.aboutUs.statValue"] as string}</p>
+                  <p className={styles.aboutUs__statLabel}>{c["home.aboutUs.statLabel"] as string}</p>
+                  <p className={styles.aboutUs__statCaption}>{c["home.aboutUs.statCaption"] as string}</p>
                 </Card>
                 <div className={styles.aboutUs__thumbWrap}>
                   <Image
-                    src={sitePhotos.aboutUsThumb}
+                    src={c["home.aboutUs.thumbImage"] as string}
                     alt=""
                     fill
                     sizes="160px"
@@ -97,19 +120,13 @@ export default function HomePage() {
                   />
                 </div>
               </div>
-              <p className={styles.aboutUs__body}>
-                WHHF was established in memory of Rev. (Mrs) Helen Titilayo
-                Okoye, under the umbrella of the All Christians Fellowship
-                Mission. What began as a single act of giving, support for
-                indigent cancer patients, continues as an ongoing
-                commitment to carry her generosity forward.
-              </p>
+              <p className={styles.aboutUs__body}>{c["home.aboutUs.body"] as string}</p>
               <Link href="/about">
                 <Button variant="outline">Learn More</Button>
               </Link>
               <div className={styles.aboutUs__fillWrap}>
                 <Image
-                  src={sitePhotos.aboutUsFill}
+                  src={c["home.aboutUs.fillImage"] as string}
                   alt=""
                   fill
                   sizes="(max-width: 900px) 100vw, 700px"
@@ -126,17 +143,11 @@ export default function HomePage() {
           <div className={styles.story}>
             <div className={styles.story__top}>
               <div className={styles.story__heading}>
-                <p className="eyebrow-label">/ Our Story /</p>
-                <h2>A loss that became a promise.</h2>
+                <p className="eyebrow-label">/ {c["home.story.eyebrow"] as string} /</p>
+                <h2>{c["home.story.heading"] as string}</h2>
               </div>
               <div className={styles.story__intro}>
-                <p className={styles.story__lede}>
-                  Rev. (Mrs) Helen Titilayo Okoye passed away in 2019. WHHF
-                  was established in her memory, under the umbrella of the
-                  All Christians Fellowship Mission, to continue the
-                  generosity she was known for, starting with support for
-                  indigent cancer patients who cannot afford treatment.
-                </p>
+                <p className={styles.story__lede}>{c["home.story.lede"] as string}</p>
                 <Link href="/about">
                   <Button variant="primary" showIconChip>
                     Read Our Full Story
@@ -148,7 +159,7 @@ export default function HomePage() {
             <div className={styles.story__bottom}>
               <div className={styles.story__imageWrap}>
                 <Image
-                  src={sitePhotos.storyMain}
+                  src={c["home.story.image"] as string}
                   alt=""
                   fill
                   sizes="(max-width: 900px) 100vw, 700px"
@@ -157,22 +168,16 @@ export default function HomePage() {
               </div>
               <div className={styles.story__stats}>
                 <Card className={styles.story__statCard}>
-                  <p className={styles.story__statValue}>Faith-Led</p>
-                  <p className={styles.story__statCaption}>
-                    Rooted in the values Helen lived by.
-                  </p>
+                  <p className={styles.story__statValue}>{c["home.story.stat1Value"] as string}</p>
+                  <p className={styles.story__statCaption}>{c["home.story.stat1Caption"] as string}</p>
                 </Card>
                 <Card className={styles.story__statCard}>
-                  <p className={styles.story__statValue}>Direct to Patients</p>
-                  <p className={styles.story__statCaption}>
-                    Grants go straight to treatment costs, not overhead.
-                  </p>
+                  <p className={styles.story__statValue}>{c["home.story.stat2Value"] as string}</p>
+                  <p className={styles.story__statCaption}>{c["home.story.stat2Caption"] as string}</p>
                 </Card>
                 <Card className={styles.story__statCard}>
-                  <p className={styles.story__statValue}>Transparent</p>
-                  <p className={styles.story__statCaption}>
-                    Every donation accounted for and reported.
-                  </p>
+                  <p className={styles.story__statValue}>{c["home.story.stat3Value"] as string}</p>
+                  <p className={styles.story__statCaption}>{c["home.story.stat3Caption"] as string}</p>
                 </Card>
               </div>
             </div>
@@ -183,13 +188,13 @@ export default function HomePage() {
       <section className="section">
         <div className="container container--wide">
           <div className={styles.howWeWork__header}>
-            <p className="eyebrow-label">/ How We Work /</p>
-            <h2>From reaching out to a life changed.</h2>
+            <p className="eyebrow-label">/ {c["home.howWeWork.eyebrow"] as string} /</p>
+            <h2>{c["home.howWeWork.heading"] as string}</h2>
           </div>
           <div className={styles.howWeWork__grid}>
             <div className={styles.howWeWork__imageWrap}>
               <Image
-                src={sitePhotos.howWeWork}
+                src={c["home.howWeWork.image"] as string}
                 alt=""
                 fill
                 sizes="(max-width: 900px) 100vw, 500px"
@@ -198,34 +203,22 @@ export default function HomePage() {
             </div>
             <Card className={styles.howWeWork__stepCard}>
               <span className={styles.howWeWork__stepNumber}>01</span>
-              <h3 className={styles.howWeWork__stepHeading}>Reach &amp; Referral</h3>
-              <p className={styles.howWeWork__stepBody}>
-                Patients and families reach us directly, or through our
-                network within the All Christians Fellowship Mission
-                community.
-              </p>
+              <h3 className={styles.howWeWork__stepHeading}>{c["home.howWeWork.step1Heading"] as string}</h3>
+              <p className={styles.howWeWork__stepBody}>{c["home.howWeWork.step1Body"] as string}</p>
             </Card>
             <Card className={styles.howWeWork__stepCard}>
               <span className={styles.howWeWork__stepNumber}>02</span>
-              <h3 className={styles.howWeWork__stepHeading}>Board Verification</h3>
-              <p className={styles.howWeWork__stepBody}>
-                Every case is reviewed by the board before any funds move,
-                confirming the medical need first.
-              </p>
+              <h3 className={styles.howWeWork__stepHeading}>{c["home.howWeWork.step2Heading"] as string}</h3>
+              <p className={styles.howWeWork__stepBody}>{c["home.howWeWork.step2Body"] as string}</p>
             </Card>
             <Card className={styles.howWeWork__stepCard}>
               <span className={styles.howWeWork__stepNumber}>03</span>
-              <h3 className={styles.howWeWork__stepHeading}>Direct Grant</h3>
-              <p className={styles.howWeWork__stepBody}>
-                Approved grants are paid straight toward treatment costs,
-                not through intermediaries.
-              </p>
+              <h3 className={styles.howWeWork__stepHeading}>{c["home.howWeWork.step3Heading"] as string}</h3>
+              <p className={styles.howWeWork__stepBody}>{c["home.howWeWork.step3Body"] as string}</p>
             </Card>
             <Card className={`${styles.howWeWork__stepCard} ${styles["howWeWork__stepCard--cta"]}`}>
-              <h3 className={styles.howWeWork__stepHeading}>See it in action</h3>
-              <p className={styles.howWeWork__stepBody}>
-                Explore the programmes this process supports.
-              </p>
+              <h3 className={styles.howWeWork__stepHeading}>{c["home.howWeWork.ctaHeading"] as string}</h3>
+              <p className={styles.howWeWork__stepBody}>{c["home.howWeWork.ctaBody"] as string}</p>
               <Link href="/programmes" className={styles.howWeWork__ctaLink}>
                 <Button variant="primary" showIconChip>
                   Our Programmes
@@ -240,31 +233,25 @@ export default function HomePage() {
         <div className="container container--wide">
           <div className={styles.programmes__header}>
             <div className={styles.programmes__headingGroup}>
-              <p className="eyebrow-label">/ Get Involved /</p>
-              <h2>Ways to support the work.</h2>
+              <p className="eyebrow-label">/ {c["home.getInvolved.eyebrow"] as string} /</p>
+              <h2>{c["home.getInvolved.heading"] as string}</h2>
             </div>
-            <p className={styles.programmes__intro}>
-              From a direct gift to sharing our story, every form of support
-              carries Helen&rsquo;s generosity a little further.
-            </p>
+            <p className={styles.programmes__intro}>{c["home.getInvolved.intro"] as string}</p>
           </div>
           <div className={styles.programmes__grid}>
             <Card className={styles.programmes__card}>
               <div className={styles.programmes__imageWrap}>
                 <Image
-                  src={placeholderImages.programmeFlagship}
+                  src={c["home.getInvolved.card1Image"] as string}
                   alt="Placeholder: cancer patient support programme photography pending"
                   fill
                   sizes="(max-width: 900px) 100vw, 400px"
                   className={styles.programmes__image}
                 />
               </div>
-              <Badge featured>Flagship Programme</Badge>
-              <h3 className={styles.cardHeading}>Indigent Cancer Patient Support</h3>
-              <p className={styles.cardBody}>
-                Direct grants toward chemotherapy and treatment costs for
-                patients who cannot afford care.
-              </p>
+              <Badge featured>{c["home.getInvolved.card1Badge"] as string}</Badge>
+              <h3 className={styles.cardHeading}>{c["home.getInvolved.card1Heading"] as string}</h3>
+              <p className={styles.cardBody}>{c["home.getInvolved.card1Body"] as string}</p>
               <Link href="/programmes" className={styles.programmes__cardLink}>
                 Know More <span aria-hidden="true">→</span>
               </Link>
@@ -272,18 +259,16 @@ export default function HomePage() {
             <Card className={styles.programmes__card}>
               <div className={styles.programmes__imageWrap}>
                 <Image
-                  src={sitePhotos.ourStory}
+                  src={c["home.getInvolved.card2Image"] as string}
                   alt=""
                   fill
                   sizes="(max-width: 900px) 100vw, 400px"
                   className={styles.programmes__image}
                 />
               </div>
-              <Badge>Our Story</Badge>
-              <h3 className={styles.cardHeading}>Founded in Helen&rsquo;s Memory</h3>
-              <p className={styles.cardBody}>
-                Read how WHHF came to be, and the family behind it.
-              </p>
+              <Badge>{c["home.getInvolved.card2Badge"] as string}</Badge>
+              <h3 className={styles.cardHeading}>{c["home.getInvolved.card2Heading"] as string}</h3>
+              <p className={styles.cardBody}>{c["home.getInvolved.card2Body"] as string}</p>
               <Link href="/about" className={styles.programmes__cardLink}>
                 Know More <span aria-hidden="true">→</span>
               </Link>
@@ -291,19 +276,16 @@ export default function HomePage() {
             <Card className={styles.programmes__card}>
               <div className={styles.programmes__imageWrap}>
                 <Image
-                  src={placeholderImages.impactHero}
+                  src={c["home.getInvolved.card3Image"] as string}
                   alt="Placeholder: WHHF programme photography pending"
                   fill
                   sizes="(max-width: 900px) 100vw, 400px"
                   className={styles.programmes__image}
                 />
               </div>
-              <Badge>Give</Badge>
-              <h3 className={styles.cardHeading}>Make a Donation</h3>
-              <p className={styles.cardBody}>
-                Every gift goes directly toward treatment costs for patients
-                who need it most.
-              </p>
+              <Badge>{c["home.getInvolved.card3Badge"] as string}</Badge>
+              <h3 className={styles.cardHeading}>{c["home.getInvolved.card3Heading"] as string}</h3>
+              <p className={styles.cardBody}>{c["home.getInvolved.card3Body"] as string}</p>
               <Link href="/donate" className={styles.programmes__cardLink}>
                 Know More <span aria-hidden="true">→</span>
               </Link>
@@ -316,7 +298,7 @@ export default function HomePage() {
         <div className="container container--wide">
           <div className={styles.impact__panel}>
             <Image
-              src={sitePhotos.aboutUsThumb}
+              src={c["home.impact.panelImage"] as string}
               alt=""
               fill
               sizes="1880px"
@@ -326,45 +308,17 @@ export default function HomePage() {
             <div className={styles.impact__panelContent}>
               <div className={styles.impact__header}>
                 <div className={styles.programmes__headingGroup}>
-                  <p className="eyebrow-label">/ Our Impact /</p>
-                  <h2>Where your support goes.</h2>
+                  <p className="eyebrow-label">/ {c["home.impact.eyebrow"] as string} /</p>
+                  <h2>{c["home.impact.heading"] as string}</h2>
                 </div>
-                <p className={styles.programmes__intro}>
-                  Four things carry every gift forward, browse through what
-                  your support makes possible.
-                </p>
+                <p className={styles.programmes__intro}>{c["home.impact.intro"] as string}</p>
               </div>
               <ImpactCarousel
-                items={[
-                  {
-                    image: placeholderImages.programmeFlagship,
-                    title: "Treatment & Recovery",
-                    body: "Direct financial grants toward chemotherapy and treatment costs, distributed in partnership with National Hospital, Abuja. Every case is reviewed individually, so support reaches the patients who need it most, without unnecessary delay.",
-                    href: "/impact/treatment-and-recovery",
-                    linkLabel: "Read More"
-                  },
-                  {
-                    image: placeholderImages.whoWeAre,
-                    title: "Faith & Community",
-                    body: "Rooted in the All Christians Fellowship Mission, our work carries forward a legacy of compassion within the community Helen served, grounded in faith, and carried out in practical, everyday ways.",
-                    href: "/impact/faith-and-community",
-                    linkLabel: "Read More"
-                  },
-                  {
-                    image: sitePhotos.howWeWork,
-                    title: "Community Outreach",
-                    body: "From hospital visits to community engagements, WHHF stays connected to the people it serves, because lasting support starts with genuinely knowing the families behind every case.",
-                    href: "/impact/community-outreach",
-                    linkLabel: "Read More"
-                  },
-                  {
-                    image: placeholderImages.impactHero,
-                    title: "Transparency & Accountability",
-                    body: "Every donation is tracked and reported, so donors can see exactly how their generosity is put to work, no hidden fees, no unexplained gaps.",
-                    href: "/impact/transparency-and-accountability",
-                    linkLabel: "Read More"
-                  }
-                ]}
+                items={IMPACT_HREFS.map((href, index) => ({
+                  ...(impactItems[index] ?? { image: "", title: "", body: "" }),
+                  href,
+                  linkLabel: "Read More"
+                }))}
               />
             </div>
           </div>
@@ -384,7 +338,7 @@ export default function HomePage() {
               </h2>
               <div className={styles.faith__imageWrap}>
                 <Image
-                  src={sitePhotos.revWilliam}
+                  src={c["home.faith.image"] as string}
                   alt="Rev. Dr. William Okoye"
                   fill
                   sizes="(max-width: 900px) 100vw, 460px"
@@ -393,26 +347,12 @@ export default function HomePage() {
               </div>
             </div>
             <div className={styles.faith__right}>
-              {/* Reflection grounded in scripture and the established facts
-                  on /about — not presented as a direct/verbatim quote from
-                  Rev. Dr. William Okoye; see the memorial-content note in
-                  AGENTS.md before adding attributed devotional writing. */}
-              <p className={styles.faith__body}>
-                &ldquo;Each of you should give what you have decided in your
-                heart to give, not reluctantly or under compulsion, for God
-                loves a cheerful giver.&rdquo; (2 Corinthians 9:7)
-              </p>
-              <p className={styles.faith__body}>
-                In loving memory of Rev. Dr. William Okoye, whose ministry,
-                alongside Rev. (Mrs) Helen Titilayo Okoye, helped carry that
-                spirit of cheerful, practical generosity through the All
-                Christians Fellowship Mission for years.
-              </p>
-              <p className={styles.faith__body}>
-                WHHF continues that same calling today: care for the sick,
-                support for the struggling, and faith put into action rather
-                than left as words alone.
-              </p>
+              {/* This is memorial content — see /admin/content/home to
+                  edit it; do not add/remove memorial content on your own
+                  judgment, per AGENTS.md and docs/content-style-guide.md. */}
+              <p className={styles.faith__body}>{c["home.faith.body1"] as string}</p>
+              <p className={styles.faith__body}>{c["home.faith.body2"] as string}</p>
+              <p className={styles.faith__body}>{c["home.faith.body3"] as string}</p>
               <Link href="/faith">
                 <Button variant="outline">Learn More About WHHF</Button>
               </Link>
@@ -425,8 +365,8 @@ export default function HomePage() {
         <div className="container">
           <div className={styles.blogSection__header}>
             <div className={styles.programmes__headingGroup}>
-              <p className="eyebrow-label">/ From the Blog /</p>
-              <h2>Stories, updates, and reflections.</h2>
+              <p className="eyebrow-label">/ {c["home.blog.eyebrow"] as string} /</p>
+              <h2>{c["home.blog.heading"] as string}</h2>
             </div>
             <Link href="/blog">
               <Button variant="outline">View All Posts</Button>
@@ -457,44 +397,15 @@ export default function HomePage() {
       </section>
 
       <FaqSection
-        heading="Frequently asked questions."
-        intro="Straightforward answers about giving, our programmes, and how WHHF operates, no pressure, just what you need to know."
+        heading={c["home.faq.heading"] as string}
+        intro={c["home.faq.intro"] as string}
         sideHeading={
           <>
             Real answers. <em>No pressure.</em>
           </>
         }
-        sideBody="We answer common questions about giving, our programmes, and how WHHF operates with full transparency, before you ever commit to anything."
-        items={[
-          {
-            question: "How can I donate?",
-            answer:
-              "You can give directly through our Donate page using bank transfer or card payment. Every gift goes toward supporting indigent cancer patients."
-          },
-          {
-            question: "Where does my donation go?",
-            answer:
-              "Donations go directly toward chemotherapy and treatment costs for patients supported through our flagship programme, distributed in partnership with National Hospital, Abuja."
-          },
-          {
-            question: "Is WHHF a registered organization?",
-            answer:
-              "WHHF operates under the umbrella of the All Christians Fellowship Mission. Our formal registration details are being finalized and will be published here once confirmed."
-          },
-          {
-            question: "Can I volunteer or partner with WHHF?",
-            answer: "Yes, reach out through our Contact page to discuss partnership or volunteering opportunities."
-          },
-          {
-            question: "Who founded WHHF?",
-            answer:
-              "WHHF was established in memory of Rev. (Mrs) Helen Titilayo Okoye, continuing the generosity she was known for during her lifetime."
-          },
-          {
-            question: "How do I get started?",
-            answer: "Visit our Donate page to give directly, or use our Contact page to reach out with questions first."
-          }
-        ]}
+        sideBody={c["home.faq.sideBody"] as string}
+        items={faqItems}
       />
 
       <section className="section">
@@ -506,60 +417,33 @@ export default function HomePage() {
             </div>
           </div>
           <div className={styles.explore__grid}>
-            <Link href="/about" className={styles.explore__card}>
-              <div className={styles.explore__cardImageWrap}>
-                <Image
-                  src={sitePhotos.ourStory}
-                  alt=""
-                  fill
-                  sizes="(max-width: 900px) 100vw, 360px"
-                  className={styles.explore__cardImage}
-                />
-                <div className={styles.explore__cardScrim} />
-                <div className={styles.explore__cardCaption}>
-                  <p className={styles.explore__cardTitle}>Our Story</p>
-                  <p className={styles.explore__cardLine}>How WHHF carries Helen&rsquo;s legacy forward.</p>
-                </div>
-              </div>
-            </Link>
-            <Link href="/programmes" className={styles.explore__card}>
-              <div className={styles.explore__cardImageWrap}>
-                <Image
-                  src={placeholderImages.programmeFlagship}
-                  alt=""
-                  fill
-                  sizes="(max-width: 900px) 100vw, 360px"
-                  className={styles.explore__cardImage}
-                />
-                <div className={styles.explore__cardScrim} />
-                <div className={styles.explore__cardCaption}>
-                  <p className={styles.explore__cardTitle}>Our Programmes</p>
-                  <p className={styles.explore__cardLine}>Direct support for indigent cancer patients.</p>
-                </div>
-              </div>
-            </Link>
-            <Link href="/impact" className={styles.explore__card}>
-              <div className={styles.explore__cardImageWrap}>
-                <Image
-                  src={placeholderImages.impactHero}
-                  alt=""
-                  fill
-                  sizes="(max-width: 900px) 100vw, 360px"
-                  className={styles.explore__cardImage}
-                />
-                <div className={styles.explore__cardScrim} />
-                <div className={styles.explore__cardCaption}>
-                  <p className={styles.explore__cardTitle}>Our Impact</p>
-                  <p className={styles.explore__cardLine}>See how your generosity reaches patients.</p>
-                </div>
-              </div>
-            </Link>
+            {EXPLORE_HREFS.map((href, index) => {
+              const item = exploreItems[index] ?? { image: "", title: "", line: "" };
+              return (
+                <Link key={href} href={href} className={styles.explore__card}>
+                  <div className={styles.explore__cardImageWrap}>
+                    <Image
+                      src={item.image}
+                      alt=""
+                      fill
+                      sizes="(max-width: 900px) 100vw, 360px"
+                      className={styles.explore__cardImage}
+                    />
+                    <div className={styles.explore__cardScrim} />
+                    <div className={styles.explore__cardCaption}>
+                      <p className={styles.explore__cardTitle}>{item.title}</p>
+                      <p className={styles.explore__cardLine}>{item.line}</p>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
 
       <DonateCta
-        images={[placeholderImages.homeHero, placeholderImages.donateCtaSecondary]}
+        images={[c["home.donateCta.image1"] as string, c["home.donateCta.image2"] as string]}
         imagePosition="center top"
       />
     </>

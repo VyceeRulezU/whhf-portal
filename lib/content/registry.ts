@@ -698,6 +698,384 @@ export const contentRegistry: PageManifest[] = [
         default: "Where your support goes."
       }
     ]
+  },
+  {
+    slug: "home",
+    label: "Home",
+    sections: [
+      { type: "text", key: "home.hero.heading", label: "Hero heading", default: "Continuing a legacy of giving, one life at a time." },
+      {
+        type: "text",
+        key: "home.hero.lede",
+        label: "Hero subtitle",
+        multiline: true,
+        default:
+          "The William & Helen Heritage Foundation supports indigent cancer patients in Abuja and beyond, carrying forward the generosity of Rev. (Mrs) Helen Titilayo Okoye."
+      },
+      {
+        type: "image",
+        key: "home.hero.image",
+        label: "Hero photo",
+        default: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/2151565852.jpg"
+      },
+      { type: "text", key: "home.hero.statLabel", label: "Hero stat card — label", default: "In loving memory of" },
+      {
+        type: "text",
+        key: "home.hero.statValue",
+        label: "Hero stat card — value",
+        default: "Rev. Dr. William & Rev. (Mrs.) Helen Okoye"
+      },
+      {
+        type: "text",
+        key: "home.hero.statCaption",
+        label: "Hero stat card — caption",
+        default: "Whose generosity continues through WHHF"
+      },
+
+      { type: "text", key: "home.aboutUs.eyebrow", label: "\"Who We Are\" eyebrow", default: "Who We Are" },
+      { type: "text", key: "home.aboutUs.heading", label: "\"Who We Are\" heading", default: "Driven by compassion, guided by faith." },
+      {
+        type: "image",
+        key: "home.aboutUs.image",
+        label: "\"Who We Are\" main photo",
+        default: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/web-images/WhatsApp%20Image%202026-09-14%20at%204.33.10%20PM.jpeg"
+      },
+      { type: "text", key: "home.aboutUs.statValue", label: "\"Who We Are\" stat — value", default: "5+" },
+      { type: "text", key: "home.aboutUs.statLabel", label: "\"Who We Are\" stat — label", default: "Patients Supported" },
+      {
+        type: "text",
+        key: "home.aboutUs.statCaption",
+        label: "\"Who We Are\" stat — caption",
+        default: "Direct grants toward chemotherapy and treatment costs."
+      },
+      {
+        type: "image",
+        key: "home.aboutUs.thumbImage",
+        label: "\"Who We Are\" thumbnail photo",
+        default: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/2151940449.jpg"
+      },
+      {
+        type: "text",
+        key: "home.aboutUs.body",
+        label: "\"Who We Are\" body",
+        multiline: true,
+        default:
+          "WHHF was established in memory of Rev. (Mrs) Helen Titilayo Okoye, under the umbrella of the All Christians Fellowship Mission. What began as a single act of giving, support for indigent cancer patients, continues as an ongoing commitment to carry her generosity forward."
+      },
+      {
+        type: "image",
+        key: "home.aboutUs.fillImage",
+        label: "\"Who We Are\" full-width photo",
+        default: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/627673414_18361507168160333_4291544863867280766_n.jpg"
+      },
+
+      { type: "text", key: "home.story.eyebrow", label: "\"Our Story\" eyebrow", default: "Our Story" },
+      { type: "text", key: "home.story.heading", label: "\"Our Story\" heading", default: "A loss that became a promise." },
+      {
+        type: "text",
+        key: "home.story.lede",
+        label: "\"Our Story\" body",
+        multiline: true,
+        default:
+          "Rev. (Mrs) Helen Titilayo Okoye passed away in 2019. WHHF was established in her memory, under the umbrella of the All Christians Fellowship Mission, to continue the generosity she was known for, starting with support for indigent cancer patients who cannot afford treatment."
+      },
+      {
+        type: "image",
+        key: "home.story.image",
+        label: "\"Our Story\" photo",
+        default: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/web-images/WhatsApp%20Image%202026-09-14%20at%204.33.10%20PM%20(1).jpeg"
+      },
+      { type: "text", key: "home.story.stat1Value", label: "\"Our Story\" stat 1 — value", default: "Faith-Led" },
+      { type: "text", key: "home.story.stat1Caption", label: "\"Our Story\" stat 1 — caption", default: "Rooted in the values Helen lived by." },
+      { type: "text", key: "home.story.stat2Value", label: "\"Our Story\" stat 2 — value", default: "Direct to Patients" },
+      {
+        type: "text",
+        key: "home.story.stat2Caption",
+        label: "\"Our Story\" stat 2 — caption",
+        default: "Grants go straight to treatment costs, not overhead."
+      },
+      { type: "text", key: "home.story.stat3Value", label: "\"Our Story\" stat 3 — value", default: "Transparent" },
+      {
+        type: "text",
+        key: "home.story.stat3Caption",
+        label: "\"Our Story\" stat 3 — caption",
+        default: "Every donation accounted for and reported."
+      },
+
+      { type: "text", key: "home.howWeWork.eyebrow", label: "\"How We Work\" eyebrow", default: "How We Work" },
+      { type: "text", key: "home.howWeWork.heading", label: "\"How We Work\" heading", default: "From reaching out to a life changed." },
+      {
+        type: "image",
+        key: "home.howWeWork.image",
+        label: "\"How We Work\" photo",
+        default: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/649531155_17984201615874766_6774910805288153881_n.webp"
+      },
+      { type: "text", key: "home.howWeWork.step1Heading", label: "Step 1 — heading", default: "Reach & Referral" },
+      {
+        type: "text",
+        key: "home.howWeWork.step1Body",
+        label: "Step 1 — body",
+        multiline: true,
+        default: "Patients and families reach us directly, or through our network within the All Christians Fellowship Mission community."
+      },
+      { type: "text", key: "home.howWeWork.step2Heading", label: "Step 2 — heading", default: "Board Verification" },
+      {
+        type: "text",
+        key: "home.howWeWork.step2Body",
+        label: "Step 2 — body",
+        multiline: true,
+        default: "Every case is reviewed by the board before any funds move, confirming the medical need first."
+      },
+      { type: "text", key: "home.howWeWork.step3Heading", label: "Step 3 — heading", default: "Direct Grant" },
+      {
+        type: "text",
+        key: "home.howWeWork.step3Body",
+        label: "Step 3 — body",
+        multiline: true,
+        default: "Approved grants are paid straight toward treatment costs, not through intermediaries."
+      },
+      { type: "text", key: "home.howWeWork.ctaHeading", label: "CTA card — heading", default: "See it in action" },
+      { type: "text", key: "home.howWeWork.ctaBody", label: "CTA card — body", default: "Explore the programmes this process supports." },
+
+      { type: "text", key: "home.getInvolved.eyebrow", label: "\"Get Involved\" eyebrow", default: "Get Involved" },
+      { type: "text", key: "home.getInvolved.heading", label: "\"Get Involved\" heading", default: "Ways to support the work." },
+      {
+        type: "text",
+        key: "home.getInvolved.intro",
+        label: "\"Get Involved\" intro",
+        multiline: true,
+        default: "From a direct gift to sharing our story, every form of support carries Helen's generosity a little further."
+      },
+      {
+        type: "image",
+        key: "home.getInvolved.card1Image",
+        label: "Card 1 (links to /programmes) — photo",
+        default: "https://images.unsplash.com/photo-1578496781307-30c2b531c05a?w=900&q=80&fm=jpg&fit=crop"
+      },
+      { type: "text", key: "home.getInvolved.card1Badge", label: "Card 1 — badge", default: "Flagship Programme" },
+      { type: "text", key: "home.getInvolved.card1Heading", label: "Card 1 — heading", default: "Indigent Cancer Patient Support" },
+      {
+        type: "text",
+        key: "home.getInvolved.card1Body",
+        label: "Card 1 — body",
+        multiline: true,
+        default: "Direct grants toward chemotherapy and treatment costs for patients who cannot afford care."
+      },
+      {
+        type: "image",
+        key: "home.getInvolved.card2Image",
+        label: "Card 2 (links to /about) — photo",
+        default: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/web-images/mummy-Helen-Okoye-1.jpg"
+      },
+      { type: "text", key: "home.getInvolved.card2Badge", label: "Card 2 — badge", default: "Our Story" },
+      { type: "text", key: "home.getInvolved.card2Heading", label: "Card 2 — heading", default: "Founded in Helen's Memory" },
+      {
+        type: "text",
+        key: "home.getInvolved.card2Body",
+        label: "Card 2 — body",
+        multiline: true,
+        default: "Read how WHHF came to be, and the family behind it."
+      },
+      {
+        type: "image",
+        key: "home.getInvolved.card3Image",
+        label: "Card 3 (links to /donate) — photo",
+        default: "https://images.unsplash.com/photo-1543689604-6fe8dbcd1f59?w=1200&q=80&fm=jpg&fit=crop"
+      },
+      { type: "text", key: "home.getInvolved.card3Badge", label: "Card 3 — badge", default: "Give" },
+      { type: "text", key: "home.getInvolved.card3Heading", label: "Card 3 — heading", default: "Make a Donation" },
+      {
+        type: "text",
+        key: "home.getInvolved.card3Body",
+        label: "Card 3 — body",
+        multiline: true,
+        default: "Every gift goes directly toward treatment costs for patients who need it most."
+      },
+
+      { type: "text", key: "home.impact.eyebrow", label: "\"Our Impact\" eyebrow", default: "Our Impact" },
+      { type: "text", key: "home.impact.heading", label: "\"Our Impact\" heading", default: "Where your support goes." },
+      {
+        type: "text",
+        key: "home.impact.intro",
+        label: "\"Our Impact\" intro",
+        multiline: true,
+        default: "Four things carry every gift forward, browse through what your support makes possible."
+      },
+      {
+        type: "image",
+        key: "home.impact.panelImage",
+        label: "\"Our Impact\" panel background photo",
+        default: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/2151940449.jpg"
+      },
+      {
+        // href/linkLabel per card stay fixed — each points to a specific
+        // /impact/[slug] detail route, and a broken/typo'd href here would
+        // silently 404. Only image/title/body are editable.
+        type: "list",
+        key: "home.impact.items",
+        label: "Impact carousel cards (in fixed order — links are not editable)",
+        itemFields: [
+          { type: "image", key: "image", label: "Photo", default: "" },
+          { type: "text", key: "title", label: "Title", default: "" },
+          { type: "text", key: "body", label: "Body", multiline: true, default: "" }
+        ],
+        default: [
+          {
+            image: "https://images.unsplash.com/photo-1578496781307-30c2b531c05a?w=900&q=80&fm=jpg&fit=crop",
+            title: "Treatment & Recovery",
+            body: "Direct financial grants toward chemotherapy and treatment costs, distributed in partnership with National Hospital, Abuja. Every case is reviewed individually, so support reaches the patients who need it most, without unnecessary delay."
+          },
+          {
+            image: "https://images.unsplash.com/photo-1632215861513-130b66fe97f4?w=900&q=80&fm=jpg&fit=crop",
+            title: "Faith & Community",
+            body: "Rooted in the All Christians Fellowship Mission, our work carries forward a legacy of compassion within the community Helen served, grounded in faith, and carried out in practical, everyday ways."
+          },
+          {
+            image: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/649531155_17984201615874766_6774910805288153881_n.webp",
+            title: "Community Outreach",
+            body: "From hospital visits to community engagements, WHHF stays connected to the people it serves, because lasting support starts with genuinely knowing the families behind every case."
+          },
+          {
+            image: "https://images.unsplash.com/photo-1543689604-6fe8dbcd1f59?w=1200&q=80&fm=jpg&fit=crop",
+            title: "Transparency & Accountability",
+            body: "Every donation is tracked and reported, so donors can see exactly how their generosity is put to work, no hidden fees, no unexplained gaps."
+          }
+        ]
+      },
+
+      {
+        type: "image",
+        key: "home.faith.image",
+        label: "\"A Word of Faith\" photo",
+        default: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/web-images/rev%20dr%20william%20okoye.jpg"
+      },
+      {
+        type: "text",
+        key: "home.faith.body1",
+        label: "\"A Word of Faith\" — paragraph 1",
+        multiline: true,
+        default:
+          "“Each of you should give what you have decided in your heart to give, not reluctantly or under compulsion, for God loves a cheerful giver.” (2 Corinthians 9:7)"
+      },
+      {
+        type: "text",
+        key: "home.faith.body2",
+        label: "\"A Word of Faith\" — paragraph 2",
+        multiline: true,
+        default:
+          "In loving memory of Rev. Dr. William Okoye, whose ministry, alongside Rev. (Mrs) Helen Titilayo Okoye, helped carry that spirit of cheerful, practical generosity through the All Christians Fellowship Mission for years."
+      },
+      {
+        type: "text",
+        key: "home.faith.body3",
+        label: "\"A Word of Faith\" — paragraph 3",
+        multiline: true,
+        default:
+          "WHHF continues that same calling today: care for the sick, support for the struggling, and faith put into action rather than left as words alone."
+      },
+
+      { type: "text", key: "home.blog.eyebrow", label: "\"From the Blog\" eyebrow", default: "From the Blog" },
+      { type: "text", key: "home.blog.heading", label: "\"From the Blog\" heading", default: "Stories, updates, and reflections." },
+
+      { type: "text", key: "home.faq.heading", label: "FAQ heading", default: "Frequently asked questions." },
+      {
+        type: "text",
+        key: "home.faq.intro",
+        label: "FAQ intro",
+        multiline: true,
+        default: "Straightforward answers about giving, our programmes, and how WHHF operates, no pressure, just what you need to know."
+      },
+      {
+        type: "text",
+        key: "home.faq.sideBody",
+        label: "FAQ side panel body",
+        multiline: true,
+        default:
+          "We answer common questions about giving, our programmes, and how WHHF operates with full transparency, before you ever commit to anything."
+      },
+      {
+        type: "list",
+        key: "home.faq.items",
+        label: "FAQ items",
+        itemFields: [
+          { type: "text", key: "question", label: "Question", default: "" },
+          { type: "text", key: "answer", label: "Answer", multiline: true, default: "" }
+        ],
+        default: [
+          {
+            question: "How can I donate?",
+            answer:
+              "You can give directly through our Donate page using bank transfer or card payment. Every gift goes toward supporting indigent cancer patients."
+          },
+          {
+            question: "Where does my donation go?",
+            answer:
+              "Donations go directly toward chemotherapy and treatment costs for patients supported through our flagship programme, distributed in partnership with National Hospital, Abuja."
+          },
+          {
+            question: "Is WHHF a registered organization?",
+            answer:
+              "WHHF operates under the umbrella of the All Christians Fellowship Mission. Our formal registration details are being finalized and will be published here once confirmed."
+          },
+          {
+            question: "Can I volunteer or partner with WHHF?",
+            answer: "Yes, reach out through our Contact page to discuss partnership or volunteering opportunities."
+          },
+          {
+            question: "Who founded WHHF?",
+            answer:
+              "WHHF was established in memory of Rev. (Mrs) Helen Titilayo Okoye, continuing the generosity she was known for during her lifetime."
+          },
+          {
+            question: "How do I get started?",
+            answer: "Visit our Donate page to give directly, or use our Contact page to reach out with questions first."
+          }
+        ]
+      },
+
+      {
+        // hrefs stay fixed (/about, /programmes, /impact) — only the
+        // photo/title/line per card are editable.
+        type: "list",
+        key: "home.explore.items",
+        label: "\"Explore more\" cards (in fixed order — links are not editable)",
+        itemFields: [
+          { type: "image", key: "image", label: "Photo", default: "" },
+          { type: "text", key: "title", label: "Title", default: "" },
+          { type: "text", key: "line", label: "Caption line", default: "" }
+        ],
+        default: [
+          {
+            image: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/web-images/mummy-Helen-Okoye-1.jpg",
+            title: "Our Story",
+            line: "How WHHF carries Helen's legacy forward."
+          },
+          {
+            image: "https://images.unsplash.com/photo-1578496781307-30c2b531c05a?w=900&q=80&fm=jpg&fit=crop",
+            title: "Our Programmes",
+            line: "Direct support for indigent cancer patients."
+          },
+          {
+            image: "https://images.unsplash.com/photo-1543689604-6fe8dbcd1f59?w=1200&q=80&fm=jpg&fit=crop",
+            title: "Our Impact",
+            line: "See how your generosity reaches patients."
+          }
+        ]
+      },
+
+      {
+        type: "image",
+        key: "home.donateCta.image1",
+        label: "Bottom donate banner — photo 1",
+        default: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/2151565852.jpg"
+      },
+      {
+        type: "image",
+        key: "home.donateCta.image2",
+        label: "Bottom donate banner — photo 2",
+        default: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/2151565939.jpg"
+      }
+    ]
   }
 ];
 
