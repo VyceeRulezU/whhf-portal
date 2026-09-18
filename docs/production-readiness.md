@@ -226,9 +226,19 @@ without a developer, with changes live immediately on save.
       R2 (not just that a plausible URL came back); added and removed a
       brand-new blog post through the real API and confirmed it resolved
       at its own detail URL immediately, with no rebuild.
-- [ ] Production verification — repeat the staging live-edit test once
-      on production itself (text field, image upload), on a low-stakes
-      field. Confirm production's `SiteContentField` table (currently
-      empty — every field is resolving through its manifest default,
-      which is why the site still renders correctly with zero rows) is
-      the expected steady state going forward, not an oversight.
+- [x] Production verification — repeated the staging live-edit test on
+      production itself: edited the Leadership hero eyebrow through the
+      real production admin, confirmed it was live on the real public
+      site within seconds; uploaded a real image through the production
+      Worker and confirmed the object landed in R2 (200, publicly
+      retrievable); reverted both and confirmed the revert took effect
+      too (one transient immediate-recheck showed the stale value, but a
+      cache-busted request and the response's own `Cache-Control:
+      no-store` header confirmed this was a one-off timing blip, not a
+      caching layer sitting in front of the dynamic page — a follow-up
+      plain request a few seconds later showed the correct reverted
+      value stably). Full smoke test green throughout. `SiteContentField`
+      resolving entirely through manifest defaults with zero DB rows in
+      production is the expected steady state, not an oversight — rows
+      only get created the first time a family member actually edits a
+      field.
