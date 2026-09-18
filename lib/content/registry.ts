@@ -592,6 +592,112 @@ export const contentRegistry: PageManifest[] = [
         ]
       }
     ]
+  },
+  {
+    slug: "faith",
+    label: "A Word of Faith",
+    sections: [
+      { type: "text", key: "faith.title", label: "Title", default: "A legacy rooted in faith and compassion." },
+      {
+        type: "image",
+        key: "faith.image",
+        label: "Photo",
+        default: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/web-images/rev%20dr%20william%20okoye.jpg"
+      },
+      // This is memorial content about a specific person (see AGENTS.md /
+      // docs/content-style-guide.md's memorial-content note) — the family
+      // themselves are the ones with standing to edit it through their own
+      // admin panel; that guidance is about an engineer/agent not
+      // rewriting it unilaterally, not about restricting the family here.
+      {
+        type: "text",
+        key: "faith.paragraph1",
+        label: "Paragraph 1 (scripture quote)",
+        multiline: true,
+        default:
+          "“Each of you should give what you have decided in your heart to give, not reluctantly or under compulsion, for God loves a cheerful giver.” (2 Corinthians 9:7)"
+      },
+      {
+        type: "text",
+        key: "faith.paragraph2",
+        label: "Paragraph 2",
+        multiline: true,
+        default:
+          "In loving memory of Rev. Dr. William Okoye, whose ministry, alongside Rev. (Mrs) Helen Titilayo Okoye, helped carry that spirit of cheerful, practical generosity through the All Christians Fellowship Mission for years."
+      },
+      {
+        type: "text",
+        key: "faith.paragraph3",
+        label: "Paragraph 3",
+        multiline: true,
+        default:
+          "WHHF continues that same calling today: care for the sick, support for the struggling, and faith put into action rather than left as words alone. It is not a passive belief held quietly, it is a conviction that shows up in a paid chemotherapy bill, a hospital visit, a case reviewed carefully before any funds move."
+      },
+      {
+        type: "text",
+        key: "faith.paragraph4",
+        label: "Paragraph 4",
+        multiline: true,
+        default:
+          "Generosity, understood this way, is not an obligation grudgingly met. It is offered cheerfully, because it reflects a character already at work in the giver, the same character this Foundation was built to carry forward, one life at a time."
+      },
+      {
+        type: "text",
+        key: "faith.paragraph5",
+        label: "Paragraph 5",
+        multiline: true,
+        default:
+          "Every gift given to WHHF, however large or small, becomes part of that same continuing act of faith, a promise kept, again and again, to the people who need it most."
+      }
+    ]
+  },
+  {
+    slug: "impact",
+    label: "Impact",
+    sections: [
+      { type: "text", key: "impact.hero.eyebrow", label: "Hero eyebrow", default: "Impact" },
+      {
+        type: "text",
+        key: "impact.hero.title",
+        label: "Hero title",
+        default: "What your generosity has made possible."
+      },
+      {
+        type: "text",
+        key: "impact.hero.lede",
+        label: "Hero subtitle",
+        multiline: true,
+        default: "Confirmed figures below, updated as new distributions are made and admin reporting comes online."
+      },
+      {
+        type: "image",
+        key: "impact.image",
+        label: "Photo",
+        default: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/670317138_18121245112616977_1879193932980889521_n.webp"
+      },
+      { type: "text", key: "impact.stat1.figure", label: "Stat 1 — figure", default: "₦1.5M+" },
+      {
+        type: "text",
+        key: "impact.stat1.description",
+        label: "Stat 1 — description",
+        multiline: true,
+        default:
+          "Distributed to five indigent cancer patients at National Hospital, Abuja, on the 4th memorial anniversary of Rev. (Mrs) Helen Okoye."
+      },
+      { type: "text", key: "impact.stat2.figure", label: "Stat 2 — figure", default: "5" },
+      {
+        type: "text",
+        key: "impact.stat2.description",
+        label: "Stat 2 — description",
+        default: "Patients directly supported in this distribution."
+      },
+      {
+        type: "text",
+        key: "impact.stories.heading",
+        label: "\"Where your support goes\" heading",
+        default: "Where your support goes."
+      }
+    ]
   }
 ];
 

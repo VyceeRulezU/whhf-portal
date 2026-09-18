@@ -3,8 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { PageHero } from "@/components/marketing/PageHero";
-import { sitePhotos } from "@/lib/content/sitePhotos";
 import { impactStories } from "@/lib/content/impactStories";
+import { getPageContent } from "@/lib/content/getPageContent";
 import styles from "./impact.module.css";
 
 export const metadata: Metadata = {
@@ -13,31 +13,29 @@ export const metadata: Metadata = {
     "₦1.5M+ distributed to indigent cancer patients at National Hospital, Abuja. See what your generosity has made possible."
 };
 
-export default function ImpactPage() {
+export default async function ImpactPage() {
+  const content = await getPageContent("impact");
+
   return (
     <>
       <PageHero
-        eyebrow="Impact"
-        title="What your generosity has made possible."
-        lede="Confirmed figures below, updated as new distributions are made and admin reporting comes online."
+        eyebrow={content["impact.hero.eyebrow"] as string}
+        title={content["impact.hero.title"] as string}
+        lede={content["impact.hero.lede"] as string}
       />
       <section className="section">
         <div className="container stack">
           <div className={styles.imageWrap}>
-            <Image src={sitePhotos.impactMain} alt="" fill sizes="100vw" className={styles.image} />
+            <Image src={content["impact.image"] as string} alt="" fill sizes="100vw" className={styles.image} />
           </div>
           <div className="grid-auto">
             <Card>
-              <h3>₦1.5M+</h3>
-              <p className={styles.description}>
-                Distributed to five indigent cancer patients at National
-                Hospital, Abuja, on the 4th memorial anniversary of Rev. (Mrs)
-                Helen Okoye.
-              </p>
+              <h3>{content["impact.stat1.figure"] as string}</h3>
+              <p className={styles.description}>{content["impact.stat1.description"] as string}</p>
             </Card>
             <Card>
-              <h3>5</h3>
-              <p className={styles.description}>Patients directly supported in this distribution.</p>
+              <h3>{content["impact.stat2.figure"] as string}</h3>
+              <p className={styles.description}>{content["impact.stat2.description"] as string}</p>
             </Card>
             {/* TODO: pull real cumulative totals from the admin/donation data once live — do not hardcode further placeholder figures. */}
           </div>
@@ -48,7 +46,7 @@ export default function ImpactPage() {
         <div className="container stack">
           <div>
             <p className="eyebrow-label">/ Read More /</p>
-            <h2>Where your support goes.</h2>
+            <h2>{content["impact.stories.heading"] as string}</h2>
           </div>
           <div className={styles.storyGrid}>
             {impactStories.map((story) => (
