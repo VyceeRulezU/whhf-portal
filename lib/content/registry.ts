@@ -476,6 +476,122 @@ export const contentRegistry: PageManifest[] = [
         default: "https://images.unsplash.com/photo-1543689604-6fe8dbcd1f59?w=1200&q=80&fm=jpg&fit=crop"
       }
     ]
+  },
+  {
+    slug: "donate",
+    label: "Donate",
+    sections: [
+      { type: "text", key: "donate.hero.eyebrow", label: "Hero eyebrow", default: "Donate" },
+      { type: "text", key: "donate.hero.title", label: "Hero title", default: "Make a donation." },
+      {
+        type: "text",
+        key: "donate.hero.lede",
+        label: "Hero subtitle",
+        multiline: true,
+        default: "Every gift goes directly toward WHHF's programmes, starting with support for indigent cancer patients."
+      },
+      { type: "text", key: "donate.bank.heading", label: "Bank transfer heading", default: "Prefer a bank transfer?" },
+      {
+        type: "text",
+        key: "donate.bank.note",
+        label: "Bank transfer note",
+        multiline: true,
+        default:
+          "While online card payments are being finalized, you can also give directly by bank transfer using the details below."
+      },
+      {
+        type: "list",
+        key: "donate.bank.rows",
+        label: "Bank details",
+        itemFields: [
+          { type: "text", key: "label", label: "Label", default: "" },
+          { type: "text", key: "value", label: "Value", default: "" }
+        ],
+        default: [
+          { label: "Account name", value: "William and Helen Heritage Foundation" },
+          { label: "Account number", value: "5600513265" },
+          { label: "Bank", value: "Fidelity Bank" }
+        ]
+      }
+    ]
+  },
+  {
+    slug: "gallery",
+    label: "Gallery",
+    sections: [
+      { type: "text", key: "gallery.hero.eyebrow", label: "Hero eyebrow", default: "Gallery" },
+      { type: "text", key: "gallery.hero.title", label: "Hero title", default: "Moments from the work." },
+      {
+        type: "text",
+        key: "gallery.hero.lede",
+        label: "Hero subtitle",
+        multiline: true,
+        default: "A look at WHHF's programmes and the community carrying them forward. Click any photo to view it full-size."
+      },
+      {
+        type: "list",
+        key: "gallery.images",
+        label: "Gallery photos",
+        itemFields: [
+          { type: "image", key: "src", label: "Photo", default: "" },
+          { type: "text", key: "caption", label: "Caption", default: "" }
+        ],
+        default: [
+          {
+            src: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/web-images/WhatsApp%20Image%202026-09-14%20at%204.33.10%20PM.jpeg",
+            caption: "WHHF programme activity"
+          },
+          {
+            src: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/web-images/WhatsApp%20Image%202026-09-14%20at%204.33.10%20PM%20(1).jpeg",
+            caption: "Community engagement"
+          },
+          {
+            src: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/649531155_17984201615874766_6774910805288153881_n.webp",
+            caption: "Case review and outreach"
+          },
+          {
+            src: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/627673414_18361507168160333_4291544863867280766_n.jpg",
+            caption: "Promoting godly values"
+          },
+          {
+            src: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/654712004_18100318330938352_452443779084317951_n.webp",
+            caption: "WHHF community outreach"
+          },
+          {
+            src: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/658187139_18313702102283882_396341819537141756_n.webp",
+            caption: "WHHF programme activity"
+          },
+          {
+            src: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/659814391_18339030712300134_1657967389436416368_n.webp",
+            caption: "WHHF in the community"
+          },
+          {
+            src: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/670317138_18121245112616977_1879193932980889521_n.webp",
+            caption: "Celebrating patients supported"
+          },
+          {
+            src: "https://images.unsplash.com/photo-1578496781307-30c2b531c05a?w=900&q=80&fm=jpg&fit=crop",
+            caption: "Recovery and treatment support"
+          },
+          {
+            src: "https://images.unsplash.com/photo-1632215861513-130b66fe97f4?w=900&q=80&fm=jpg&fit=crop",
+            caption: "Faith and community"
+          },
+          {
+            src: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/2151940449.jpg",
+            caption: "WHHF in the community"
+          },
+          {
+            src: "https://images.unsplash.com/photo-1561212856-44e9bae482aa?w=1200&q=80&fm=jpg&fit=crop",
+            caption: "Remembering our founding story"
+          },
+          {
+            src: "https://images.unsplash.com/photo-1761370981139-c1fe5402c709?w=1200&q=80&fm=jpg&fit=crop",
+            caption: "Reaching families in Abuja"
+          }
+        ]
+      }
+    ]
   }
 ];
 
