@@ -52,7 +52,7 @@ export function CardCarousel({ children }: CardCarouselProps) {
 
   return (
     <div className={styles.wrapper}>
-      <div ref={trackRef} className={`grid-auto ${styles.track} scrollbar-hidden`}>
+      <div ref={trackRef} className={`${styles.track} scrollbar-hidden`}>
         {items.map((child, index) => (
           <div key={index} className={styles.item}>
             {child}

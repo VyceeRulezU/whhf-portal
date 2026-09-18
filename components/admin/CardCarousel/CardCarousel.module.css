@@ -2,6 +2,21 @@
   display: contents;
 }
 
+/* Same layout as the shared global .grid-auto utility, but defined here
+   directly rather than applying that class alongside this module's own
+   — mixing a global class with a CSS Module class for the same element
+   makes the cascade order between the two stylesheets undefined (it can
+   differ between `next dev` and a production build), which previously
+   let this unconditional rule silently outrank the media query below in
+   production even though dev looked correct. Keeping both the default
+   and the mobile override in this one file guarantees the mobile rule
+   always wins where it should, regardless of build/bundling order. */
+.track {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-6);
+}
+
 .dots {
   display: none;
 }
