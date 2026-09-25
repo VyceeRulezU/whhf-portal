@@ -19,7 +19,14 @@ jobs:
           node-version: 20
           cache: npm
 
-      - run: npm ci
+      # `npm ci` fails here with EBADPLATFORM on optional esbuild
+      # platform packages — a lockfile generated on Windows doesn't
+      # validate cleanly under npm ci on Linux, even though the actually-
+      # needed linux-x64 binary resolves fine. Same fix as ci.yml's `ci`
+      # job. This job only ever runs `node scripts/db-backup.js` (a plain
+      # CommonJS script needing just `aws4fetch`), so the full dependency
+      # tree isn't even load-bearing here — `npm install` is enough.
+      - run: npm install
 
       - name: Install postgresql-client (pg_dump)
         # ubuntu-latest's default postgresql-client is older than
