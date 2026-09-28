@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Input } from "@/components/ui/Input";
+import { PasswordInput } from "@/components/ui/PasswordInput";
 import { Button } from "@/components/ui/Button";
 import { useAlert } from "@/components/ui/AlertModal";
 import { placeholderImages } from "@/lib/content/placeholderImages";
@@ -59,13 +60,7 @@ export default function AdminLoginPage() {
             <p className={styles.subtitle}>Staff access only.</p>
           </div>
           <Input label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-          <Input
-            label="Password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <PasswordInput label="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
           <Button type="submit" variant="primary" disabled={isSubmitting}>
             {isSubmitting ? "Signing in…" : "Sign in"}
           </Button>
