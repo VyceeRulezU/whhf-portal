@@ -1,6 +1,10 @@
-.wrapper {
-  display: contents;
-}
+/* Deliberately NOT display:contents: that suppresses this element's own
+   box, which also silently discards any margin the parent .stack's
+   `> * + *` rule gives it — the h1 above this component and the cards
+   ended up touching with zero gap because of exactly that. A plain block
+   wrapper (the div default) is a real box that receives the stack's
+   margin-top normally, and is otherwise invisible to layout since .track
+   fills its full width same as before. */
 
 /* Same layout as the shared global .grid-auto utility, but defined here
    directly rather than applying that class alongside this module's own
@@ -15,6 +19,19 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: var(--space-6);
+}
+
+/* A fixed max-width here (not a fixed max in the minmax() above) is what
+   keeps a single-card row — e.g. the Interest page's lone "Total
+   submissions" card — from stretching to the full container width: using
+   a fixed length as minmax()'s max instead of 1fr would also change how
+   many columns auto-fit computes for a multi-card row (it switches from
+   sizing by the 260px min to sizing by the fixed max), silently wrapping
+   3-card rows onto two lines. Capping the grid ITEM's width instead has
+   no effect once a column is already narrower than 320px, so multi-card
+   rows are pixel-identical to before. */
+.item {
+  max-width: 320px;
 }
 
 .dots {
@@ -42,6 +59,7 @@
 
   .item {
     flex: 0 0 100%;
+    max-width: none;
     scroll-snap-align: start;
   }
 

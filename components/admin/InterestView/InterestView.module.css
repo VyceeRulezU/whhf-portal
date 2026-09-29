@@ -1,0 +1,20 @@
+.actionsCell {
+  width: 1%;
+}
+
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  transition: background-color var(--motion-fast), color var(--motion-fast);
+}
+
+.iconButton:hover {
+  background-color: var(--color-bg-surface-raised);
+  color: var(--color-gold);
+}
