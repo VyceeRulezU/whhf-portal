@@ -6,4 +6,4 @@
 export const SITE_URL = "https://whheritagefoundation.org";
 export const SITE_NAME = "William & Helen Heritage Foundation";
 export const SITE_DESCRIPTION =
-  "William & Helen Heritage Foundation (WHHF) is an Abuja-based NGO supporting indigent cancer patients and continuing a legacy of giving, under the umbrella of the All Christians Fellowship Mission (ACFM).";
+  "William & Helen Heritage Foundation (WHHF) is an Abuja-based NGO supporting indigent cancer patients and promoting values that transform lives.";

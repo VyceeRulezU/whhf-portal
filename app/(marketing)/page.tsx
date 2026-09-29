@@ -35,6 +35,11 @@ interface FaqItem {
   answer: string;
 }
 
+interface Partner {
+  name: string;
+  logo: string;
+}
+
 // Fixed order/hrefs — see the registry's "links are not editable" note on
 // home.impact.items and home.explore.items.
 const IMPACT_HREFS = [
@@ -50,6 +55,7 @@ export default async function HomePage() {
   const impactItems = c["home.impact.items"] as ImpactItem[];
   const exploreItems = c["home.explore.items"] as ExploreItem[];
   const faqItems = c["home.faq.items"] as FaqItem[];
+  const partners = c["home.partners"] as Partner[];
 
   const blogContent = await getPageContent("blog");
   const blogPosts = blogContent["blog.posts"] as BlogPostSummary[];
@@ -95,7 +101,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <PartnerCarousel />
+      <PartnerCarousel partners={partners} />
 
       <section className="section">
         <div className="container">

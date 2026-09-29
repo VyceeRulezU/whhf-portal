@@ -792,6 +792,23 @@ export const contentRegistry: PageManifest[] = [
         default: "Whose generosity continues through WHHF"
       },
 
+      // Empty by default on purpose — no real partner logos exist yet
+      // (see components/marketing/PartnerCarousel.tsx). The gold band
+      // still renders with zero items; adding one here makes it appear.
+      // Logos are shown in solid black (brightness(0) filter) regardless
+      // of the uploaded image's own colors — design-system.md: gold
+      // carries all emphasis, no second accent hue.
+      {
+        type: "list",
+        key: "home.partners",
+        label: "Partner logos",
+        itemFields: [
+          { type: "text", key: "name", label: "Partner name (used as the image's alt text)", default: "" },
+          { type: "image", key: "logo", label: "Logo", default: "" }
+        ],
+        default: []
+      },
+
       { type: "text", key: "home.aboutUs.eyebrow", label: "\"Who We Are\" eyebrow", default: "Who We Are" },
       { type: "text", key: "home.aboutUs.heading", label: "\"Who We Are\" heading", default: "Driven by compassion, guided by faith." },
       {
