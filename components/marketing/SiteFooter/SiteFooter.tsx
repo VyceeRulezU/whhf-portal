@@ -50,9 +50,8 @@ export async function SiteFooter() {
           <div className={styles.footer__brand}>
             <Image src={logo} alt="William & Helen Heritage Foundation" width={220} height={220} className={styles.footer__logo} />
             <p className={styles.footer__tagline}>
-              Continuing a legacy of giving, under the umbrella of the All
-              Christians Fellowship Mission (ACFM): support for indigent
-              cancer patients in Abuja and beyond.
+              Promoting godly values and continuing a legacy of compassion:
+              support for indigent cancer patients in Abuja and beyond.
             </p>
             <NewsletterForm />
           </div>
@@ -76,9 +75,14 @@ export async function SiteFooter() {
                 return <li key={row.label}>{href ? <a href={href}>{row.value}</a> : row.value}</li>;
               })}
             </ul>
-            <Link href="/donate" className={styles.footer__donateLink}>
-              Donate Now →
-            </Link>
+            <div className={styles.footer__ctaLinks}>
+              <Link href="/donate" className={styles.footer__donateLink}>
+                Support the Cause →
+              </Link>
+              <Link href="/interest" className={styles.footer__donateLink}>
+                Get Involved →
+              </Link>
+            </div>
           </div>
 
           <div className={styles.footer__column}>

@@ -1151,6 +1151,29 @@ export const contentRegistry: PageManifest[] = [
         key: "home.donateCta.image2",
         label: "Bottom donate banner — photo 2",
         default: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/2151565939.jpg"
+      },
+
+      // Second banner, right after "Ways to support the work" — embeds the
+      // interest form directly (same form also lives at the shareable
+      // /interest page — see app/(marketing)/interest).
+      {
+        type: "image",
+        key: "home.interestCta.image",
+        label: "\"Get involved\" section photo",
+        default: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/649531155_17984201615874766_6774910805288153881_n.webp"
+      },
+      {
+        type: "text",
+        key: "home.interestCta.heading",
+        label: "\"Get involved\" section heading",
+        default: "Want to get involved?"
+      },
+      {
+        type: "text",
+        key: "home.interestCta.body",
+        label: "\"Get involved\" section body",
+        multiline: true,
+        default: "Tell us you're interested, as a volunteer, partner, or supporter, and we'll reach out."
       }
     ]
   },
@@ -1264,6 +1287,28 @@ export const contentRegistry: PageManifest[] = [
               "WHHF's board reviews every case before funds move, a deliberate choice to keep the Foundation small enough that no grant happens without real oversight.\n\nThat board sits within the wider All Christians Fellowship Mission community, the same community Rev. (Mrs) Helen Titilayo Okoye and Rev. Dr. William Okoye served for years. Continuing WHHF's work is, for many of them, personal.\n\nSee the full leadership page for who currently serves on the board, and what each person brings to the work of keeping this promise going.\n\nAs the Foundation grows, so will this team, but the underlying commitment stays the same: verify the need, move the funds directly, and never let overhead get between a donor's gift and a patient's care."
           }
         ]
+      }
+    ]
+  },
+  {
+    slug: "interest",
+    label: "Interest Form",
+    sections: [
+      { type: "text", key: "interest.hero.eyebrow", label: "Hero eyebrow", default: "Get Involved" },
+      { type: "text", key: "interest.hero.title", label: "Hero title", default: "Tell us you're interested." },
+      {
+        type: "text",
+        key: "interest.hero.lede",
+        label: "Hero subtitle",
+        multiline: true,
+        default:
+          "Leave your details and someone from WHHF will reach out about how you can get involved, as a volunteer, partner, or supporter."
+      },
+      {
+        type: "text",
+        key: "interest.form.heading",
+        label: "Form card heading",
+        default: "Your details"
       }
     ]
   }

@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { useAlert } from "@/components/ui/AlertModal";
+import { compressImageFile } from "@/lib/content/compressImage";
 import styles from "./ImageUploadInput.module.css";
 
 interface ImageUploadInputProps {
@@ -31,8 +32,9 @@ export function ImageUploadInput({ fieldKey, value, onChange, label }: ImageUplo
 
     setIsUploading(true);
     try {
+      const compressed = await compressImageFile(file);
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", compressed);
       formData.append("fieldKey", fieldKey);
 
       const res = await fetch("/api/admin/content/upload", { method: "POST", body: formData });

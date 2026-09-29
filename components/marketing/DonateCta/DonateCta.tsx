@@ -36,7 +36,7 @@ export function DonateCta({
   imagePosition = "center",
   heading = "Your kindness can change a life.",
   body = "Every gift goes directly toward WHHF’s programmes, starting with support for indigent cancer patients.",
-  buttonLabel = "Donate Now",
+  buttonLabel = "Support the Cause",
   href = "/donate"
 }: DonateCtaProps) {
   const gallery = images && images.length > 0 ? images : image ? [image] : [];

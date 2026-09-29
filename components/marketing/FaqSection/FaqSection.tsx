@@ -25,7 +25,7 @@ export function FaqSection({
   intro,
   sideHeading,
   sideBody,
-  ctaLabel = "Donate Now",
+  ctaLabel = "Support the Cause",
   ctaHref = "/donate",
   items
 }: FaqSectionProps) {

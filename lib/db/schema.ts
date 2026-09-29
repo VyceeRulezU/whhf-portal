@@ -295,3 +295,26 @@ export const siteContentFields = pgTable(
 export const siteContentFieldsRelations = relations(siteContentFields, ({ one }) => ({
   updatedBy: one(adminUsers, { fields: [siteContentFields.updatedByAdminId], references: [adminUsers.id] })
 }));
+
+// Submissions from the public /interest form (see app/(marketing)/interest)
+// — people expressing interest in partnering/volunteering/getting
+// involved, distinct from ContactMessage (general enquiries) and
+// Donation. Shareable link, so this table is what the admin "Interest"
+// dashboard page reads.
+export const interestSubmissions = pgTable(
+  "InterestSubmission",
+  {
+    id: text("id").primaryKey().$defaultFn(genId),
+    name: text("name").notNull(),
+    phone: text("phone").notNull(),
+    email: text("email").notNull(),
+    // See lib/validation/interest.ts's INTEREST_CATEGORIES for the fixed
+    // set of values this holds. Defaults to "other" purely so the column
+    // can be added NOT NULL against rows submitted before categories
+    // existed — every new submission always sends a real category.
+    category: text("category").notNull().default("other"),
+    otherDetails: text("otherDetails"),
+    createdAt: timestamp("createdAt", { precision: 3 }).notNull().defaultNow()
+  },
+  (table) => [index("InterestSubmission_createdAt_idx").on(table.createdAt)]
+);

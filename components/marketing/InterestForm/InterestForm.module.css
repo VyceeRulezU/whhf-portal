@@ -1,0 +1,4 @@
+.success {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body-lg);
+}

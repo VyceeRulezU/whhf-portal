@@ -6,6 +6,16 @@ const nextConfig = {
   // server output files, which matters for the Cloudflare Workers build.
   outputFileTracingRoot: __dirname,
   images: {
+    // Next's built-in image optimizer needs `sharp`, which isn't available
+    // on the Cloudflare Workers runtime this app deploys to — verified
+    // directly against production: a /_next/image request with w=256
+    // returned the exact same byte count as the unmodified original, i.e.
+    // it was silently doing nothing but adding a pointless extra Worker
+    // hop. `unoptimized: true` stops generating those URLs and serves the
+    // original src directly. Real compression now happens once, at upload
+    // time, in lib/content/compressImage.ts (client-side, before the file
+    // ever reaches R2) — see ImageUploadInput.tsx.
+    unoptimized: true,
     // TEMPORARY: Unsplash serves placeholder photography (topically
     // relevant, free-licensed) until real WHHF programme/beneficiary
     // photos are supplied — see lib/content/placeholderImages.ts. Remove

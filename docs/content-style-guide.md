@@ -20,9 +20,9 @@ upbeat "startup" energy that feels mismatched with the founding story.
 
 ## Buttons & CTAs
 
-Active voice, states exactly what happens: "Donate Now," "Send Your Gift,"
-not "Submit" or "Click Here." A button's label and the resulting
-confirmation should use matching language (button says "Donate Now" →
+Active voice, states exactly what happens: "Support the Cause," "Send Your
+Gift," not "Submit" or "Click Here." A button's label and the resulting
+confirmation should use matching language (button says "Support the Cause" →
 confirmation says "Your donation is confirmed," not "Submission received").
 
 ## Forms & errors

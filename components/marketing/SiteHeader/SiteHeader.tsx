@@ -10,7 +10,7 @@ import logo from "@/assets/brand/logo-transparent.png";
 import { ALL_NAV_LINKS, MORE_LINKS, NAV_LINKS } from "./navLinks";
 import styles from "./SiteHeader.module.css";
 
-// The home hero has its own gold "Donate Now" button — design-system.md
+// The home hero has its own gold "Support the Cause" button — design-system.md
 // says a gold CTA should never appear twice at once. Rather than leave the
 // header CTA blank while the hero's own button is in view, it starts as
 // the quieter outline variant there and only becomes gold once the donor
@@ -144,7 +144,7 @@ export function SiteHeader() {
             {/* Icon chip is reserved for the primary variant only — see
                 design-system.md ("Buttons"): never pair it with outline/ghost. */}
             <Button variant={ctaVariant} showIconChip={ctaVariant === "primary"}>
-              Donate Now
+              Support the Cause
             </Button>
           </Link>
           <button
@@ -204,7 +204,7 @@ export function SiteHeader() {
                     showIconChip={ctaVariant === "primary"}
                     className={styles.mobileNav__ctaButton}
                   >
-                    Donate Now
+                    Support the Cause
                   </Button>
                 </Link>
               </div>

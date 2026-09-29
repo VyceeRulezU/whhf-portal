@@ -1,0 +1,4 @@
+.formHeading {
+  font-size: var(--font-size-h3);
+  margin-bottom: var(--space-5);
+}

@@ -109,7 +109,7 @@ in the WHHF palette:
 - **Primary** — gold fill (`--color-gold`), text `--color-text-on-gold`,
   weight 600, `padding: 14px 28px`, `border-radius: var(--radius-pill)`.
   Hover: `--color-gold-hover` + subtle lift (`transform: translateY(-1px)`).
-  This is the "Donate Now" button — it should appear once per view as the
+  This is the "Support the Cause" (donate) button — it should appear once per view as the
   clear primary action, never doubled up with a second gold button visible
   at the same time.
 - **Secondary (outline)** — transparent fill, 1.5px border in

@@ -7,6 +7,7 @@ import { PartnerCarousel } from "@/components/marketing/PartnerCarousel";
 import { ImpactCarousel } from "@/components/marketing/ImpactCarousel";
 import { FaqSection } from "@/components/marketing/FaqSection";
 import { DonateCta } from "@/components/marketing/DonateCta";
+import { InterestForm } from "@/components/marketing/InterestForm";
 import { getPageContent } from "@/lib/content/getPageContent";
 import styles from "./page.module.css";
 
@@ -71,7 +72,7 @@ export default async function HomePage() {
               <div className="cluster">
                 <Link href="/donate">
                   <Button variant="primary" showIconChip>
-                    Donate Now
+                    Support the Cause
                   </Button>
                 </Link>
                 <Link href="/about">
@@ -306,6 +307,35 @@ export default async function HomePage() {
                 Know More <span aria-hidden="true">→</span>
               </Link>
             </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* The form itself, embedded directly so visitors can fill it in
+          without leaving the homepage. The same form also lives at
+          /interest, a clean standalone URL the family can share directly. */}
+      <section className="section">
+        <div className="container container--wide">
+          <div className={styles.interestCta}>
+            <div className={styles.interestCta__header}>
+              <p className="eyebrow-label">/ Get Involved /</p>
+              <h2>{c["home.interestCta.heading"] as string}</h2>
+              <p className={styles.interestCta__body}>{c["home.interestCta.body"] as string}</p>
+            </div>
+            <div className={styles.interestCta__grid}>
+              <div className={styles.interestCta__imageWrap}>
+                <Image
+                  src={c["home.interestCta.image"] as string}
+                  alt=""
+                  fill
+                  sizes="(max-width: 900px) 100vw, 560px"
+                  className={styles.interestCta__image}
+                />
+              </div>
+              <Card className={styles.interestCta__formCard}>
+                <InterestForm />
+              </Card>
+            </div>
           </div>
         </div>
       </section>

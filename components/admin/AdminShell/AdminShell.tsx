@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { SignOutButton } from "@/components/admin/SignOutButton";
-import { DashboardIcon, DonationsIcon, EmailIcon, NewsletterIcon, PagesIcon, ChevronDoubleLeftIcon } from "@/components/admin/icons";
+import { DashboardIcon, DonationsIcon, EmailIcon, NewsletterIcon, PagesIcon, InterestIcon, ChevronDoubleLeftIcon } from "@/components/admin/icons";
 import { NotificationDrawer } from "@/components/admin/NotificationDrawer";
 import logo from "@/assets/brand/logo-transparent.png";
 import styles from "./AdminShell.module.css";
@@ -19,7 +19,10 @@ const NAV_GROUPS = [
   },
   {
     label: "Fundraising",
-    links: [{ href: "/admin/donations", label: "Donations", Icon: DonationsIcon }]
+    links: [
+      { href: "/admin/donations", label: "Donations", Icon: DonationsIcon },
+      { href: "/admin/interest", label: "Interest", Icon: InterestIcon }
+    ]
   },
   {
     label: "Communications",

@@ -116,7 +116,7 @@ export function ArticleLayout({
               </p>
               <Link href="/donate" className={styles.donateCardLink}>
                 <Button variant="primary" showIconChip className={styles.donateCardButton}>
-                  Donate Now
+                  Support the Cause
                 </Button>
               </Link>
             </Card>
