@@ -1155,23 +1155,27 @@ export const contentRegistry: PageManifest[] = [
 
       // Second banner, right after "Ways to support the work" — embeds the
       // interest form directly (same form also lives at the shareable
-      // /interest page — see app/(marketing)/interest).
+      // /interest page — see app/(marketing)/interest). Labels below are
+      // deliberately prefixed "Interest form:" rather than reusing "Get
+      // involved" — the section above (home.getInvolved.*) already uses
+      // that exact phrase, and the two were easy to mix up in the flat
+      // admin field list.
       {
         type: "image",
         key: "home.interestCta.image",
-        label: "\"Get involved\" section photo",
+        label: "Interest form: photo",
         default: "https://pub-edb75a29dec547999359fcf854521a0f.r2.dev/649531155_17984201615874766_6774910805288153881_n.webp"
       },
       {
         type: "text",
         key: "home.interestCta.heading",
-        label: "\"Get involved\" section heading",
+        label: "Interest form: heading",
         default: "Want to get involved?"
       },
       {
         type: "text",
         key: "home.interestCta.body",
-        label: "\"Get involved\" section body",
+        label: "Interest form: body",
         multiline: true,
         default: "Tell us you're interested, as a volunteer, partner, or supporter, and we'll reach out."
       }
