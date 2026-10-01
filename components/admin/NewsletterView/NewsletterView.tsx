@@ -40,7 +40,11 @@ type Tab = "compose" | "subscribers" | "history";
     subscriber (see app/api/admin/newsletter/send/route.ts, which sends
     one personalized copy per subscriber rather than a shared bcc list),
     a subscriber list with a remove action, and a send history. */
-export function NewsletterView({ subscribers, activeSubscriberCount, history }: NewsletterViewProps) {
+export function NewsletterView({
+  subscribers: initialSubscribers,
+  activeSubscriberCount: initialActiveSubscriberCount,
+  history
+}: NewsletterViewProps) {
   const router = useRouter();
   const { showAlert } = useAlert();
   const [activeTab, setActiveTab] = useState<Tab>("compose");
@@ -48,6 +52,14 @@ export function NewsletterView({ subscribers, activeSubscriberCount, history }: 
   const [body, setBody] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [removingId, setRemovingId] = useState<string | null>(null);
+  // Mirrors the server props in local state and updates it directly on a
+  // successful delete, rather than relying on router.refresh() alone —
+  // the Next.js client Router Cache can keep serving the stale RSC
+  // payload for a little while after a refresh, which made a successful
+  // delete look like it "didn't work" (the row stayed visible even though
+  // it was already gone from the database).
+  const [subscribers, setSubscribers] = useState(initialSubscribers);
+  const [activeSubscriberCount, setActiveSubscriberCount] = useState(initialActiveSubscriberCount);
 
   async function handleSend(e: React.FormEvent) {
     e.preventDefault();
@@ -97,7 +109,18 @@ export function NewsletterView({ subscribers, activeSubscriberCount, history }: 
     if (!window.confirm(`Remove ${email} from the subscriber list?`)) return;
     setRemovingId(id);
     try {
-      await fetch(`/api/admin/newsletter/subscribers/${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/admin/newsletter/subscribers/${id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const json = await res.json().catch(() => null);
+        showAlert({
+          title: "Couldn't remove subscriber",
+          message: json?.error?.message ?? "Something went wrong. Please try again.",
+          variant: "error"
+        });
+        return;
+      }
+      setSubscribers((current) => current.filter((subscriber) => subscriber.id !== id));
+      setActiveSubscriberCount((current) => Math.max(0, current - 1));
       router.refresh();
     } finally {
       setRemovingId(null);

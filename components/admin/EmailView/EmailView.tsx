@@ -81,17 +81,37 @@ interface DetailTarget {
  * the shared ComposeEmailModal (in either reply or forward mode) for the
  * other two composing actions.
  */
-export function EmailView({ emails, unreadEmailCount, messages, unreadMessageCount, sent }: EmailViewProps) {
+export function EmailView({
+  emails: initialEmails,
+  unreadEmailCount: initialUnreadEmailCount,
+  messages: initialMessages,
+  unreadMessageCount: initialUnreadMessageCount,
+  sent: initialSent
+}: EmailViewProps) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<Tab>("inbox");
   const [composeTarget, setComposeTarget] = useState<ComposeTarget | null>(null);
   const [detailTarget, setDetailTarget] = useState<DetailTarget | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
+  // Mirrors the server props in local state and updates it directly on a
+  // successful mutation, rather than relying on router.refresh() alone —
+  // the Next.js client Router Cache can keep serving the stale RSC
+  // payload for a little while after a refresh, which made a successful
+  // delete (or mark-as-read) look like it "didn't work": the row stayed
+  // visible even though it was already gone from the database.
+  const [emails, setEmails] = useState(initialEmails);
+  const [unreadEmailCount, setUnreadEmailCount] = useState(initialUnreadEmailCount);
+  const [messages, setMessages] = useState(initialMessages);
+  const [unreadMessageCount, setUnreadMessageCount] = useState(initialUnreadMessageCount);
+  const [sent, setSent] = useState(initialSent);
 
   async function markInboxRead(id: string) {
     setBusyId(id);
     try {
-      await fetch(`/api/admin/inbox/${id}`, { method: "PATCH" });
+      const res = await fetch(`/api/admin/inbox/${id}`, { method: "PATCH" });
+      if (!res.ok) return;
+      setEmails((current) => current.map((email) => (email.id === id ? { ...email, isRead: true } : email)));
+      setUnreadEmailCount((current) => Math.max(0, current - 1));
       router.refresh();
     } finally {
       setBusyId(null);
@@ -102,7 +122,13 @@ export function EmailView({ emails, unreadEmailCount, messages, unreadMessageCou
     if (!window.confirm("Delete this email? This can't be undone.")) return;
     setBusyId(id);
     try {
-      await fetch(`/api/admin/inbox/${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/admin/inbox/${id}`, { method: "DELETE" });
+      if (!res.ok) return;
+      setEmails((current) => {
+        const target = current.find((email) => email.id === id);
+        if (target && !target.isRead) setUnreadEmailCount((count) => Math.max(0, count - 1));
+        return current.filter((email) => email.id !== id);
+      });
       router.refresh();
     } finally {
       setBusyId(null);
@@ -112,11 +138,14 @@ export function EmailView({ emails, unreadEmailCount, messages, unreadMessageCou
   async function markMessageRead(id: string) {
     setBusyId(id);
     try {
-      await fetch(`/api/admin/messages/${id}`, {
+      const res = await fetch(`/api/admin/messages/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: "read" })
       });
+      if (!res.ok) return;
+      setMessages((current) => current.map((msg) => (msg.id === id ? { ...msg, status: "read" as const } : msg)));
+      setUnreadMessageCount((current) => Math.max(0, current - 1));
       router.refresh();
     } finally {
       setBusyId(null);
@@ -127,7 +156,13 @@ export function EmailView({ emails, unreadEmailCount, messages, unreadMessageCou
     if (!window.confirm("Delete this message? This can't be undone.")) return;
     setBusyId(id);
     try {
-      await fetch(`/api/admin/messages/${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/admin/messages/${id}`, { method: "DELETE" });
+      if (!res.ok) return;
+      setMessages((current) => {
+        const target = current.find((msg) => msg.id === id);
+        if (target && target.status === "unread") setUnreadMessageCount((count) => Math.max(0, count - 1));
+        return current.filter((msg) => msg.id !== id);
+      });
       router.refresh();
     } finally {
       setBusyId(null);
@@ -138,7 +173,9 @@ export function EmailView({ emails, unreadEmailCount, messages, unreadMessageCou
     if (!window.confirm("Delete this email from your Outgoing history? This can't be undone.")) return;
     setBusyId(id);
     try {
-      await fetch(`/api/admin/email/sent/${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/admin/email/sent/${id}`, { method: "DELETE" });
+      if (!res.ok) return;
+      setSent((current) => current.filter((item) => item.id !== id));
       router.refresh();
     } finally {
       setBusyId(null);
