@@ -8,6 +8,7 @@ import { Tabs } from "@/components/admin/Tabs";
 import { ComposeEmailModal } from "@/components/admin/ComposeEmailModal";
 import { EmailDetailModal } from "@/components/admin/EmailDetailModal";
 import { EyeIcon, ReplyIcon, ForwardIcon, CheckIcon, TrashIcon } from "@/components/admin/icons";
+import { useAlert } from "@/components/ui/AlertModal";
 import { formatDateTime } from "@/lib/format/date";
 import styles from "./EmailView.module.css";
 import type { TableColumn } from "@/components/admin/Table";
@@ -89,6 +90,7 @@ export function EmailView({
   sent: initialSent
 }: EmailViewProps) {
   const router = useRouter();
+  const { showAlert } = useAlert();
   const [activeTab, setActiveTab] = useState<Tab>("inbox");
   const [composeTarget, setComposeTarget] = useState<ComposeTarget | null>(null);
   const [detailTarget, setDetailTarget] = useState<DetailTarget | null>(null);
@@ -123,12 +125,16 @@ export function EmailView({
     setBusyId(id);
     try {
       const res = await fetch(`/api/admin/inbox/${id}`, { method: "DELETE" });
-      if (!res.ok) return;
+      if (!res.ok) {
+        showAlert({ title: "Couldn't delete", message: "Something went wrong. Please try again.", variant: "error" });
+        return;
+      }
       setEmails((current) => {
         const target = current.find((email) => email.id === id);
         if (target && !target.isRead) setUnreadEmailCount((count) => Math.max(0, count - 1));
         return current.filter((email) => email.id !== id);
       });
+      showAlert({ title: "Email deleted", message: "The email has been deleted.", variant: "success" });
       router.refresh();
     } finally {
       setBusyId(null);
@@ -157,12 +163,16 @@ export function EmailView({
     setBusyId(id);
     try {
       const res = await fetch(`/api/admin/messages/${id}`, { method: "DELETE" });
-      if (!res.ok) return;
+      if (!res.ok) {
+        showAlert({ title: "Couldn't delete", message: "Something went wrong. Please try again.", variant: "error" });
+        return;
+      }
       setMessages((current) => {
         const target = current.find((msg) => msg.id === id);
         if (target && target.status === "unread") setUnreadMessageCount((count) => Math.max(0, count - 1));
         return current.filter((msg) => msg.id !== id);
       });
+      showAlert({ title: "Message deleted", message: "The message has been deleted.", variant: "success" });
       router.refresh();
     } finally {
       setBusyId(null);
@@ -174,8 +184,12 @@ export function EmailView({
     setBusyId(id);
     try {
       const res = await fetch(`/api/admin/email/sent/${id}`, { method: "DELETE" });
-      if (!res.ok) return;
+      if (!res.ok) {
+        showAlert({ title: "Couldn't delete", message: "Something went wrong. Please try again.", variant: "error" });
+        return;
+      }
       setSent((current) => current.filter((item) => item.id !== id));
+      showAlert({ title: "Email deleted", message: "The email has been removed from your Outgoing history.", variant: "success" });
       router.refresh();
     } finally {
       setBusyId(null);

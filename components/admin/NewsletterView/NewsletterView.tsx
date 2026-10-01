@@ -121,6 +121,7 @@ export function NewsletterView({
       }
       setSubscribers((current) => current.filter((subscriber) => subscriber.id !== id));
       setActiveSubscriberCount((current) => Math.max(0, current - 1));
+      showAlert({ title: "Subscriber removed", message: `${email} has been removed.`, variant: "success" });
       router.refresh();
     } finally {
       setRemovingId(null);
