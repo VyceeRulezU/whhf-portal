@@ -29,7 +29,7 @@ function emptyItem(field: ListFieldDef): Record<string, string> {
  * whole array in one write (see PUT /api/admin/content/list).
  */
 export function ListField({ field, initialItems }: ListFieldProps) {
-  const { showAlert } = useAlert();
+  const { showAlert, showConfirm } = useAlert();
   const [items, setItems] = useState<Record<string, string>[]>(initialItems);
   const [savedItems, setSavedItems] = useState<Record<string, string>[]>(initialItems);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
@@ -41,9 +41,15 @@ export function ListField({ field, initialItems }: ListFieldProps) {
     setEditingIndex(items.length);
   }
 
-  function handleRemove(index: number) {
+  async function handleRemove(index: number) {
     const label = items[index]?.[field.itemFields[0]?.key ?? ""] || `item ${index + 1}`;
-    if (!window.confirm(`Remove "${label}" from ${field.label}?`)) return;
+    const confirmed = await showConfirm({
+      title: "Remove this item?",
+      message: `"${label}" will be removed from ${field.label}.`,
+      confirmLabel: "Remove",
+      danger: true
+    });
+    if (!confirmed) return;
     setItems((current) => current.filter((_, i) => i !== index));
   }
 

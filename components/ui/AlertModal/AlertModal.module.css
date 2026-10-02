@@ -67,6 +67,12 @@
   min-width: 120px;
 }
 
+.confirmActions {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

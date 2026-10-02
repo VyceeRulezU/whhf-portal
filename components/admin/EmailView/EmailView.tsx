@@ -90,7 +90,7 @@ export function EmailView({
   sent: initialSent
 }: EmailViewProps) {
   const router = useRouter();
-  const { showAlert } = useAlert();
+  const { showAlert, showConfirm } = useAlert();
   const [activeTab, setActiveTab] = useState<Tab>("inbox");
   const [composeTarget, setComposeTarget] = useState<ComposeTarget | null>(null);
   const [detailTarget, setDetailTarget] = useState<DetailTarget | null>(null);
@@ -121,7 +121,13 @@ export function EmailView({
   }
 
   async function deleteInbox(id: string) {
-    if (!window.confirm("Delete this email? This can't be undone.")) return;
+    const confirmed = await showConfirm({
+      title: "Delete this email?",
+      message: "This can't be undone.",
+      confirmLabel: "Delete",
+      danger: true
+    });
+    if (!confirmed) return;
     setBusyId(id);
     try {
       const res = await fetch(`/api/admin/inbox/${id}`, { method: "DELETE" });
@@ -159,7 +165,13 @@ export function EmailView({
   }
 
   async function deleteMessage(id: string) {
-    if (!window.confirm("Delete this message? This can't be undone.")) return;
+    const confirmed = await showConfirm({
+      title: "Delete this message?",
+      message: "This can't be undone.",
+      confirmLabel: "Delete",
+      danger: true
+    });
+    if (!confirmed) return;
     setBusyId(id);
     try {
       const res = await fetch(`/api/admin/messages/${id}`, { method: "DELETE" });
@@ -180,7 +192,13 @@ export function EmailView({
   }
 
   async function deleteSent(id: string) {
-    if (!window.confirm("Delete this email from your Outgoing history? This can't be undone.")) return;
+    const confirmed = await showConfirm({
+      title: "Delete this email?",
+      message: "This will remove it from your Outgoing history. This can't be undone.",
+      confirmLabel: "Delete",
+      danger: true
+    });
+    if (!confirmed) return;
     setBusyId(id);
     try {
       const res = await fetch(`/api/admin/email/sent/${id}`, { method: "DELETE" });

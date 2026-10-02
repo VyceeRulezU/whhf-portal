@@ -46,7 +46,7 @@ export function NewsletterView({
   history
 }: NewsletterViewProps) {
   const router = useRouter();
-  const { showAlert } = useAlert();
+  const { showAlert, showConfirm } = useAlert();
   const [activeTab, setActiveTab] = useState<Tab>("compose");
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
@@ -69,13 +69,12 @@ export function NewsletterView({
       return;
     }
 
-    if (
-      !window.confirm(
-        `Send "${subject}" to ${activeSubscriberCount} subscriber${activeSubscriberCount === 1 ? "" : "s"}? This can't be undone.`
-      )
-    ) {
-      return;
-    }
+    const confirmed = await showConfirm({
+      title: "Send this newsletter?",
+      message: `This sends "${subject}" to ${activeSubscriberCount} subscriber${activeSubscriberCount === 1 ? "" : "s"}. This can't be undone.`,
+      confirmLabel: "Send"
+    });
+    if (!confirmed) return;
 
     setIsSending(true);
     try {
@@ -106,7 +105,13 @@ export function NewsletterView({
   }
 
   async function handleRemoveSubscriber(id: string, email: string) {
-    if (!window.confirm(`Remove ${email} from the subscriber list?`)) return;
+    const confirmed = await showConfirm({
+      title: "Remove this subscriber?",
+      message: `${email} will be removed from the subscriber list.`,
+      confirmLabel: "Remove",
+      danger: true
+    });
+    if (!confirmed) return;
     setRemovingId(id);
     try {
       const res = await fetch(`/api/admin/newsletter/subscribers/${id}`, { method: "DELETE" });
